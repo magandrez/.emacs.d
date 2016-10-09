@@ -9,3 +9,11 @@
 (cask-initialize)
 (require 'pallet)
 (pallet-mode t)
+
+;; Load paths
+(add-to-list 'load-path "~/.emacs.d/configs")
+
+
+(load "ruby.el")
+(load "common.el")
+(load "auto-complete.el")
