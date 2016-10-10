@@ -19,4 +19,8 @@
 
 `cask install`
 
-You should be ready to go.
+* Install auto-complete from emacsx
+
+`M-x package-install auto-complete`
+
+Re-start emacs and you should be ready to go.
