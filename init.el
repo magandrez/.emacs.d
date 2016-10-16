@@ -10,6 +10,11 @@
 (require 'pallet)
 (pallet-mode t)
 
+;; Enabling package index
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
+
 
 ;; Modular config loading
 ;; from https://www.emacswiki.org/emacs/DotEmacsModular#toc4
@@ -27,3 +32,15 @@
         (load (file-name-sans-extension fullpath)))))))
 
 (load-directory "~/.emacs.d/configs")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (ag pallet auto-complete async))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
