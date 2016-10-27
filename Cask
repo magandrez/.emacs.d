@@ -5,4 +5,5 @@
 (depends-on "ag")
 (depends-on "auto-complete")
 (depends-on "pallet")
+(depends-on "robe")
 (depends-on "rvm")
