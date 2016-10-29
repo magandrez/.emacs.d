@@ -10,9 +10,11 @@
 
 `git clone https://github.com/magandrez/.emacs.d.git`
 
-* Install emacs using [brew](http://brew.sh/).
+* Install emacs using [brew](http://brew.sh/) fixing any post install issues if instructed by brew installer.
 
-`brew install emacs --HEAD --cocoa --srgb`
+`brew install --HEAD --with-cocoa --srgb emacs`
+
+* Run `brew linkapps emacs` if you want to start Emacs from Launchpad/Spotlight/Quicksilver.
 
 * Run cask install in `~/.emacs.d/`
 
