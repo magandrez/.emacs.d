@@ -6,9 +6,9 @@
 
 `curl -fsSL https://raw.githubusercontent.com/cask/cask/master/go | python`
 
-* Clone this repo 
+* Clone this repository in your home folder
 
-`git clone https://github.com/magandrez/emacs.d.git .`
+`git clone https://github.com/magandrez/.emacs.d.git`
 
 * Install emacs using [brew](http://brew.sh/).
 
