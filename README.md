@@ -8,8 +8,9 @@
 2. Clone this repository in your home folder
 `git clone https://github.com/magandrez/.emacs.d.git`
 
-3. Install emacs using [brew](http://brew.sh/) fixing any post install issues if instructed by brew installer.
+3. Install emacs using [brew](http://brew.sh/).
 `brew install --HEAD --with-cocoa --srgb emacs`
+
  * Run `brew linkapps emacs` if you want to start Emacs from Launchpad/Spotlight/Quicksilver.
  
 4. Run cask install in `~/.emacs.d/`
