@@ -20,10 +20,6 @@
 
 `cask install`
 
-* Install auto-complete from emacs
-
-`M-x package-install auto-complete`
-
 * Install ag [the silver searcher](https://github.com/ggreer/the_silver_searcher)
 
 `brew install the_silver_searcher`
