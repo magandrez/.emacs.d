@@ -27,9 +27,5 @@
 
 `brew install the_silver_searcher`
 
-* Enable MELPA packages (to install `ag`)
-
-Add `(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))` to init.el. Packages should be available under `M-x package-list-packages`.
-
 Re-start emacs and you should be ready to go.
 
