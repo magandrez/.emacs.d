@@ -25,7 +25,7 @@
 
 * Install ag (the silver searcher)[https://github.com/ggreer/the_silver_searcher]
 
-`brew install the-silver-searcher`
+`brew install the_silver_searcher`
 
 * Enable MELPA packages (to install `ag`)
 
