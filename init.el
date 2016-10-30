@@ -40,9 +40,13 @@
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice "~/")
  '(initial-scratch-message nil)
+ '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async))))
+    (monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+ '(scroll-bar-mode nil)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
