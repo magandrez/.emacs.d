@@ -2,3 +2,4 @@ auto-save-list/
 .cask/
 *~
 *.dat
+/eshell
