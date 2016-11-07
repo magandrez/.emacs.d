@@ -21,3 +21,4 @@
 
 6. Re-start emacs and you should be ready to go.
 
+NOTE: Re-run `cask install` after every pull.
