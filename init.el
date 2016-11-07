@@ -42,7 +42,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+    (magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
