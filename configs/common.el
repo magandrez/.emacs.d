@@ -20,3 +20,8 @@
   (interactive)
   (revert-buffer nil t t)
   (message (concat "Reverted buffer " (buffer-name))))
+
+;; Kill-buffer prompt for confirmation disabled
+(setq kill-buffer-query-functions
+  (remq 'process-kill-buffer-query-function
+         kill-buffer-query-functions))
