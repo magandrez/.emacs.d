@@ -52,3 +52,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+
+
+;; Key bindings
+
+(global-set-key (kbd "C-x r") 'reload-this-buffer)
