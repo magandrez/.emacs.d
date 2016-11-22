@@ -14,3 +14,9 @@
 
 ;; Automatically reload a file iff changed
 (global-auto-revert-mode 1)
+
+;; Reloads the current buffer without prompting
+(defun reload-this-buffer ()
+  (interactive)
+  (revert-buffer nil t t)
+  (message (concat "Reverted buffer " (buffer-name))))
