@@ -30,7 +30,6 @@
         (load-directory fullpath))
        ((and (eq isdir nil) (string= (substring path -3) ".el"))
         (load (file-name-sans-extension fullpath)))))))
-
 (load-directory "~/.emacs.d/configs")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -54,10 +53,3 @@
  ;; If there is more than one, they won't work right.
  )
 
-
-
-
-;; Key bindings
-
-(global-set-key (kbd "C-x r") 'reload-this-buffer)
-(global-set-key (kbd "M-o") 'other-window)

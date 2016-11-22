@@ -28,3 +28,8 @@
 
 ;; Removes confirmation when searching for files or buffers that don't exist.
 (setq confirm-nonexistent-file-or-buffer nil)
+
+;; Key bindings
+
+(global-set-key (kbd "C-x r") 'reload-this-buffer)
+(global-set-key (kbd "M-o") 'other-window)
