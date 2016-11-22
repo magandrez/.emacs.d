@@ -25,3 +25,6 @@
 (setq kill-buffer-query-functions
   (remq 'process-kill-buffer-query-function
          kill-buffer-query-functions))
+
+;; Removes confirmation when searching for files or buffers that don't exist.
+(setq confirm-nonexistent-file-or-buffer nil)
