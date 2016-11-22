@@ -59,3 +59,4 @@
 ;; Key bindings
 
 (global-set-key (kbd "C-x r") 'reload-this-buffer)
+(global-set-key (kbd "M-o") 'other-window)
