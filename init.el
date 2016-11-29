@@ -54,3 +54,6 @@
  )
 ;; Enable CUA mode (C-c, C-x, C-v, C-z)
 (cua-mode t)
+
+;; Open files in an existing frame instead of a new frame
+(setq ns-pop-up-frames nil)
