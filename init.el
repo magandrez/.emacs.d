@@ -57,3 +57,6 @@
 
 ;; Open files in an existing frame instead of a new frame
 (setq ns-pop-up-frames nil)
+
+;; Removes scroll bar
+(toggle-scroll-bar -1)
