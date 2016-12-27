@@ -52,12 +52,26 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-;; Enable CUA mode (C-c, C-x, C-v, C-z)
-(require 'cua)
-(CUA-mode t)
 
 ;; Open files in an existing frame instead of a new frame
 (setq ns-pop-up-frames nil)
 
 ;; Removes scroll bar
 (toggle-scroll-bar -1)
+
+;; Enable CUA mode (C-c, C-x, C-v, C-z)
+(cua-mode 1)
+
+;; Tramp (http://www.emacswiki.org/emacs/TrampMode) for remote files
+(require 'tramp)
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+(setq tramp-default-method "ssh")
+;; Backup (file~) disabled and auto-save (#file#) locally to prevent delays in editing remote files
+(add-to-list 'backup-directory-alist
+             (cons tramp-file-name-regexp nil))
+(setq tramp-auto-save-directory temporary-file-directory)
+(setq tramp-verbose 10)
+;; Complete hostnames from ssh config
+(tramp-set-completion-function "ssh"
+                  '((tramp-parse-sconfig "/etc/ssh_config")
+                    (tramp-parse-sconfig "~/.ssh/config")))

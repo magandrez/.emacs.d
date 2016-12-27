@@ -42,9 +42,3 @@
   kept-old-versions 5    ; and how many of the old
   )
 
-;; Use tramp mode with SSH config file.
-(tramp-set-completion-function "ssh"
-                               '((tramp-parse-sconfig "/etc/ssh_config")
-                                 (tramp-parse-sconfig "~/.ssh/config")))
-;; Set tramp's default mode to SSH (others FTP or SCP)
-(setq tramp-default-method "ssh")
