@@ -1,4 +1,6 @@
 ;; Hook for Robe to play with Enhanced Ruby Mode
+(add-hook 'ruby-mode-hook 'robe-mode)
+;; Hook for Robe to play with Ruby standard mode
 (add-hook 'enh-ruby-mode-hook 'robe-mode)
 
 ;; Monokai theme
@@ -30,7 +32,6 @@
 (setq confirm-nonexistent-file-or-buffer nil)
 
 ;; Key bindings
-
 (global-set-key (kbd "C-x r") 'reload-this-buffer)
 (global-set-key (kbd "M-o") 'other-window)
 
