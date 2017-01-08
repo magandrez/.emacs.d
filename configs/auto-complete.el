@@ -12,3 +12,7 @@
   "Only AC!"
   (unless (minibufferp (current-buffer))
     (auto-complete-mode 1)))
+
+;; Company-mode
+(eval-after-load 'company 
+  '(push 'company-robe company-backends))
