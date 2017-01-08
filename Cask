@@ -4,6 +4,8 @@
 
 (depends-on "ag")
 (depends-on "auto-complete")
+(depends-on "company")
+(depends-on "company-quickhelp")
 (depends-on "dash")
 (depends-on "enh-ruby-mode")
 (depends-on "git-commit")

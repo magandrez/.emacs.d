@@ -6,13 +6,19 @@
 (ac-config-default)
 (setq ac-ignore-case nil)
 
-;; Load auto-complete on startup
-;; for every mode
+;; Load auto-complete for minibufferp
+;(defun auto-complete-mode-maybe ()
+;  "Only AC!"
+;  (unless (minibufferp (current-buffer))
+;    (auto-complete-mode 1)))
+
 (defun auto-complete-mode-maybe ()
-  "Only AC!"
-  (unless (minibufferp (current-buffer))
-    (auto-complete-mode 1)))
+  "What buffer `auto-complete-mode' prefers."
+  (if (and (not (minibufferp (current-buffer)))
+           (memq major-mode ac-modes))
+      (auto-complete-mode 1)))
 
 ;; Company-mode
-(eval-after-load 'company 
-  '(push 'company-robe company-backends))
+;(with-eval-after-load 'company 
+;  '(push 'company-robe company-backends))
+
