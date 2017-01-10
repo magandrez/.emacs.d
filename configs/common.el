@@ -42,3 +42,5 @@
   kept-old-versions 5    ; and how many of the old
   )
 
+;; Set ZSH as multi-term terminal
+(setq multi-term-program "/bin/zsh")

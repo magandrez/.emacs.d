@@ -50,7 +50,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+    (multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
