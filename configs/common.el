@@ -1,6 +1,3 @@
-;; Hook for Robe to play with Enhanced Ruby Mode
-(add-hook 'enh-ruby-mode-hook 'robe-mode)
-
 ;; Monokai theme
 (load-theme 'monokai t)
 
@@ -30,10 +27,10 @@
 (setq confirm-nonexistent-file-or-buffer nil)
 
 ;; Key bindings
-
 (global-set-key (kbd "C-x r") 'reload-this-buffer)
 (global-set-key (kbd "M-o") 'other-window)
 
+;; Backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
   backup-by-copying t    ; Don't delink hardlinks
   version-control t      ; Use version numbers on backups
@@ -44,3 +41,15 @@
 
 ;; Set ZSH as multi-term terminal
 (setq multi-term-program "/bin/zsh")
+
+;; Yes-or-No -> Y or N
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; Confirm kill emacs (because sometimes I am careless)
+(setq confirm-kill-emacs 'y-or-n-p)
+
+;; Follow symlinks, or course
+(setq vc-follow-symlinks t)
+
+;; Enable clipboard integration
+(setq x-select-enable-clipboard t)
