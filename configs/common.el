@@ -1,6 +1,11 @@
 ;; Monokai theme
 (load-theme 'monokai t)
 
+;; Increase/Decrease text size
+;; C-x C-0 restores the default font size
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+
 ;; ZSH as shell
 (setenv "ESHELL" (expand-file-name "~/bin/eshell"))
 
