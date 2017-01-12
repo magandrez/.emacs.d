@@ -58,3 +58,6 @@
 
 ;; Enable clipboard integration
 (setq x-select-enable-clipboard t)
+
+;; Enable YAML when appropriate
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))

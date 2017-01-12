@@ -18,3 +18,4 @@
 (depends-on "robe")
 (depends-on "rvm")
 (depends-on "with-editor")
+(depends-on "yaml-mode")
