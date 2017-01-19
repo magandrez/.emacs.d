@@ -18,4 +18,5 @@
 (depends-on "robe")
 (depends-on "rvm")
 (depends-on "with-editor")
+(depends-on "yafolding")
 (depends-on "yaml-mode")

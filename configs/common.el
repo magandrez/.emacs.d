@@ -34,6 +34,12 @@
 ;; Key bindings
 (global-set-key (kbd "C-x r") 'reload-this-buffer)
 (global-set-key (kbd "M-o") 'other-window)
+(define-key yafolding-mode-map (kbd "<C-S-return>") nil)
+(define-key yafolding-mode-map (kbd "<C-M-return>") nil)
+(define-key yafolding-mode-map (kbd "<C-return>") nil)
+(define-key yafolding-mode-map (kbd "C-i") 'yafolding-toggle-all)
+(define-key yafolding-mode-map (kbd "C-f") 'yafolding-hide-parent-element)
+(define-key yafolding-mode-map (kbd "C-u") 'yafolding-toggle-element)
 
 ;; Backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
@@ -61,3 +67,7 @@
 
 ;; Enable YAML when appropriate
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+;; Enable yafolding (fold code based on indentation)
+(add-hook 'prog-mode-hook
+          (lambda () (yafolding-mode)))
