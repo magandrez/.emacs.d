@@ -1,11 +1,6 @@
 ;; Monokai theme
 (load-theme 'monokai t)
 
-;; Increase/Decrease text size
-;; C-x C-0 restores the default font size
-(global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-
 ;; ZSH as shell
 (setenv "ESHELL" (expand-file-name "~/bin/eshell"))
 
@@ -40,6 +35,11 @@
 (define-key yafolding-mode-map (kbd "C-i") 'yafolding-toggle-all)
 (define-key yafolding-mode-map (kbd "C-f") 'yafolding-hide-parent-element)
 (define-key yafolding-mode-map (kbd "C-u") 'yafolding-toggle-element)
+;; Increase/Decrease text size
+;; C-x C-0 restores the default font size
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+
 
 ;; Backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
