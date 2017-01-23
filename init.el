@@ -46,6 +46,7 @@
  '(global-company-mode t)
  '(ido-create-new-buffer (quote always))
  '(inhibit-startup-screen t)
+ '(initial-frame-alist (quote ((vertical-scroll-bars) (fullscreen . maximized))))
  '(initial-scratch-message nil)
  '(menu-bar-mode nil)
  '(package-selected-packages
