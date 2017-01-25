@@ -1,3 +1,10 @@
+;; UTF-8 for ya'all
+(set-language-environment 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-locale-environment "en_US.UTF-8")
+(prefer-coding-system 'utf-8)
+
 ;; Monokai theme
 (load-theme 'monokai t)
 
