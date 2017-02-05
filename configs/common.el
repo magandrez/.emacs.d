@@ -8,8 +8,8 @@
 ;; Monokai theme
 (load-theme 'monokai t)
 
-;; ZSH as shell
-(setenv "ESHELL" (expand-file-name "~/bin/eshell"))
+;; ZSH as shell for multi-term
+(setq multi-term-program "/usr/local/bin/zsh")
 
 ;; Enable {}
 (setq mac-option-modifier nil
