@@ -33,19 +33,39 @@
 ;; Removes confirmation when searching for files or buffers that don't exist.
 (setq confirm-nonexistent-file-or-buffer nil)
 
-;; Key bindings
-(global-set-key (kbd "C-x r") 'reload-this-buffer)
-(global-set-key (kbd "M-o") 'other-window)
-(define-key yafolding-mode-map (kbd "<C-S-return>") nil)
-(define-key yafolding-mode-map (kbd "<C-M-return>") nil)
-(define-key yafolding-mode-map (kbd "<C-return>") nil)
-(define-key yafolding-mode-map (kbd "C-i") 'yafolding-toggle-all)
-(define-key yafolding-mode-map (kbd "C-f") 'yafolding-hide-parent-element)
-(define-key yafolding-mode-map (kbd "C-u") 'yafolding-toggle-element)
+;; ;; Key bindings
 ;; Increase/Decrease text size
 ;; C-x C-0 restores the default font size
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
+
+  ;; Indentation from
+  ;; http://blog.binchen.org/posts/easy-indentation-setup-in-emacs-for-web-development.html
+  (defun my-setup-indent (n)
+    ;; web development
+    (setq enh-ruby-deep-indent-paren nil) ; enh-ruby
+    (setq enh-ruby-indent-tabs-mode nil) ; enh-ruby
+    (setq enh-ruby-indent-level n) ; enh-ruby
+    (setq enh-ruby-handing-indent-level n) ; enh-ruby
+    (setq javascript-indent-level n) ; javascript-mode
+    (setq js-indent-level n) ; js-mode
+    (setq js2-basic-offset n) ; js2-mode
+    (setq web-mode-markup-indent-offset n) ; web-mode, html tag in html file
+    (setq web-mode-css-indent-offset n) ; web-mode, css in html file
+    (setq web-mode-code-indent-offset n) ; web-mode, js code in html file
+    (setq css-indent-offset n) ; css-mode
+    )
+
+  (defun my-personal-code-style ()
+    (interactive)
+    (message "Indentation set to two")
+    (setq indent-tabs-mode nil) ; use space instead of tab
+    (my-setup-indent 2) ; indent 2 spaces width
+    )
+
+;; call indentation
+(my-personal-code-style)
+
 
 
 ;; Backups
@@ -74,10 +94,6 @@
 
 ;; Enable YAML when appropriate
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-
-;; Enable yafolding (fold code based on indentation)
-(add-hook 'prog-mode-hook
-          (lambda () (yafolding-mode)))
 
 ;; Tramp as sudo
 (defun find-alternative-file-with-sudo ()
