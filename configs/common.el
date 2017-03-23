@@ -39,6 +39,9 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
+;; Cycle through windows
+(define-key global-map (kbd "M-o") 'previous-multiframe-window)
+
 ;; Backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
   backup-by-copying t    ; Don't delink hardlinks
