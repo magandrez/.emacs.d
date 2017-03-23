@@ -39,35 +39,6 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
-  ;; Indentation from
-  ;; http://blog.binchen.org/posts/easy-indentation-setup-in-emacs-for-web-development.html
-  (defun my-setup-indent (n)
-    ;; web development
-    (setq enh-ruby-deep-indent-paren nil) ; enh-ruby
-    (setq enh-ruby-indent-tabs-mode nil) ; enh-ruby
-    (setq enh-ruby-indent-level n) ; enh-ruby
-    (setq enh-ruby-handing-indent-level n) ; enh-ruby
-    (setq javascript-indent-level n) ; javascript-mode
-    (setq js-indent-level n) ; js-mode
-    (setq js2-basic-offset n) ; js2-mode
-    (setq web-mode-markup-indent-offset n) ; web-mode, html tag in html file
-    (setq web-mode-css-indent-offset n) ; web-mode, css in html file
-    (setq web-mode-code-indent-offset n) ; web-mode, js code in html file
-    (setq css-indent-offset n) ; css-mode
-    )
-
-  (defun my-personal-code-style ()
-    (interactive)
-    (message "Indentation set to two")
-    (setq indent-tabs-mode nil) ; use space instead of tab
-    (my-setup-indent 2) ; indent 2 spaces width
-    )
-
-;; call indentation
-(my-personal-code-style)
-
-
-
 ;; Backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
   backup-by-copying t    ; Don't delink hardlinks
