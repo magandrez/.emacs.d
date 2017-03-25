@@ -9,6 +9,7 @@
 (depends-on "dash")
 (depends-on "enh-ruby-mode")
 (depends-on "git-commit")
+(depends-on "go-mode")
 (depends-on "inf-ruby")
 (depends-on "magit")
 (depends-on "magit-popup")
