@@ -17,6 +17,7 @@
 (depends-on "inf-ruby")
 (depends-on "magit")
 (depends-on "magit-popup")
+(depends-on "markdown-mode")
 (depends-on "monokai-theme")
 (depends-on "multi-term")
 (depends-on "neotree")
