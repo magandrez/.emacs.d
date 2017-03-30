@@ -9,6 +9,7 @@
 (depends-on "dash")
 (depends-on "enh-ruby-mode")
 (depends-on "exec-path-from-shell")
+(depends-on "flycheck")
 (depends-on "flymake-go")
 (depends-on "git-commit")
 (depends-on "go-autocomplete")
