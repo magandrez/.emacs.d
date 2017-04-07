@@ -4,6 +4,7 @@
 
 (depends-on "ag")
 (depends-on "auto-complete")
+(depends-on "column-enforce-mode")
 (depends-on "company")
 (depends-on "company-quickhelp")
 (depends-on "dash")

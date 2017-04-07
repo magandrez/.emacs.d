@@ -84,3 +84,6 @@
 
 ;; Flycheck shell scripts on shell mode
 (add-hook 'sh-mode-hook 'flycheck-mode)
+
+;; Highlight all code over 80 lines
+(add-hook 'prog-mode-hook 'column-enforce-mode)
