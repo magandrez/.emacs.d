@@ -23,6 +23,7 @@
 (depends-on "monokai-theme")
 (depends-on "multi-term")
 (depends-on "neotree")
+(depends-on "org-present")
 (depends-on "pallet")
 (depends-on "robe")
 (depends-on "rvm")
