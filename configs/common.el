@@ -39,8 +39,12 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
-;; Cycle through windows
-(define-key global-map (kbd "M-o") 'previous-multiframe-window)
+;; Cycle through windows all frames
+(define-key global-map (kbd "M-n") 'next-multiframe-window)
+(define-key global-map (kbd "M-p") 'previous-multiframe-window)
+
+;; Select window from all frames
+(define-key global-map (kbd "M-o") 'ace-window)
 
 ;; Backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))

@@ -2,6 +2,7 @@
 (source marmalade)
 (source melpa)
 
+(depends-on "ace-window")
 (depends-on "ag")
 (depends-on "auto-complete")
 (depends-on "column-enforce-mode")
