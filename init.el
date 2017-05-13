@@ -53,6 +53,7 @@
    (quote
     (ace-window org-present password-store column-enforce-mode markdown-mode flycheck neotree flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
  '(scroll-bar-mode nil)
+ '(send-mail-function (quote sendmail-send-it))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
