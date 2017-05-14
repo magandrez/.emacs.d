@@ -91,3 +91,6 @@
 
 ;; Highlight all code over 80 lines
 (add-hook 'prog-mode-hook 'column-enforce-mode)
+
+;; Org mode configs
+ '(org-log-done (quote note))
