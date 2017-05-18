@@ -43,6 +43,10 @@
 (define-key global-map (kbd "M-n") 'next-multiframe-window)
 (define-key global-map (kbd "M-p") 'previous-multiframe-window)
 
+;; Org-mode key bindings
+(define-key global-map (kbd "C-c l") 'org-store-link)
+(define-key global-map (kbd "C-c a") 'org-agenda)
+
 ;; Select window from all frame
 (define-key global-map (kbd "M-o") 'ace-window)
 
@@ -99,6 +103,5 @@
 (add-hook 'prog-mode-hook 'column-enforce-mode)
 
 ;; Org mode configs
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
+
