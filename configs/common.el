@@ -43,8 +43,14 @@
 (define-key global-map (kbd "M-n") 'next-multiframe-window)
 (define-key global-map (kbd "M-p") 'previous-multiframe-window)
 
-;; Select window from all frames
+;; Select window from all frame
 (define-key global-map (kbd "M-o") 'ace-window)
+
+;; Quirky way to handle frame switching on a multi-term
+;; (i.e: not M-o but actually C-c o)
+;; need to look into this deeper.
+(add-hook 'multi-term-mode-hook (lambda ()
+                            (define-key term-raw-map (kbd "M-o") 'ace-window)))
 
 ;; Backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
