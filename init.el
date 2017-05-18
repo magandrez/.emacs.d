@@ -51,10 +51,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (ace-window org-present password-store column-enforce-mode markdown-mode
-		flycheck neotree flymake-go go-autocomplete go-mode yaml-mode
-		multi-term company-quickhelp company magit monokai-theme
-		enh-ruby-mode robe rvm ag pallet auto-complete async)))
+    (suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck neotree flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote sendmail-send-it))
  '(show-paren-mode t)
@@ -85,3 +82,9 @@
                     (tramp-parse-sconfig "~/.ssh/config")))
 
 (put 'dired-find-alternate-file 'disabled t)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

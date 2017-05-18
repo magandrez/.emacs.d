@@ -26,5 +26,6 @@
 (depends-on "pallet")
 (depends-on "robe")
 (depends-on "rvm")
+(depends-on "suomalainen-kalenteri")
 (depends-on "with-editor")
 (depends-on "yaml-mode")
