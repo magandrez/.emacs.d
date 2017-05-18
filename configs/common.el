@@ -104,9 +104,9 @@
 
 ;; Org mode configs
 (setq org-log-done t)
-(setq org-agenda-files (list "~/notebooks/personal-todo.org"
-                             "~/notebooks/politics-notebook.org"
-			     "~/notebooks/ruby-notebook.org"
-			     "~/notebooks/shell-notebook.org"
-                             "~/notebooks/articles-notebook.org"
-                             "~/notebooks/emacs-notebook.org"))
+(setq org-agenda-files (list "~/notebooks/personal-todo.org.gpg"
+                             "~/notebooks/politics-notebook.org.gpg"
+			     "~/notebooks/ruby-notebook.org.gpg"
+			     "~/notebooks/shell-notebook.org.gpg"
+                             "~/notebooks/articles-notebook.org.gpg"
+                             "~/notebooks/emacs-notebook.org.gpg"))

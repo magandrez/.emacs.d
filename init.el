@@ -9,6 +9,9 @@
 (cask-initialize)
 (require 'pallet)
 (pallet-mode t)
+;; Org-files encryption
+(require 'epa-file)
+(epa-file-enable)
 
 ;; Enabling package index
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
