@@ -104,9 +104,6 @@
 
 ;; Org mode configs
 (setq org-log-done t)
-(setq org-agenda-files (list "~/notebooks/personal-todo.org.gpg"
-                             "~/notebooks/politics-notebook.org.gpg"
-			     "~/notebooks/ruby-notebook.org.gpg"
-			     "~/notebooks/shell-notebook.org.gpg"
-                             "~/notebooks/articles-notebook.org.gpg"
-                             "~/notebooks/emacs-notebook.org.gpg"))
+(load-library "find-lisp")
+(setq org-agenda-files
+   (find-lisp-find-files "/keybase/private/spavi/org" "\.org.gpg$"))
