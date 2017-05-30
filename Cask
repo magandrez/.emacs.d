@@ -15,6 +15,7 @@
 (depends-on "git-commit")
 (depends-on "go-autocomplete")
 (depends-on "go-mode")
+(depends-on "header2")
 (depends-on "inf-ruby")
 (depends-on "magit")
 (depends-on "magit-popup")

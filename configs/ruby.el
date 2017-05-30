@@ -13,3 +13,17 @@
 
 (add-to-list 'auto-mode-alist
              '("\\(?:\\.rb\\|cap\\|ru\\|rake\\|thor\\|jbuilder\\|gemspec\\|podspec\\|/\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\)file\\)\\'" . enh-ruby-mode))
+
+(autoload 'auto-make-header "header2")
+(add-hook 'enh-ruby-mode 'auto-make-header)
+
+(custom-set-variables 
+ '(make-header-hook
+   (quote
+    (header-title
+     header-blank
+     header-author
+     header-creation-date
+     header-modification-date
+     header-blank
+     header-description))))
