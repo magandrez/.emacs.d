@@ -20,7 +20,7 @@
 (add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
 
 (autoload 'auto-make-header "header2")
-(add-hook 'enh-ruby-mode 'auto-make-header)
+(add-hook 'enh-ruby-mode-hook 'auto-make-header)
 
 (custom-set-variables 
  '(make-header-hook
