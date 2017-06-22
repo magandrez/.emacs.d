@@ -29,6 +29,5 @@
      header-blank
      header-author
      header-creation-date
-     header-modification-date
      header-blank
      header-description))))
