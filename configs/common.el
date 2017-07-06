@@ -72,9 +72,6 @@
 ; disable lock files, messy on mounted network fs
 (setq create-lockfiles nil)
 
-;; Set ZSH as multi-term terminal
-(setq multi-term-program "/bin/zsh")
-
 ;; Yes-or-No -> Y or N
 (defalias 'yes-or-no-p 'y-or-n-p)
 
