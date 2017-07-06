@@ -10,6 +10,8 @@
 
 ;; ZSH as shell for multi-term
 (setq multi-term-program "/usr/local/bin/zsh")
+(add-hook 'term-mode-hook (lambda ()
+                            (define-key term-raw-map (kbd "C-y") 'term-paste)))
 
 ;; Enable {}
 (setq mac-option-modifier nil
