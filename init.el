@@ -50,6 +50,9 @@
  '(inhibit-startup-screen t)
  '(initial-frame-alist (quote ((vertical-scroll-bars) (fullscreen . maximized))))
  '(initial-scratch-message nil)
+ '(make-header-hook
+   (quote
+    (header-title header-blank header-author header-creation-date header-blank header-description)))
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
