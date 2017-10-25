@@ -38,6 +38,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(calendar-date-style (quote european))
+ '(calendar-latitude 60.1)
+ '(calendar-longitude 24.9)
+ '(calendar-time-display-form
+   (quote
+    (24-hours ":" minutes
+	      (if time-zone " (")
+	      time-zone
+	      (if time-zone ")"))))
+ '(calendar-week-start-day 1)
  '(company-auto-complete t)
  '(company-idle-delay 0.25)
  '(company-quickhelp-delay 0.25)
@@ -54,9 +64,11 @@
    (quote
     (header-title header-blank header-author header-creation-date header-blank header-description)))
  '(menu-bar-mode nil)
+ '(org-journal-date-format "%A, %d.%m.%Y")
+ '(org-journal-dir "/keybase/private/spavi/org/diary")
  '(package-selected-packages
    (quote
-    (header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+    (org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
  '(safe-local-variable-values
    (quote
     ((epa-file-encrypt-to “manuel@manuel\.is”)
@@ -92,4 +104,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(calendar-today ((t (:underline t))))
+ '(calendar-today-visible-hook (quote (calendar-mark-today)))
+ '(calendar-week-start-day 1))
