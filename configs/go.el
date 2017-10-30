@@ -18,3 +18,4 @@
 (auto-complete-mode 1)
 
 (setq gofmt-command "goimports")
+(define-key ac-mode-map (kbd "M-f") 'auto-complete)
