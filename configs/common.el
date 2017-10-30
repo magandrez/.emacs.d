@@ -113,3 +113,14 @@
 (load-library "find-lisp")
 (setq org-agenda-files
    (find-lisp-find-files "/keybase/private/spavi/org" "\.org.gpg$"))
+
+;; Get rid of the beeps
+(setq visible-bell t)
+
+;; Wrap characters
+(global-set-key (kbd "M-[") 'insert-pair)
+(global-set-key (kbd "M-{") 'insert-pair)
+(global-set-key (kbd "M-<") 'insert-pair)
+(global-set-key (kbd "M-'") 'insert-pair)
+(global-set-key (kbd "M-`") 'insert-pair)
+(global-set-key (kbd "M-\"") 'insert-pair)
