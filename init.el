@@ -66,6 +66,7 @@
  '(menu-bar-mode nil)
  '(org-journal-date-format "%A, %d.%m.%Y")
  '(org-journal-dir "/keybase/private/spavi/org/diary")
+ '(org-support-shift-select t)
  '(package-selected-packages
    (quote
     (org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
