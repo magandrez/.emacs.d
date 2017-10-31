@@ -1,5 +1,6 @@
 ;; Hook for robe to play with Enhanced Ruby Mode
 (add-hook 'enh-ruby-mode-hook 'robe-mode)
+(add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
 
 ;; Major mode for Ruby
 (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
@@ -18,6 +19,9 @@
 (add-to-list 'auto-mode-alist '("\\.gemspec$" . enh-ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.ru$" . enh-ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
+
+(global-company-mode t)
+(push 'company-robe company-backends)
 
 (autoload 'auto-make-header "header2")
 (add-hook 'enh-ruby-mode-hook 'auto-make-header)
