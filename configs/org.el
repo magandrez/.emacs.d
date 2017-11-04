@@ -1,4 +1,5 @@
-;; Org mode settings and general tweaks
+;; Calendar
+;;
 (setq calendar-date-style (quote european))
 ;; Helsinki
 (setq calendar-latitude 60.1)
@@ -10,6 +11,21 @@
 (setq calendar-week-start-day 1)
 ;; highlight today
 (setq calendar-today-visible-hook (quote (calendar-mark-today)))
-;; org-journal specifics
+
+;; Journal
+;;
 (setq org-journal-date-format "%A, %d.%m.%Y")
-(setq org-journal-dir "/keybase/private/spavi/org/diary")
+;; Journal folder files
+(setq org-journal-dir "/keybase/private/spavi/org/diary/")
+
+;; Org mode
+;;
+(setq org-log-done t)
+;; org folder
+(setq org-directory "/keybase/private/spavi/org")
+;; org-agenda-files
+(load-library "find-lisp")
+(setq org-agenda-files
+   (find-lisp-find-files "/keybase/private/spavi/org" "\.org.gpg$"))
+;; notes
+(setq org-default-notes-file "/keybase/private/spavi/org/refile.org.gpg")

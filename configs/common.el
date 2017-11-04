@@ -108,12 +108,6 @@
 ;; Highlight all code over 80 lines
 (add-hook 'prog-mode-hook 'column-enforce-mode)
 
-;; Org mode configs
-(setq org-log-done t)
-(load-library "find-lisp")
-(setq org-agenda-files
-   (find-lisp-find-files "/keybase/private/spavi/org" "\.org.gpg$"))
-
 ;; Get rid of the beeps
 (setq visible-bell t)
 
