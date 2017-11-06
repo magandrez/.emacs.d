@@ -110,11 +110,3 @@
 
 ;; Get rid of the beeps
 (setq visible-bell t)
-
-;; Wrap characters
-(global-set-key (kbd "M-[") 'insert-pair)
-(global-set-key (kbd "M-{") 'insert-pair)
-(global-set-key (kbd "M-<") 'insert-pair)
-(global-set-key (kbd "M-'") 'insert-pair)
-(global-set-key (kbd "M-`") 'insert-pair)
-(global-set-key (kbd "M-\"") 'insert-pair)
