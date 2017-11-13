@@ -91,3 +91,23 @@
 	  "*%(sp/my-timestamp)\n\n**%(format-time-string \"%H:%M\")%?" :kill-buffer t)
 	 ("i" "Idea came up." entry (file org-default-notes-file)
 	  "* %? :IDEA: \n%u" :clock-in t :clock-resume t) ))
+
+;; Refile
+(setq org-refile-targets '((nil :maxlevel . 9)
+                                (org-agenda-files :maxlevel . 9)))
+; Use full outline paths for refile targets - we file directly with IDO
+(setq org-refile-use-outline-path t)
+
+; Targets complete directly with IDO
+(setq org-outline-path-complete-in-steps nil)
+
+; Use IDO for both buffer and file completion and ido-everywhere to t
+(setq org-completion-use-ido t)
+(setq ido-everywhere t)
+(setq ido-max-directory-size 100000)
+(ido-mode (quote both))
+; Use the current window when visiting files and buffers with ido
+(setq ido-default-file-method 'selected-window)
+(setq ido-default-buffer-method 'selected-window)
+; Use the current window for indirect buffer display
+(setq org-indirect-buffer-display 'current-window)
