@@ -1,3 +1,7 @@
+;; General
+;;
+(setq org-support-shift-select t)
+
 ;; Calendar
 ;;
 (setq calendar-date-style (quote european))
