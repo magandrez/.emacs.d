@@ -83,7 +83,9 @@
 
 ;; Templates
 (defvar org-capture-templates
-       '(("t" "Todo entry (refile)." entry (file+headline org-default-notes-file "Tasks")
+       '(("t" "To-do task." entry (file+headline org-default-notes-file "Tasks")
+	  "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+	 ("w" "Work task." entry (file+headline org-default-notes-file "Work Task")
 	  "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
 	 ("l" "Link: Something interesting?"
 	  entry
