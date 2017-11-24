@@ -1,7 +1,7 @@
-(source gnu)
-(source marmalade)
 (source melpa)
+(source gnu)
 
+(depends-on "pallet")
 (depends-on "ace-window")
 (depends-on "ag")
 (depends-on "auto-complete")
@@ -24,7 +24,6 @@
 (depends-on "multi-term")
 (depends-on "org-journal")
 (depends-on "org-present")
-(depends-on "pallet")
 (depends-on "robe")
 (depends-on "rvm")
 (depends-on "suomalainen-kalenteri")
