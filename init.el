@@ -56,7 +56,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+    (calfw-org calfw org-gcal org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
  '(safe-local-variable-values
    (quote
     ((epa-file-encrypt-to “manuel@manuel\.is”)

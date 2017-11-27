@@ -87,6 +87,11 @@
 	  "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
 	 ("w" "Work task." entry (file+headline org-default-notes-file "Work Task")
 	  "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+	 ("a" "Apointment"
+	  entry
+	  (file "/keybase/private/spavi/org/schedule.org.gpg")
+	  (file "~/.emacs.d/configs/org-templates/events.orgcaptmpl")
+	  :empty-lines-before 1)
 	 ("l" "Link: Something interesting?"
 	  entry
 	  (file+headline org-default-notes-file "Links")
