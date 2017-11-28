@@ -28,6 +28,7 @@
 (depends-on "org-gcal")
 (depends-on "org-journal")
 (depends-on "org-present")
+(depends-on "package-build")
 (depends-on "pallet")
 (depends-on "robe")
 (depends-on "rvm")
