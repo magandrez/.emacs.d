@@ -9,3 +9,4 @@ tramp
 ido.last
 bookmarks
 configs/org_gcal.el
+/org-gcal/.org-gcal-token
