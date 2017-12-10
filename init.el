@@ -87,3 +87,5 @@
                     (tramp-parse-sconfig "~/.ssh/config")))
 (put 'dired-find-alternate-file 'disabled t)
 
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
