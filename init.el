@@ -59,7 +59,8 @@
     (calfw-org calfw org-gcal org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
  '(safe-local-variable-values
    (quote
-    ((epa-file-encrypt-to “manuel@manuel\.is”)
+    ((encoding . utf-8)
+     (epa-file-encrypt-to “manuel@manuel\.is”)
      (header-auto-update-enabled))))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote sendmail-send-it))
@@ -89,3 +90,9 @@
 
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
