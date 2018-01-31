@@ -1,8 +1,9 @@
 ;; Loading auto-complete config
 ;; and dictionaries
+;(require 'go-autocomplete)
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories 
-"~/.emacs.d/.cask/26.0/elpa/auto-complete-20160827.649/dict")
+	     "~/.emacs.d/.cask/25.3/elpa/auto-complete-20170124.1845/dict")
 (ac-config-default)
 (setq ac-ignore-case nil)
 
