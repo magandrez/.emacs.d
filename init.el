@@ -10,7 +10,7 @@
 (pallet-mode t)
 ;; Org-files encryption
 (require 'epa-file)
-(epa-file-enable)
+;(epa-file-enable)
 
 ;; Enabling package index
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -45,6 +45,7 @@
  '(company-quickhelp-use-propertized-text t)
  '(company-show-numbers t)
  '(company-tooltip-idle-delay 0.25)
+ '(dired-use-ls-dired nil)
  '(global-company-mode t)
  '(ido-create-new-buffer (quote always))
  '(inhibit-startup-screen t)
