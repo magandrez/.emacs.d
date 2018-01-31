@@ -16,7 +16,6 @@
 (depends-on "dash")
 (depends-on "enh-ruby-mode")
 (depends-on "epl")
-(depends-on "exec-path-from-shell")
 (depends-on "f")
 (depends-on "flycheck")
 (depends-on "flymake-go")
