@@ -51,6 +51,8 @@
  '(inhibit-startup-screen t)
  '(initial-frame-alist (quote ((vertical-scroll-bars) (fullscreen . maximized))))
  '(initial-scratch-message nil)
+ '(magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256")))
+ '(magit-push-arguments (quote ("--force-with-lease")))
  '(make-header-hook
    (quote
     (header-title header-blank header-author header-creation-date header-blank header-description)))
