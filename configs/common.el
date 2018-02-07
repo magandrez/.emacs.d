@@ -110,3 +110,6 @@
 
 ;; Get rid of the beeps
 (setq visible-bell t)
+
+;; used ibuffer mode for managing buffers
+(global-set-key (kbd "C-x C-b") 'ibuffer)
