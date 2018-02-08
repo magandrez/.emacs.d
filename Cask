@@ -40,5 +40,6 @@
 (depends-on "robe")
 (depends-on "rvm")
 (depends-on "suomalainen-kalenteri")
+(depends-on "which-key")
 (depends-on "with-editor")
 (depends-on "yaml-mode")

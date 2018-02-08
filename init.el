@@ -51,13 +51,15 @@
  '(inhibit-startup-screen t)
  '(initial-frame-alist (quote ((vertical-scroll-bars) (fullscreen . maximized))))
  '(initial-scratch-message nil)
+ '(magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256")))
+ '(magit-push-arguments (quote ("--force-with-lease")))
  '(make-header-hook
    (quote
     (header-title header-blank header-author header-creation-date header-blank header-description)))
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (go-playground-cli calfw-org calfw org-gcal org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+    (which-key go-playground-cli calfw-org calfw org-gcal org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
  '(safe-local-variable-values
    (quote
     ((encoding . utf-8)
@@ -67,6 +69,9 @@
  '(send-mail-function (quote sendmail-send-it))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
+
+;; Enable which-key
+(which-key-mode)
 
 ;; Open files in an existing frame instead of a new frame
 (setq ns-pop-up-frames nil)
