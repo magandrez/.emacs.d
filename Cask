@@ -14,6 +14,7 @@
 (depends-on "company")
 (depends-on "company-quickhelp")
 (depends-on "dash")
+(depends-on "dockerfile-mode")
 (depends-on "enh-ruby-mode")
 (depends-on "epl")
 (depends-on "f")
