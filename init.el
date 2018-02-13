@@ -59,7 +59,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (which-key go-playground-cli calfw-org calfw org-gcal org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+    (dockerfile-mode which-key go-playground-cli calfw-org calfw org-gcal org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
  '(safe-local-variable-values
    (quote
     ((encoding . utf-8)
