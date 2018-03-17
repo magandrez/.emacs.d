@@ -1,4 +1,3 @@
-(source gnu)
 (source melpa)
 
 (depends-on "ace-window")
@@ -26,7 +25,9 @@
 (depends-on "go-mode")
 (depends-on "go-playground-cli")
 (depends-on "header2")
+(depends-on "hlinum")
 (depends-on "inf-ruby")
+(depends-on "linum-off")
 (depends-on "magit")
 (depends-on "magit-popup")
 (depends-on "markdown-mode")
@@ -43,4 +44,5 @@
 (depends-on "suomalainen-kalenteri")
 (depends-on "which-key")
 (depends-on "with-editor")
+(depends-on "yafolding")
 (depends-on "yaml-mode")

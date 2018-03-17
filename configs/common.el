@@ -8,6 +8,12 @@
 ;; Monokai theme
 (load-theme 'monokai t)
 
+;; Global line numbers
+(global-linum-mode t)
+(hlinum-activate)
+(require 'linum-off)
+(add-to-list 'linum-disabled-modes-list 'dired-mode)
+
 ;; ZSH as shell for multi-term
 (setq multi-term-program "/usr/local/bin/zsh")
 (add-hook 'term-mode-hook (lambda ()
@@ -27,7 +33,7 @@
   (revert-buffer nil t t)
   (message (concat "Reverted buffer " (buffer-name))))
 
-;; Kill-buffer prompt for confirmation disabled
+ ;; Kill-buffer prompt for confirmation disabled
 (setq kill-buffer-query-functions
   (remq 'process-kill-buffer-query-function
          kill-buffer-query-functions))

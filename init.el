@@ -50,6 +50,7 @@
  '(inhibit-startup-screen t)
  '(initial-frame-alist (quote ((vertical-scroll-bars) (fullscreen . maximized))))
  '(initial-scratch-message nil)
+ '(linum-highlight-in-all-buffersp t)
  '(magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256")))
  '(magit-push-arguments (quote ("--force-with-lease")))
  '(make-header-hook
@@ -59,7 +60,8 @@
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(package-selected-packages
    (quote
-    (dockerfile-mode which-key go-playground-cli calfw-org calfw org-gcal org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+    (linum-off hlinum yard-mode yari rspec-mode yafolding dockerfile-mode which-key go-playground-cli calfw-org calfw org-gcal org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+ '(ruby-align-chained-calls nil)
  '(safe-local-variable-values
    (quote
     ((encoding . utf-8)
