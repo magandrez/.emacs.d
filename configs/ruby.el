@@ -35,3 +35,6 @@
      header-creation-date
      header-blank
      header-description))))
+
+(setq enh-ruby-add-encoding-comment-on-save nil)
+(setq ruby-insert-encoding-magic-comment nil)
