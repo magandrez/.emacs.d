@@ -1,3 +1,9 @@
+;; Make startup faster by reducing the frequency of garbage
+;; collection.  The default is 0.8MB.  Measured in bytes.
+(setq gc-cons-threshold (* 50 1000 1000))
+;; Portion of heap used for allocation.  Defaults to 0.1.
+(setq gc-cons-percentage 0.6)
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -14,7 +20,6 @@
 
 ;; Enabling package index
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")))
-
 
 ;; Modular config loading
 ;; from https://www.emacswiki.org/emacs/DotEmacsModular#toc4
@@ -109,3 +114,6 @@
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "GOPATH"))
+
+;; Make gc pauses faster by decreasing the threshold.
+(setq gc-cons-threshold (* 2 1000 1000))
