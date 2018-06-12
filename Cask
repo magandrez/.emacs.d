@@ -24,7 +24,6 @@
 (depends-on "go-autocomplete")
 (depends-on "go-mode")
 (depends-on "go-playground-cli")
-(depends-on "header2")
 (depends-on "hlinum")
 (depends-on "inf-ruby")
 (depends-on "linum-off")

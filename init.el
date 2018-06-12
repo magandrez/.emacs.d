@@ -4,12 +4,6 @@
 ;; Portion of heap used for allocation.  Defaults to 0.1.
 (setq gc-cons-percentage 0.6)
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
@@ -65,7 +59,7 @@
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(package-selected-packages
    (quote
-    (linum-off hlinum yard-mode yari rspec-mode yafolding dockerfile-mode which-key go-playground-cli calfw-org calfw org-gcal org-journal header2 suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+    (linum-off hlinum yard-mode yari rspec-mode yafolding dockerfile-mode which-key go-playground-cli calfw-org calfw org-gcal org-journal suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
  '(ruby-align-chained-calls nil)
  '(safe-local-variable-values
    (quote
