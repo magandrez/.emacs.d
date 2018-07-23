@@ -45,29 +45,26 @@
  '(company-tooltip-idle-delay 0.25)
  '(dired-use-ls-dired nil)
  '(global-company-mode t)
- '(ido-create-new-buffer (quote always))
+ '(ido-create-new-buffer 'always)
  '(inhibit-startup-screen t)
- '(initial-frame-alist (quote ((vertical-scroll-bars) (fullscreen . maximized))))
+ '(initial-frame-alist '((vertical-scroll-bars) (fullscreen . maximized)))
  '(initial-scratch-message nil)
  '(linum-highlight-in-all-buffersp t)
- '(magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256")))
- '(magit-push-arguments (quote ("--force-with-lease")))
+ '(magit-log-section-arguments '("--graph" "--color" "--decorate" "-n256"))
+ '(magit-push-arguments '("--force-with-lease"))
  '(make-header-hook
-   (quote
-    (header-title header-blank header-author header-creation-date header-blank header-description)))
+   '(header-title header-blank header-author header-creation-date header-blank header-description))
  '(menu-bar-mode nil)
- '(org-refile-allow-creating-parent-nodes (quote confirm))
+ '(org-refile-allow-creating-parent-nodes 'confirm)
  '(package-selected-packages
-   (quote
-    (linum-off hlinum yard-mode yari rspec-mode yafolding dockerfile-mode which-key go-playground-cli calfw-org calfw org-gcal org-journal suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async)))
+   '(go-direx go-eldoc go-add-tags go-stacktracer company-go dumb-jump linum-off hlinum yard-mode yari rspec-mode yafolding dockerfile-mode which-key go-playground-cli calfw-org calfw org-gcal org-journal suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async))
  '(ruby-align-chained-calls nil)
  '(safe-local-variable-values
-   (quote
-    ((encoding . utf-8)
-     (epa-file-encrypt-to “manuel@manuel\.is”)
-     (header-auto-update-enabled))))
+   '((encoding . utf-8)
+     (epa-file-encrypt-to \“manuel@manuel\.is”)
+     (header-auto-update-enabled)))
  '(scroll-bar-mode nil)
- '(send-mail-function (quote sendmail-send-it))
+ '(send-mail-function 'sendmail-send-it)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 
