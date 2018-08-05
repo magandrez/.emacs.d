@@ -1,0 +1,49 @@
+#+PROPERTY: header-args :tangle yes
+#+BEGIN_SRC emacs-lisp
+;;; -*- lexical-binding: t -*-
+#+END_SRC
+
+* Overview
+
+This is an emacs configuration written as Org file(s). Literate configs are a side of literate programming (https://en.wikipedia.org/wiki/Literate_programming) where configuration is written in a file along with its documentation. From this literate configuration file, configs applied are subject to be extracted into a "runnable" file (in this case into init.el), this process is called "tangling" (important Org functions for this are org-babel-tangle and org-babel-tangle-file, see: https://orgmode.org/manual/Extracting-source-code.html for more info on the subject).
+
+Additionally, this emacs configuration is also byte-compiled. Here (http://emacsredux.com/blog/2013/06/25/boost-performance-by-leveraging-byte-compilation/) Bozhidar Batsov explains what is byte compilation and why to do it (i.e.: performance), although mentions that it is pretty much useless to compile non-computationally intensive configs (defuns), I do it "for science".
+
+#+BEGIN_SRC emacs-lisp
+(defun tangle-init ()
+  "If the current buffer is 'init.org' the code-blocks are
+tangled, and the tangled file is compiled."
+  (when (equal (buffer-file-name)
+               (expand-file-name (concat user-emacs-directory "init.org")))
+    ;; Avoid running hooks when tangling.
+    (let ((prog-mode-hook nil))
+      (org-babel-tangle)
+      (byte-compile-file (concat user-emacs-directory "init.el")))))
+
+;; Let's tangle it ever time we save it to not have stale configs
+(add-hook 'after-save-hook 'tangle-init)
+#+END_SRC
+
+Secrets are kept under "zecrets.el".
+
+#+BEGIN_SRC emacs-lisp
+(add-hook
+  'after-init-hook
+   (lambda ()
+   (let ((zecrets-file (concat user-emacs-directory "zecrets.el")))
+     (when (file-exists-p zecrets-file)
+	       (load-file zecrets-file)))))
+#+END_SRC
+
+Use `package` for managing Emacs packages.
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(package-initialize)
+#+END_SRC
+
+Use melpa as the only package repository.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+#+END_SRC
