@@ -43,6 +43,7 @@
 (depends-on "org-present")
 (depends-on "package-build")
 (depends-on "pallet")
+(depends-on "pass")
 (depends-on "robe")
 (depends-on "rvm")
 (depends-on "shut-up")

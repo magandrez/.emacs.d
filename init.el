@@ -57,7 +57,7 @@
  '(menu-bar-mode nil)
  '(org-refile-allow-creating-parent-nodes 'confirm)
  '(package-selected-packages
-   '(go-direx go-eldoc go-add-tags go-stacktracer company-go dumb-jump linum-off hlinum yard-mode yari rspec-mode yafolding dockerfile-mode which-key go-playground-cli calfw-org calfw org-gcal org-journal suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async))
+   '(pass go-direx go-eldoc go-add-tags go-stacktracer company-go dumb-jump linum-off hlinum yard-mode yari rspec-mode yafolding dockerfile-mode which-key go-playground-cli calfw-org calfw org-gcal org-journal suomalainen-kalenteri ace-window org-present password-store column-enforce-mode markdown-mode flycheck flymake-go go-autocomplete go-mode yaml-mode multi-term company-quickhelp company magit monokai-theme enh-ruby-mode robe rvm ag pallet auto-complete async))
  '(ruby-align-chained-calls nil)
  '(safe-local-variable-values
    '((encoding . utf-8)
