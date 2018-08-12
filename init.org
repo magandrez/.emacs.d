@@ -2,7 +2,6 @@
 #+BEGIN_SRC emacs-lisp
 ;;; -*- lexical-binding: t -*-
 #+END_SRC
-
 * Overview
 
 This is an emacs configuration written as Org file(s). Literate configs are a side of literate programming (https://en.wikipedia.org/wiki/Literate_programming) where configuration is written in a file along with its documentation. From this literate configuration file, configs applied are subject to be extracted into a "runnable" file (in this case into init.el), this process is called "tangling" (important Org functions for this are org-babel-tangle and org-babel-tangle-file, see: https://orgmode.org/manual/Extracting-source-code.html for more info on the subject).
@@ -11,10 +10,9 @@ Additionally, this emacs configuration is also byte-compiled. Here (http://emacs
 
 #+BEGIN_SRC emacs-lisp
 (defun tangle-init ()
-  "If the current buffer is 'init.org' the code-blocks are
-tangled, and the tangled file is compiled."
+  "If the current buffer is 'init.org' the code-blocks are tangled, and the tangled file is compiled."
   (when (equal (buffer-file-name)
-               (expand-file-name (concat user-emacs-directory "init.org")))
+	       (expand-file-name (concat user-emacs-directory "init.org")))
     ;; Avoid running hooks when tangling.
     (let ((prog-mode-hook nil))
       (org-babel-tangle)
@@ -28,22 +26,89 @@ Secrets are kept under "zecrets.el".
 
 #+BEGIN_SRC emacs-lisp
 (add-hook
-  'after-init-hook
-   (lambda ()
+ 'after-init-hook
+ (lambda ()
    (let ((zecrets-file (concat user-emacs-directory "zecrets.el")))
      (when (file-exists-p zecrets-file)
-	       (load-file zecrets-file)))))
+       (load-file zecrets-file)))))
 #+END_SRC
 
-Use `package` for managing Emacs packages.
+Use `package` for managing Emacs packages. `cl` is used along the compilation and it is required `with-no-warnings` in here because of what it is explained here: https://stackoverflow.com/a/13832070
 
 #+BEGIN_SRC emacs-lisp
+(with-no-warnings
+  (require 'cl))
 (require 'package)
-(package-initialize)
 #+END_SRC
 
 Use melpa as the only package repository.
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+#+END_SRC
+
+
+* Packages
+
+Let's install some packages here.
+
+#+BEGIN_SRC emacs-lisp
+(let* ((package--builtins nil)
+       (packages
+	'(auto-compile         ; automatically compile Emacs Lisp libraries
+	  company              ; Modular text completion framework
+	  focus                ; Dim color of text in surrounding sections
+	  jedi                 ; Python auto-completion for Emacs
+	  js2-mode             ; Improved JavaScript editing mode
+	  magit                ; control Git from Emacs
+	  markdown-mode        ; Emacs Major mode for Markdown-formatted files
+	  org                  ; Outline-based notes management and organizer
+	  try                  ; Try out Emacs packages
+	  monokai-theme        ; My favourite emacs theme
+	  enh-ruby-mode	       ; Ruby dev
+	  rvm		       ; Ruby dev
+	  exec-path-from-shell ; Ruby dev
+	  which-key)))         ; Display available keybindings in popup
+  (ignore-errors ; Packages on Mac OS X.
+    (when (memq window-system '(mac ns))
+      (push 'exec-path-from-shell packages)
+      (push 'reveal-in-osx-finder packages))
+    (let ((packages (remove-if 'package-installed-p packages)))
+      (when packages
+	;; Install uninstalled packages
+        (package-refresh-contents)
+	(mapc 'package-install packages)))))
+#+END_SRC
+
+Few automodes to be loaded in case of coming across one of the listed file extensions.
+
+#+BEGIN_SRC emacs-lisp
+(setq auto-mode-alist
+      (append '(
+		("\\.rb$" . enh-ruby-mode)
+		("\\.rake$" . enh-ruby-mode)
+		("\\.ru$" . enh-ruby-mode)
+		("\\Rakefile$" . enh-ruby-mode)
+		("\\spec.rb$" . enh-ruby-mode)
+		("\\.yaml$" . yaml-mode)
+		("\\.yml$" . yaml-mode)
+		("\\.sql$" . sql-mode)
+		("\\.pp$" . puppet-mode)
+		("\\.js$" . js-mode)
+		("\\.dot$" . dot-mode)
+		("\\.go$" . go-mode)
+		("\\.groovy$" . groovy-mode)
+		("\\.txt$" . text-mode)
+		("\\.feature$" . cucumber-mode)
+		("\\.el$" . lisp-mode)
+		("\\.html$" . web-mode)
+		("\\.css$" . css-mode)
+		("\\.*nginx.*\.conf$" . nginx-mode)
+		("\\.conf$" . conf-mode)
+		("\\TODO$" . org-mode)
+		("\\.org$". org-mode)
+		("\\.md$" . markdown-mode)
+		("\\.MD$" . markdown-mode)
+		("\\.markdown$" . markdown-mode))
+	      auto-mode-alist))
 #+END_SRC
