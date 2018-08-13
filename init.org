@@ -112,3 +112,59 @@ Few automodes to be loaded in case of coming across one of the listed file exten
 		("\\.markdown$" . markdown-mode))
 	      auto-mode-alist))
 #+END_SRC
+
+
+* Behaviour
+
+Some misc behavioural changes (backups, startup, yes-no questions, etc) 
+It also disables lock files, it is messy on mounted network file systems like Keybase FS (https://keybase.io/)
+
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+(setq backup-by-copying t
+      backup-directory-alist '(("." . "~/.emacs.d/backup/"))
+      delete-old-versions t
+      kept-new-versions 3
+      kept-old-versions 2
+      version-control t
+      inhibit-startup-screen t
+      initial-scratch-message "ಠ_ಠ\n"
+      create-lockfiles nil
+      confirm-nonexistent-file-or-buffer nil
+      confirm-kill-emacs 'y-or-n-p
+      vc-follow-symlinks t
+      visible-bell t)
+(global-auto-revert-mode 1) ; reload files when change, please
+#+END_SRC
+
+The below are some OS X-related tweaks (enabling {}, switching meta, etc) 
+
+#+BEGIN_SRC emacs-lisp
+(when (eq system-type 'darwin)
+  (setq ns-pop-up-frames nil
+        mac-option-modifier nil
+        mac-command-modifier 'meta
+        select-enable-clipboard t)
+  (exec-path-from-shell-initialize)
+  (when (fboundp 'mac-auto-operator-composition-mode)
+    (mac-auto-operator-composition-mode 1)))
+#+END_SRC
+** Appearance
+
+I usually work with emacs GUI, but I dislike scrolls. I also like good ol' Cmd-c, Cmd-x, etc. (enabled CUA mode: https://www.gnu.org/software/emacs/manual/html_node/emacs/CUA-Bindings.html)
+
+#+BEGIN_SRC emacs-lisp
+(cua-mode t)
+(custom-set-variables
+ '(exec-path-from-shell-check-startup-files nil)
+ '(scroll-bar-mode nil))
+(setq tool-bar-mode nil
+      show-paren-mode t
+      show-paren-delay 0)
+#+END_SRC
+
+Use monokai theme for Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(load-theme 'monokai t)
+#+END_SRC
