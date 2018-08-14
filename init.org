@@ -120,7 +120,6 @@ Some misc behavioural changes (backups, startup, yes-no questions, etc)
 It also disables lock files, it is messy on mounted network file systems like Keybase FS (https://keybase.io/)
 
 #+BEGIN_SRC emacs-lisp
-(defalias 'yes-or-no-p 'y-or-n-p)
 (setq backup-by-copying t
       backup-directory-alist '(("." . "~/.emacs.d/backup/"))
       delete-old-versions t
@@ -131,7 +130,6 @@ It also disables lock files, it is messy on mounted network file systems like Ke
       initial-scratch-message "ಠ_ಠ\n"
       create-lockfiles nil
       confirm-nonexistent-file-or-buffer nil
-      confirm-kill-emacs 'y-or-n-p
       vc-follow-symlinks t
       visible-bell t)
 (global-auto-revert-mode 1) ; reload files when change, please
