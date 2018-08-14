@@ -155,10 +155,10 @@ I usually work with emacs GUI, but I dislike scrolls. I also like good ol' Cmd-c
 (cua-mode t)
 (custom-set-variables
  '(exec-path-from-shell-check-startup-files nil)
- '(scroll-bar-mode nil))
-(setq tool-bar-mode nil
-      show-paren-mode t
-      show-paren-delay 0)
+ '(scroll-bar-mode nil)
+ '(tool-bar-mode nil)
+ '(show-paren-mode t)
+ '(show-paren-delay 0))
 #+END_SRC
 
 Use monokai theme for Emacs.
