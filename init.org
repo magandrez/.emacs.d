@@ -88,7 +88,9 @@ Few automodes to be loaded in case of coming across one of the listed file exten
 		("\\.rake$" . enh-ruby-mode)
 		("\\.ru$" . enh-ruby-mode)
 		("\\Rakefile$" . enh-ruby-mode)
+		("\\Capfile$" . enh-ruby-mode)
 		("\\spec.rb$" . enh-ruby-mode)
+		("\\.gemspec$" . enh-ruby-mode)
 		("\\.yaml$" . yaml-mode)
 		("\\.yml$" . yaml-mode)
 		("\\.sql$" . sql-mode)
@@ -146,6 +148,7 @@ The below are some OS X-related tweaks (enabling {}, switching meta, etc)
   (when (fboundp 'mac-auto-operator-composition-mode)
     (mac-auto-operator-composition-mode 1)))
 #+END_SRC
+
 ** Appearance
 
 I usually work with emacs GUI, but I dislike scrolls. I also like good ol' Cmd-c, Cmd-x, etc. (enabled CUA mode: https://www.gnu.org/software/emacs/manual/html_node/emacs/CUA-Bindings.html)
