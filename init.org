@@ -133,7 +133,8 @@ It also disables lock files, it is messy on mounted network file systems like Ke
       confirm-nonexistent-file-or-buffer nil
       vc-follow-symlinks t
       visible-bell t
-      confirm-nonexistent-file-or-buffer nil) ; remove confirm dialog on new buffers
+      confirm-nonexistent-file-or-buffer nil ; remove confirm dialog on new buffers
+      which-key-mode t)
 (global-auto-revert-mode 1) ; reload files when change, please
 #+END_SRC
 
