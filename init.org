@@ -160,7 +160,8 @@ I usually work with emacs GUI, but I dislike scrolls. I also like good ol' Cmd-c
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil)
  '(show-paren-mode t)
- '(show-paren-delay 0))
+ '(show-paren-delay 0)
+ '(global-company-mode t))
 #+END_SRC
 
 Use monokai theme for Emacs.
