@@ -36,8 +36,7 @@ Secrets are kept under "zecrets.el".
 Use `package` for managing Emacs packages. `cl` is used along the compilation and it is required `with-no-warnings` in here because of what it is explained here: https://stackoverflow.com/a/13832070
 
 #+BEGIN_SRC emacs-lisp
-(with-no-warnings
-  (require 'cl))
+(eval-when-compile (require 'cl))
 (require 'package)
 #+END_SRC
 
