@@ -262,6 +262,13 @@ Text sizing. Use `C-x C-0` to restore font size.
 (global-set-key (kbd "M-o") 'ace-window)                  ; Cycles through frames
 #+END_SRC
 
+Handle frame switching on a terminal frame (due to need to escape meta)
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'multi-term-mode-hook (lambda ()
+                                  (define-key term-raw-map (kbd "M-o") 'ace-window)))
+#+END_SRC
+
 
 * Encryption
 
