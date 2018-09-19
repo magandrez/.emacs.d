@@ -66,7 +66,6 @@ Let's install some packages here.
     monokai-theme        ; My favourite emacs theme
     enh-ruby-mode	 ; Ruby dev
     rvm		         ; Ruby dev
-    exec-path-from-shell ; Ruby dev
     which-key            ; Display available keybindings in popup
     multi-term           ; Better terminal emulation
     ace-window           ; Cycle through frames
@@ -84,6 +83,19 @@ Let's install some packages here.
 	;; Install uninstalled packages
         (package-refresh-contents)
 	(mapc 'package-install packages)))))
+#+END_SRC
+
+The below are some OS X-related tweaks (enabling {}, switching meta, etc).
+
+#+BEGIN_SRC emacs-lisp
+(when (eq system-type 'darwin)
+  (setq ns-pop-up-frames nil
+        mac-option-modifier nil
+        mac-command-modifier 'meta
+        select-enable-clipboard t)
+  (exec-path-from-shell-initialize)
+  (when (fboundp 'mac-auto-operator-composition-mode)
+    (mac-auto-operator-composition-mode 1)))
 #+END_SRC
 
 Few automodes to be loaded in case of coming across one of the listed file extensions.
@@ -169,19 +181,6 @@ Tramp mode is used to access other machines. The below enables tramp mode and pr
   '((tramp-parse-sconfig "/etc/ssh_config")
     (tramp-parse-sconfig "~/.ssh/config")))
 (put 'dired-find-alternate-file 'disabled t)
-#+END_SRC
-
-The below are some OS X-related tweaks (enabling {}, switching meta, etc).
-
-#+BEGIN_SRC emacs-lisp
-(when (eq system-type 'darwin)
-  (setq ns-pop-up-frames nil
-        mac-option-modifier nil
-        mac-command-modifier 'meta
-        select-enable-clipboard t)
-  (exec-path-from-shell-initialize)
-  (when (fboundp 'mac-auto-operator-composition-mode)
-    (mac-auto-operator-composition-mode 1)))
 #+END_SRC
 
 
