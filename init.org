@@ -132,7 +132,8 @@ Few automodes to be loaded in case of coming across one of the listed file exten
 		("\\.org$". org-mode)
 		("\\.md$" . markdown-mode)
 		("\\.MD$" . markdown-mode)
-		("\\.markdown$" . markdown-mode))
+		("\\.markdown$" . markdown-mode)
+                ("\\.sh$" . sh-mode))
 	      auto-mode-alist))
 #+END_SRC
 
@@ -198,6 +199,7 @@ The below are some OS X-related tweaks (enabling {}, switching meta, etc).
     (mac-auto-operator-composition-mode 1)))
 #+END_SRC
 
+
 ** Modes
 #+BEGIN_SRC emacs-lisp
 (dolist (mode
@@ -207,6 +209,7 @@ The below are some OS X-related tweaks (enabling {}, switching meta, etc).
     show-paren-mode              ; Highlight matching parentheses
     which-key-mode               ; Available keybindings in popup
     cua-mode                     ; Global Cmd-c, Cmd-x to copy & paste
+    global-display-line-numbers-mode    ; Native line numbers
     ))
   (funcall mode 1))
 
@@ -224,6 +227,7 @@ Yes or no -> y-or-n
 
 #+END_SRC
 
+
 ** Theme
 Use monokai theme for Emacs.
 
@@ -238,6 +242,7 @@ UTF-8 everywhere, because it is the standard
 (set-keyboard-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 #+END_SRC
+
 
 
 ** Completion
@@ -419,3 +424,4 @@ Some defaults for some languages I use.
  (set (make-local-variable 'company-backends) '(company-go))
  (company-mode)))
 #+END_SRC
+
