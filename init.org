@@ -53,21 +53,24 @@ Let's install some packages here.
 
 #+BEGIN_SRC emacs-lisp
 (let* ((package--builtins nil)
-       (packages
-	'(auto-compile         ; automatically compile Emacs Lisp libraries
-	  company              ; Modular text completion framework
-	  focus                ; Dim color of text in surrounding sections
-	  jedi                 ; Python auto-completion for Emacs
-	  js2-mode             ; Improved JavaScript editing mode
-	  magit                ; control Git from Emacs
-	  markdown-mode        ; Emacs Major mode for Markdown-formatted files
-	  org                  ; Outline-based notes management and organizer
-	  try                  ; Try out Emacs packages
-	  monokai-theme        ; My favourite emacs theme
-	  enh-ruby-mode	       ; Ruby dev
-	  rvm		       ; Ruby dev
-	  exec-path-from-shell ; Ruby dev
-	  which-key)))         ; Display available keybindings in popup
+  (packages
+  '(auto-compile         ; automatically compile Emacs Lisp libraries
+    company              ; Modular text completion framework
+    focus                ; Dim color of text in surrounding sections
+    jedi                 ; Python auto-completion for Emacs
+    js2-mode             ; Improved JavaScript editing mode
+    magit                ; control Git from Emacs
+    markdown-mode        ; Emacs Major mode for Markdown-formatted files
+    org                  ; Outline-based notes management and organizer
+    try                  ; Try out Emacs packages
+    monokai-theme        ; My favourite emacs theme
+    enh-ruby-mode	       ; Ruby dev
+    rvm		       ; Ruby dev
+    exec-path-from-shell ; Ruby dev
+    which-key            ; Display available keybindings in popup
+    multi-term           ; Better terminal emulation
+    idle-require         ; Load libraries when Emacs is idle
+    )))
   (ignore-errors ; Packages on Mac OS X.
     (when (memq window-system '(mac ns))
       (push 'exec-path-from-shell packages)
@@ -77,6 +80,20 @@ Let's install some packages here.
 	;; Install uninstalled packages
         (package-refresh-contents)
 	(mapc 'package-install packages)))))
+#+END_SRC
+
+To minimize init time, some things can be loaded when Emacs is idling. For this, we make use of `idle-require`.
+
+#+BEGIN_SRC emacs-lisp
+(require 'idle-require)             ; Need in order to use idle-require
+(dolist (feature
+         '(auto-compile             ; auto-compile .el files
+           jedi                     ; auto-completion for python
+           tex-mode))               ; TeX, LaTeX, and SliTeX mode commands
+  (idle-require feature))
+
+(setq idle-require-idle-delay 5)
+(idle-require-mode 1)
 #+END_SRC
 
 Few automodes to be loaded in case of coming across one of the listed file extensions.
@@ -115,10 +132,10 @@ Few automodes to be loaded in case of coming across one of the listed file exten
 #+END_SRC
 
 
-* Behaviour
+* Behaviour & appearance
 
-Some misc behavioural changes (backups, startup, yes-no questions, etc) 
-It also disables lock files, it is messy on mounted network file systems like Keybase FS (https://keybase.io/)
+Some misc behavioural changes (backups, startup, yes-no questions, etc).
+It also disables lock files, it is messy on mounted network file systems like Keybase FS (https://keybase.io/).
 
 #+BEGIN_SRC emacs-lisp
 (setq backup-by-copying t
@@ -133,12 +150,34 @@ It also disables lock files, it is messy on mounted network file systems like Ke
       confirm-nonexistent-file-or-buffer nil
       vc-follow-symlinks t
       visible-bell t
-      confirm-nonexistent-file-or-buffer nil ; remove confirm dialog on new buffers
-      which-key-mode t)
-(global-auto-revert-mode 1) ; reload files when change, please
+      confirm-nonexistent-file-or-buffer nil         ; Remove confirm dialog on new buffers
+      exec-path-from-shell-check-startup-files nil
+      show-paren-delay 0                             ; No delay when showing matching parenthesis.
+      tramp-default-method "ssh"
+      tramp-verbose 10
+      )
 #+END_SRC
 
-The below are some OS X-related tweaks (enabling {}, switching meta, etc) 
+Set multi-term to use ZSH. And configure "paste".
+
+#+BEGIN_SRC emacs-lisp
+(setq multi-term-program "/usr/local/bin/zsh")
+(add-hook 'term-mode-hook (lambda ()
+(define-key term-raw-map (kbd "C-y") 'term-paste)))
+#+END_SRC
+
+Tramp mode is used to access other machines. The below enables tramp mode and provides auto-complete of hosts from ssh config.
+
+#+BEGIN_SRC emacs-lisp
+(require 'tramp)
+
+(tramp-set-completion-function "ssh"
+  '((tramp-parse-sconfig "/etc/ssh_config")
+    (tramp-parse-sconfig "~/.ssh/config")))
+(put 'dired-find-alternate-file 'disabled t)
+#+END_SRC
+
+The below are some OS X-related tweaks (enabling {}, switching meta, etc).
 
 #+BEGIN_SRC emacs-lisp
 (when (eq system-type 'darwin)
@@ -151,21 +190,29 @@ The below are some OS X-related tweaks (enabling {}, switching meta, etc)
     (mac-auto-operator-composition-mode 1)))
 #+END_SRC
 
-** Appearance
+I usually work with emacs GUI, but I dislike scrolls. I also like good ol' Cmd-c, Cmd-x, etc. (enabled CUA mode: https://www.gnu.org/software/emacs/manual/html_node/emacs/CUA-Bindings.html).
 
-I usually work with emacs GUI, but I dislike scrolls. I also like good ol' Cmd-c, Cmd-x, etc. (enabled CUA mode: https://www.gnu.org/software/emacs/manual/html_node/emacs/CUA-Bindings.html)
-
+** Modes
 #+BEGIN_SRC emacs-lisp
-(cua-mode t)
-(custom-set-variables
- '(exec-path-from-shell-check-startup-files nil)
- '(scroll-bar-mode nil)
- '(tool-bar-mode nil)
- '(show-paren-mode t)
- '(show-paren-delay 0)
- '(global-company-mode t))
+(dolist (mode
+  '(global-company-mode          ; Auto-completion everywhere
+    global-prettify-symbols-mode ; Greek letters should look greek
+    global-auto-revert-mode      ; Reload files when change, please
+    show-paren-mode              ; Highlight matching parentheses
+    which-key-mode               ; Available keybindings in popup
+    cua-mode                     ; Global Cmd-c, Cmd-x to copy & paste
+    ))
+  (funcall mode 1))
+
+(dolist (mode
+  '(scroll-bar-mode  ; No scroll bar
+    tool-bar-mode    ; No toolbar
+    ))
+  (funcall mode -1))
 #+END_SRC
 
+
+** Theme
 Use monokai theme for Emacs.
 
 #+BEGIN_SRC emacs-lisp
@@ -178,4 +225,23 @@ UTF-8 everywhere, because it is the standard
 (set-language-environment "UTF-8")
 (set-keyboard-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
+#+END_SRC
+
+
+* Key bindings
+
+Text sizing. Use `C-x C-0` to restore font size.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-+") 'text-scale-increase) ; Bigger
+(global-set-key (kbd "C--") 'text-scale-decrease) ; Smaller
+#+END_SRC
+
+
+* Encryption
+
+EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/EasyPG]])
+#+BEGIN_SRC emacs-lisp
+(require 'epa-file)
+(epa-file-enable)
 #+END_SRC
