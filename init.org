@@ -135,6 +135,8 @@ Few automodes to be loaded in case of coming across one of the listed file exten
 
 * Behaviour & appearance
 
+** Misc
+
 Some misc behavioural changes (backups, startup, yes-no questions, etc).
 It also disables lock files, it is messy on mounted network file systems like Keybase FS (https://keybase.io/).
 
@@ -156,6 +158,7 @@ It also disables lock files, it is messy on mounted network file systems like Ke
       show-paren-delay 0                             ; No delay when showing matching parenthesis.
       tramp-default-method "ssh"
       tramp-verbose 10
+      epa-file-inhibit-auto-save t                   ; Disable auto-save for encrypted files
       )
 #+END_SRC
 
@@ -192,6 +195,7 @@ The below are some OS X-related tweaks (enabling {}, switching meta, etc).
 #+END_SRC
 
 I usually work with emacs GUI, but I dislike scrolls. I also like good ol' Cmd-c, Cmd-x, etc. (enabled CUA mode: https://www.gnu.org/software/emacs/manual/html_node/emacs/CUA-Bindings.html).
+
 
 ** Modes
 #+BEGIN_SRC emacs-lisp
