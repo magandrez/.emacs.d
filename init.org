@@ -22,16 +22,6 @@ Additionally, this emacs configuration is also byte-compiled. Here (http://emacs
 (add-hook 'after-save-hook 'tangle-init)
 #+END_SRC
 
-Secrets are kept under "zecrets.el".
-
-#+BEGIN_SRC emacs-lisp
-(add-hook
- 'after-init-hook
- (lambda ()
-   (let ((zecrets-file (concat user-emacs-directory "zecrets.el")))
-     (when (file-exists-p zecrets-file)
-       (load-file zecrets-file)))))
-#+END_SRC
 
 Use `package` for managing Emacs packages. `cl` is used along the compilation and it is required `with-no-warnings` in here because of what it is explained here: https://stackoverflow.com/a/13832070
 
