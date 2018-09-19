@@ -8,3 +8,5 @@ org-gcal/.org-gcal-token
 tramp
 elpa/
 .cask/
+*.dat
+*.elc
