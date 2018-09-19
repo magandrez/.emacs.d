@@ -70,6 +70,7 @@ Let's install some packages here.
     which-key            ; Display available keybindings in popup
     multi-term           ; Better terminal emulation
     idle-require         ; Load libraries when Emacs is idle
+    ace-window           ; Cycle through frames
     )))
   (ignore-errors ; Packages on Mac OS X.
     (when (memq window-system '(mac ns))
@@ -233,8 +234,15 @@ UTF-8 everywhere, because it is the standard
 Text sizing. Use `C-x C-0` to restore font size.
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-+") 'text-scale-increase) ; Bigger
-(global-set-key (kbd "C--") 'text-scale-decrease) ; Smaller
+(global-set-key (kbd "C-+") 'text-scale-increase)        ; Bigger
+(global-set-key (kbd "C--") 'text-scale-decrease)        ; Smaller
+(global-set-key (kbd "C-x C-b") 'ibuffer)                ; Open ibuffer manager
+(global-set-key (kbd "C-c n") 'org-capture)              ; Org capture
+(global-set-key (kbd "M-n") 'next-multiframe-window)     ; Cycle through frames
+(global-set-key (kbd "M-p") 'previous-multiframe-window) ; Cycle through frames
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "M-o") 'ace-window)                  ; Cycles through frames
 #+END_SRC
 
 
