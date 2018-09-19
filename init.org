@@ -64,13 +64,17 @@ Let's install some packages here.
     org                  ; Outline-based notes management and organizer
     try                  ; Try out Emacs packages
     monokai-theme        ; My favourite emacs theme
-    enh-ruby-mode	       ; Ruby dev
-    rvm		       ; Ruby dev
+    enh-ruby-mode	 ; Ruby dev
+    rvm		         ; Ruby dev
     exec-path-from-shell ; Ruby dev
     which-key            ; Display available keybindings in popup
     multi-term           ; Better terminal emulation
     idle-require         ; Load libraries when Emacs is idle
     ace-window           ; Cycle through frames
+    go-eldoc             ; Go dev
+    go-add-tags          ; Go dev
+    company-go           ; Go dev
+    go-mode              ; Go dev
     )))
   (ignore-errors ; Packages on Mac OS X.
     (when (memq window-system '(mac ns))
@@ -193,9 +197,6 @@ The below are some OS X-related tweaks (enabling {}, switching meta, etc).
   (when (fboundp 'mac-auto-operator-composition-mode)
     (mac-auto-operator-composition-mode 1)))
 #+END_SRC
-
-I usually work with emacs GUI, but I dislike scrolls. I also like good ol' Cmd-c, Cmd-x, etc. (enabled CUA mode: https://www.gnu.org/software/emacs/manual/html_node/emacs/CUA-Bindings.html).
-
 
 ** Modes
 #+BEGIN_SRC emacs-lisp
@@ -393,4 +394,22 @@ Org agenda files
 (setq org-agenda-files
    (find-lisp-find-files "/keybase/private/spavi/org" "\.org.gpg$"))
 
+#+END_SRC
+
+
+* Programming
+
+Some defaults for some languages I use.
+
+** Go
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'go-mode-hook 'go-eldoc-setup)
+(add-hook 'before-save-hook #'gofmt-before-save)
+(add-hook 'go-mode-hook 'flycheck-mode)
+(add-hook 'go-mode-hook 'dumb-jump-mode)
+(add-hook 'go-mode-hook 'company-mode)
+(add-hook 'go-mode-hook (lambda ()
+ (set (make-local-variable 'company-backends) '(company-go))
+ (company-mode)))
 #+END_SRC
