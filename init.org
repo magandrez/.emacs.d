@@ -217,6 +217,12 @@ The below are some OS X-related tweaks (enabling {}, switching meta, etc).
   (funcall mode -1))
 #+END_SRC
 
+Yes or no -> y-or-n
+
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+#+END_SRC
 
 ** Theme
 Use monokai theme for Emacs.
