@@ -276,3 +276,121 @@ EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/Easy
 #+BEGIN_SRC emacs-lisp
 (require 'epa-file)
 #+END_SRC
+
+
+* Org
+
+** Misc
+
+Some defaults and custom variables follow.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-support-shift-select t                                           ; Enables Shift + arrows to select a region
+      calendar-date-style (quote european)
+      calendar-latitude 60.1                                               ; Roughly Helsinki
+      calendar-longitude 24.9                                              ; Roughly Helsinki
+      calendar-week-start-day 1                                            ; Weeks start on Monday
+      calendar-today-visible-hook (quote (calendar-mark-today))
+      org-journal-date-format "%A, %d.%m.%Y"
+      org-journal-dir "/keybase/private/spavi/org/diary/"
+      org-log-done t
+      org-directory "/keybase/private/spavi/org/"
+      org-default-notes-file "/keybase/private/spavi/org/refile.org.gpg"
+      org-tag-alist
+      '((:startgroup)                                                     ; Tag lists
+        ("@w0rk" . ?w)
+        ("@home" . ?h)
+        (:endgroup)
+        ("PERSONAL" . ?p)
+        ("NOTE" . ?n))
+      org-fast-tag-selection-include-todo t
+      org-use-fast-todo-selection t
+      org-todo-keywords
+      '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
+	(sequence "WAITING(w@/!)" "INACTIVE(i@/!)" "|" "CANCELLED(c@/!)")) ; Keywords
+      org-todo-keyword-faces
+      '(("TODO" :foreground "red" :weight bold)
+	("PROGRESSING" :foreground "blue" :weight bold)
+	("DONE" :foreground "forest green" :weight bold)
+	("WAITING" :foreground "orange" :weight bold)
+	("INACTIVE" :foreground "magenta" :weight bold)
+	("CANCELLED" :foreground "brown" :weight bold))                    ; Colors for keywords
+	org-todo-state-tags-triggers
+	'(("CANCELLED" ("CANCELLED" . t))
+	("WAITING" ("WAITING" . t))
+	("INACTIVE" ("WAITING") ("INACTIVE" . t))
+	("PROGRESSING" ("PROGRESSING" . t))
+	(done ("WAITING") ("INACTIVE") ("PROGRESSING") )
+	("TODO" ("WAITING") ("CANCELLED") ("INACTIVE") ("PROGRESSING"))
+	("DONE" ("WAITING") ("CANCELLED") ("INACTIVE"))
+	("PROGRESSING" ("WAITING") ("CANCELLED") ("INACTIVE")))            ; Auto-update tags whenever the state has changed
+	org-refile-targets '((nil :maxlevel . 9)
+                             (org-agenda-files :maxlevel . 9))
+        org-refile-use-outline-path t                                      ; Use full outline paths for refile targets
+        org-outline-path-complete-in-steps nil
+        org-completion-use-ido t
+        ido-everywhere t
+        ido-max-directory-size 100000
+	ido-default-file-method 'selected-window
+        ido-default-buffer-method 'selected-window
+	org-indirect-buffer-display 'current-window
+	)
+(ido-mode (quote both))
+#+END_SRC
+
+Org template custom configurations
+
+#+BEGIN_SRC emacs-lisp
+(defvar org-capture-templates
+  '(
+    ("t" "To-do task." 
+     entry 
+     (file+headline org-default-notes-file "Tasks")
+     "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+    ("w" "Work task." 
+     entry 
+     (file+headline org-default-notes-file "Work Task")
+     "* TODO %?\n%u\n%a\n" 
+     :clock-in t 
+     :clock-resume t)
+    ("a" "Apointment" 
+     entry 
+     (file "/keybase/private/spavi/org/schedule.org.gpg") 
+     (file "~/.emacs.d/configs/org-templates/events.orgcaptmpl")
+     :empty-lines-before 1)
+    ("l" "Link: Something interesting?"
+     entry
+     (file+headline org-default-notes-file "Links")
+     (file "~/.emacs.d/configs/org-templates/links.orgcaptmpl"))
+    ("j" "Journal daily." 
+     entry 
+     (file (expand-file-name (format-time-string "%Y%m%d") org-journal-dir))
+     "*%(sp/my-timestamp)\n\n**%(format-time-string \"%H:%M\")%?" 
+     :kill-buffer t)
+    ("i" "Idea came up." 
+     entry 
+     (file org-default-notes-file)
+     "* %? :IDEA: \n%u" :clock-in t :clock-resume t)))
+#+END_SRC
+
+Hack to work around %A having different meaning for capture mode vs. format-time-string
+
+#+BEGIN_SRC emacs-lisp
+(defun sp/my-timestamp ()
+  (format-time-string "%A, %d.%m.%Y"))
+#+END_SRC
+
+Automatic text width for org-mode documents
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook 'auto-fill-mode)
+(add-hook 'org-journal-mode-hook 'auto-fill-mode)
+#+END_SRC
+
+Org agenda files
+#+BEGIN_SRC emacs-lisp
+(load-library "find-lisp")
+(setq org-agenda-files
+   (find-lisp-find-files "/keybase/private/spavi/org" "\.org.gpg$"))
+
+#+END_SRC
