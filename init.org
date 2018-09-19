@@ -251,5 +251,4 @@ Text sizing. Use `C-x C-0` to restore font size.
 EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/EasyPG]])
 #+BEGIN_SRC emacs-lisp
 (require 'epa-file)
-(epa-file-enable)
 #+END_SRC
