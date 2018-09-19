@@ -13,4 +13,4 @@ configs/org_gcal.el
 network-security.data
 .org-id-locations
 /network-security.data
-/elpa/gnupg
+/elpa
