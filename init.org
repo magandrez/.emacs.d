@@ -69,7 +69,6 @@ Let's install some packages here.
     exec-path-from-shell ; Ruby dev
     which-key            ; Display available keybindings in popup
     multi-term           ; Better terminal emulation
-    idle-require         ; Load libraries when Emacs is idle
     ace-window           ; Cycle through frames
     go-eldoc             ; Go dev
     go-add-tags          ; Go dev
@@ -85,20 +84,6 @@ Let's install some packages here.
 	;; Install uninstalled packages
         (package-refresh-contents)
 	(mapc 'package-install packages)))))
-#+END_SRC
-
-To minimize init time, some things can be loaded when Emacs is idling. For this, we make use of `idle-require`.
-
-#+BEGIN_SRC emacs-lisp
-(require 'idle-require)             ; Need in order to use idle-require
-(dolist (feature
-         '(auto-compile             ; auto-compile .el files
-           jedi                     ; auto-completion for python
-           tex-mode))               ; TeX, LaTeX, and SliTeX mode commands
-  (idle-require feature))
-
-(setq idle-require-idle-delay 5)
-(idle-require-mode 1)
 #+END_SRC
 
 Few automodes to be loaded in case of coming across one of the listed file extensions.
@@ -368,12 +353,12 @@ Org template custom configurations
     ("a" "Apointment" 
      entry 
      (file "/keybase/private/spavi/org/schedule.org.gpg") 
-     (file "~/.emacs.d/configs/org-templates/events.orgcaptmpl")
+     (file "~/.emacs.d/org-templates/events.orgcaptmpl")
      :empty-lines-before 1)
     ("l" "Link: Something interesting?"
      entry
      (file+headline org-default-notes-file "Links")
-     (file "~/.emacs.d/configs/org-templates/links.orgcaptmpl"))
+     (file "~/.emacs.d/org-templates/links.orgcaptmpl"))
     ("j" "Journal daily." 
      entry 
      (file (expand-file-name (format-time-string "%Y%m%d") org-journal-dir))
