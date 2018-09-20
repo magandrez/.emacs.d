@@ -29,9 +29,9 @@ Thus, init.el should be ignored from the repo:
 `git update-index --assume-unchanged init.el`
 
 - Adding new packages would mean:
--- Editing the block in init.org where packages are requried.
--- Remove the compiled init.elc from the repo.
--- Stop and start emacs server.
+  - Editing the block in init.org where packages are requried.
+  - Remove the compiled init.elc from the repo.
+  - Stop and start emacs server.
 
 ## Disclaimer
 
