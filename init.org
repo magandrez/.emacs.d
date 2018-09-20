@@ -23,7 +23,7 @@ Additionally, this emacs configuration is also byte-compiled. Here (http://emacs
 #+END_SRC
 
 
-Use `package` for managing Emacs packages. `cl` is used along the compilation and it is required `with-no-warnings` in here because of what it is explained here: https://stackoverflow.com/a/13832070
+Use `package` for managing Emacs packages. `cl` is used along the compilation and it is required `eval-when-compile` as explained here: https://stackoverflow.com/a/13832070
 
 #+BEGIN_SRC emacs-lisp
 (eval-when-compile (require 'cl))
