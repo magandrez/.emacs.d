@@ -129,7 +129,7 @@ Few automodes to be loaded in case of coming across one of the listed file exten
 
 ** Misc
 
-Some misc behavioural changes (backups, startup, yes-no questions, etc).
+Some misc behavioural changes (backups, startup, etc).
 It also disables lock files, it is messy on mounted network file systems like Keybase FS (https://keybase.io/).
 
 #+BEGIN_SRC emacs-lisp
