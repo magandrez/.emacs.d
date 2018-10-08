@@ -160,7 +160,7 @@ Set multi-term to use ZSH. And configure "paste".
 #+BEGIN_SRC emacs-lisp
 (setq multi-term-program "/usr/local/bin/zsh")
 (add-hook 'term-mode-hook (lambda ()
-(define-key term-raw-map (kbd "C-y") 'term-paste)))
+(define-key term-raw-map (kbd "C-c C-y") 'term-paste)))
 #+END_SRC
 
 Tramp mode is used to access other machines. The below enables tramp mode and provides auto-complete of hosts from ssh config.
