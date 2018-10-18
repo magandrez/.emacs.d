@@ -144,7 +144,7 @@ It also disables lock files, it is messy on mounted network file systems like Ke
       create-lockfiles nil
       confirm-nonexistent-file-or-buffer nil
       vc-follow-symlinks t
-      visible-bell t
+      visible-bell nil
       confirm-nonexistent-file-or-buffer nil         ; Remove confirm dialog on new buffers
       exec-path-from-shell-check-startup-files nil
       show-paren-delay 0                             ; No delay when showing matching parenthesis.
