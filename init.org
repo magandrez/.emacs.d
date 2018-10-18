@@ -134,7 +134,7 @@ It also disables lock files, it is messy on mounted network file systems like Ke
 
 #+BEGIN_SRC emacs-lisp
 (setq backup-by-copying t
-      backup-directory-alist `((".*" . ,temporary-file-directory))
+      backup-directory-alist '(("." . "~/.emacs.d/backup"))
       delete-old-versions t
       kept-new-versions 3
       kept-old-versions 2
