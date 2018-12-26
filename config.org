@@ -200,25 +200,8 @@ Magit is <3 for Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
-  :preface
-  (defun me/magit-display-buffer-same (buffer)
-    "Display most magit popups in the current buffer."
-    (display-buffer
-     buffer
-     (cond ((and (derived-mode-p 'magit-mode)
-                 (eq (with-current-buffer buffer major-mode) 'magit-status-mode))
-            nil)
-           ((memq (with-current-buffer buffer major-mode)
-                  '(magit-process-mode
-                    magit-revision-mode
-                    magit-diff-mode
-                    magit-stash-mode))
-            nil)
-           (t '(display-buffer-same-window)))))
   :config
   (setq-default
-   magit-display-buffer-function 'me/magit-display-buffer-same
-   magit-popup-display-buffer-action '((display-buffer-same-window))
    magit-refs-show-commit-count 'all
    magit-section-show-child-count t))
 #+END_SRC
