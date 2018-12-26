@@ -157,14 +157,6 @@
         ruby-indent-tabs-mode nil)
 )
 
-(use-package ruby-block
-  :ensure enh-ruby-mode
-  :commands ruby-block-mode
-  :init
-  (add-hook 'enh-ruby-mode-hook '(lambda () (ruby-block-mode t)))
-  :config
-  (setq ruby-block-highlight-toggle t))
-
 (use-package yari
   :after enh-ruby-mode
   :init
@@ -217,15 +209,10 @@
   (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "/etc/ssh_config") (tramp-parse-sconfig "~/.ssh/config"))))
 
 (use-package smartparens
-  :defer 1
-  :config
-  (show-paren-mode 0)
-  (require 'smartparens-config)
-  (setq-default
-   sp-highlight-pair-overlay nil
-   sp-highlight-wrap-overlay nil
-   sp-highlight-wrap-tag-overlay nil)
-  (smartparens-global-mode 1))
+  :ensure t
+  :init
+    (use-package smartparens-ruby)
+    (add-hook 'enh-ruby-mode-hook 'smartparens-strict-mode))
 
 (use-package org
   :init

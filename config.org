@@ -278,18 +278,6 @@ C-M-a / C-M-e
 )
 #+END_SRC
 
-Ruby blocks
-
-#+BEGIN_SRC emacs-lisp
-(use-package ruby-block
-  :ensure enh-ruby-mode
-  :commands ruby-block-mode
-  :init
-  (add-hook 'enh-ruby-mode-hook '(lambda () (ruby-block-mode t)))
-  :config
-  (setq ruby-block-highlight-toggle t))
-#+END_SRC
-
 
 *** Ruby documentation
 
@@ -427,15 +415,10 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
-  :defer 1
-  :config
-  (show-paren-mode 0)
-  (require 'smartparens-config)
-  (setq-default
-   sp-highlight-pair-overlay nil
-   sp-highlight-wrap-overlay nil
-   sp-highlight-wrap-tag-overlay nil)
-  (smartparens-global-mode 1))
+  :ensure t
+  :init
+    (use-package smartparens-ruby)
+    (add-hook 'enh-ruby-mode-hook 'smartparens-strict-mode))
 #+END_SRC
 
 
@@ -608,7 +591,9 @@ Bullets!
   (org-mode . (lambda () (org-bullets-mode 1))))
 #+END_SRC
 
+
 ** Projectile
+
 
 Use Projectile for jumping around code, etc.
 #+BEGIN_SRC emacs-lisp
@@ -629,11 +614,13 @@ Use Projectile for jumping around code, etc.
 
 #+END_SRC
 
+
 ** Highlight
 
 #+BEGIN_SRC emacs-lisp
 (use-package highlight)
 #+END_SRC
+
 
 ** Treemacs
 
