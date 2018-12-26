@@ -181,8 +181,10 @@
   (setq feature-default-language "en"))
 
 (use-package which-key
+ :init
+ (add-hook 'after-init-hook 'which-key-mode)
  :config
- (which-key-mode 1)
+ (which-key-mode)
  (setq which-key-idle-delay 0.25))
 
 (use-package ace-window
@@ -194,6 +196,10 @@
 (setq epg-gpg-program "gpg2")
 (setf epa-pinentry-mode 'loopback)
 (setq epa-file-inhibit-auto-save t)
+
+(use-package pinentry
+  :config
+  (pinentry-start))
 
 (dolist (mode
   '(global-prettify-symbols-mode        ; Greek letters should look greek
@@ -211,8 +217,13 @@
 (use-package smartparens
   :ensure t
   :init
-    (use-package smartparens-ruby)
     (add-hook 'enh-ruby-mode-hook 'smartparens-strict-mode))
+
+(setq org-directory "/keybase/private/spavi/org/")
+(require 'find-lisp)
+(setq org-agenda-files
+      (find-lisp-find-files org-directory "\.org.gpg$"))
+(setq org-default-notes-file "/keybase/private/spavi/org/refile.org.gpg")
 
 (use-package org
   :init
@@ -228,28 +239,21 @@
         calendar-longitude 24.9    ; Roughly Helsinki
         calendar-week-start-day 1  ; Weeks start on Monday
         calendar-today-visible-hook (quote (calendar-mark-today))   
-        org-log-done t
-        org-journal-date-format "%A, %d.%m.%Y"
-        org-journal-dir "/keybase/private/spavi/org/diary/"
-        org-directory "/keybase/private/spavi/org/"
-        org-default-notes-file "/keybase/private/spavi/org/refile.org.gpg"
-	org-refile-targets '((nil :maxlevel . 9)
-                             (org-agenda-files :maxlevel . 9))
+        org-log-done t           
+        org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
         org-refile-use-outline-path t                                
         org-outline-path-complete-in-steps nil
         org-completion-use-ido t
         ido-everywhere t
         ido-max-directory-size 100000
-	ido-default-file-method 'selected-window
+        ido-default-file-method 'selected-window
         ido-default-buffer-method 'selected-window
-	org-indirect-buffer-display 'current-window
+        org-indirect-buffer-display 'current-window
         org-fast-tag-selection-include-todo t
         org-use-fast-todo-selection t
         org-startup-indented t)
-  
   (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
   (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))
-  (add-hook 'org-mode-hook 'yas-minor-mode-on)
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-journal-mode-hook 'auto-fill-mode)
   :bind (("C-c l" . org-store-link)
@@ -258,35 +262,27 @@
   :config
   (font-lock-add-keywords            
    'org-mode `(("^\\*+ \\(TODO\\) "
-                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑")
-                          nil)))
+               (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑") nil)))
                ("^\\*+ \\(PROGRESSING\\) "
-                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐")
-                          nil)))
+               (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐") nil)))
                ("^\\*+ \\(CANCELED\\) "
-                (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘")
-                          nil)))
+               (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
                ("^\\*+ \\(DONE\\) "
-                (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔")
-                          nil)))))
+               (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
 
   (setq org-tag-alist '((:startgroup) ("@w0rk" . ?w) ("@home" . ?h) (:endgroup) ("PERSONAL" . ?p) ("NOTE" . ?n))
         org-todo-keywords '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
-	                    (sequence "INACTIVE(i@/!)" "|" "CANCELLED(c@/!)"))
+                            (sequence "INACTIVE(i@/!)" "|" "CANCELLED(c@/!)"))
         org-todo-keyword-faces
-        '(("TODO" :foreground "red" :weight bold)
-          ("PROGRESSING" :foreground "blue" :weight bold)
-	  ("DONE" :foreground "forest green" :weight bold)
-	  ("INACTIVE" :foreground "magenta" :weight bold)
-	  ("CANCELLED" :foreground "brown" :weight bold)))
+          '(("TODO" :foreground "red" :weight bold)
+            ("PROGRESSING" :foreground "blue" :weight bold)
+            ("DONE" :foreground "forest green" :weight bold)
+            ("INACTIVE" :foreground "magenta" :weight bold)
+            ("CANCELLED" :foreground "brown" :weight bold)))
  
- (define-key org-mode-map [remap org-return] (lambda () (interactive)
-                                                (if (org-in-src-block-p)
-                                                    (org-return)
-                                                  (org-return-indent)))))
-
-(use-package org-mime
-  )
+   (define-key org-mode-map [remap org-return] (lambda () (interactive)
+                                                  (if (org-in-src-block-p)
+                                                      (org-return) (org-return-indent)))))
 
 (defvar org-capture-templates
   '(
@@ -322,9 +318,11 @@
 (defun sp/my-timestamp ()
   (format-time-string "%A, %d.%m.%Y"))
 
-(load-library "find-lisp")
-(setq org-agenda-files
-   (find-lisp-find-files "/keybase/private/spavi/org" "\.org.gpg$"))
+(use-package org-journal  
+  :config
+  (setq org-journal-date-format "%A, %d.%m.%Y"
+        org-journal-file-format "%Y%m%d"
+        org-journal-dir "/keybase/private/spavi/org/diary/"))
 
 (defun meeting-notes ()
   "Call this after creating an org-mode heading for where the notes for the meeting
@@ -370,31 +368,33 @@ should be. After calling this function, call 'meeting-done' to reset the environ
 
 (use-package treemacs
   :config
-  (progn
-    (setq treemacs-follow-after-init t
-          treemacs-width 35
-          treemacs-indentation 1
-          treemacs-recenter-after-file-follow nil
-          treemacs-collapse-dirs (if (executable-find "python") 3 0)
-          treemacs-silent-refresh t
-          treemacs-silent-filewatch t
-          treemacs-change-root-without-asking t
-          treemacs-sorting 'alphabetic-desc
-          treemacs-show-hidden-files t
-          treemacs-never-persist nil
-          treemacs-is-never-other-window t
-          treemacs-indentation-string (propertize " ǀ " 'face 'font-lock-comment-face))
-
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode t)
-
+  (setq treemacs-follow-after-init t
+        treemacs-width 35
+        treemacs-indentation 1
+        treemacs-recenter-after-file-follow nil
+        treemacs-silent-refresh t
+        treemacs-silent-filewatch t
+        treemacs-change-root-without-asking t
+        treemacs-sorting 'alphabetic-desc
+        treemacs-show-hidden-files t
+        treemacs-never-persist nil
+        treemacs-is-never-other-window f
+        treemacs-indentation-string (propertize " ǀ " 'face 'font-lock-comment-face)
+        treemacs-follow-mode t
+        treemacs-filewatch-mode t
+        treemacs-fringe-indicator-mode t)
   :bind
-  (:map global-map
-        ([f8] . treemacs)
-        ("C-c f" . treemacs-select-window))))
+  (([f8] . treemacs)
+   ("C-c f" . treemacs-select-window)))
 
 (use-package treemacs-projectile
   :after treemacs projectile
-  :bind (:map global-map
-("C-c o p" . treemacs-projectile)))
+  :bind 
+  (("C-c o p" . treemacs-projectile)))
+
+(use-package yafolding
+  :bind 
+  (("M-RET" . yafolding-toggle-element)
+  ("M-m" . yafolding-toggle-all))
+  :init
+  (add-hook 'enh-ruby-mode-hook 'yafolding-mode))
