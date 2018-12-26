@@ -10,3 +10,5 @@ elpa/
 .cask/
 *.dat
 *.elc
+.cache
+.projectile-*

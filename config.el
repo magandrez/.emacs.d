@@ -1,0 +1,413 @@
+(customize-set-variable 'scroll-bar-mode nil)
+(customize-set-variable 'horizontal-scroll-bar-mode nil)
+(customize-set-variable 'blink-cursor-mode nil)
+(customize-set-variable 'tool-bar-mode nil)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+(setq-default inhibit-startup-screen t
+              initial-scratch-message ""
+	      	  visible-bell nil                               ; No shaking
+	          confirm-nonexistent-file-or-buffer nil         ; Remove confirm dialog on new buffers
+	          show-paren-delay 0                             ; No delay when showing matching parenthesis
+	          confirm-kill-emacs 'y-or-n-p                   ; Confirm exiting Emacs
+	          display-time-default-load-average nil          ; Don't display load average
+	          indent-tabs-mode nil                           ; No tabs for indentation
+	          select-enable-clipboard t                      ; Unite Emacs & system clipboard
+	          window-combination-resize t                    ; Create new windows proportionally
+	          use-package-always-ensure t)                    ; Install packages if not found on the system
+
+(setq scroll-margin 1
+      scroll-conservatively 0
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01)
+
+(setq-default scroll-up-aggressively 0.01
+              scroll-down-aggressively 0.01)
+
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-language-environment 'utf-8)
+
+(global-set-key (kbd "C-+") 'text-scale-increase)        ; Bigger
+(global-set-key (kbd "C--") 'text-scale-decrease)        ; Smaller
+(global-set-key (kbd "M-n") 'next-multiframe-window)     ; Cycle through frames
+(global-set-key (kbd "M-p") 'previous-multiframe-window) ; Cycle through frames
+
+;(setq custom-file (expand-file-name ".custom.el" user-emacs-directory))
+;(when (file-exists-p custom-file)
+;  (load custom-file))
+
+(use-package monokai-theme
+  :init
+  (load-theme 'monokai t))
+
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :config
+  (setq exec-path-from-shell-variables '("PATH" "GOPATH")
+        exec-path-from-shell-check-startup-files nil)
+  (exec-path-from-shell-initialize))
+
+(when (eq system-type 'darwin)
+  (setq-default
+   exec-path (append exec-path '("/usr/local/bin"))  ; Add Homebrew path
+   mac-command-modifier 'meta                        ; Map Meta to Cmd
+   mac-option-modifier nil                           ; Don't use Option key 
+   mac-right-option-modifier nil                     ; Disable the right Alt key
+   ns-pop-up-frames nil))                              ; Visit files in same frame
+
+(setq backup-by-copying t
+      backup-directory-alist '(("." . "~/.emacs.d/backup"))
+      delete-old-versions t
+      kept-new-versions 3
+      kept-old-versions 2
+      version-control t
+      create-lockfiles nil
+      vc-follow-symlinks t)
+
+(use-package dockerfile-mode
+  :mode "Dockerfile\\'" 
+  :mode "Dockerfile.test\\'")
+
+(use-package sgml-mode
+  :mode "\\.html\\'"
+  :config (setq-default sgml-basic-offset 2))
+
+(use-package markdown-mode
+  :mode "INSTALL\\'"
+  :mode "CONTRIBUTORS\\'"
+  :mode "LICENSE\\'"
+  :mode "README\\'"
+  :mode "\\.markdown\\'"
+  :mode "\\.md\\'"
+  :config
+  (setq-default
+   markdown-asymmetric-header t
+   markdown-split-window-direction 'right))
+
+(use-package yaml-mode
+  :mode "\\.yml\\'"  
+  :mode "\\.yaml\\'")
+
+(use-package csv-mode
+  :mode "\\.[Cc][Ss][Vv]\\'"
+  :init (setq csv-separators '("," ";" "|" " "))
+  :config (use-package csv-nav))
+
+(use-package magit
+  :preface
+  (defun me/magit-display-buffer-same (buffer)
+    "Display most magit popups in the current buffer."
+    (display-buffer
+     buffer
+     (cond ((and (derived-mode-p 'magit-mode)
+                 (eq (with-current-buffer buffer major-mode) 'magit-status-mode))
+            nil)
+           ((memq (with-current-buffer buffer major-mode)
+                  '(magit-process-mode
+                    magit-revision-mode
+                    magit-diff-mode
+                    magit-stash-mode))
+            nil)
+           (t '(display-buffer-same-window)))))
+  :config
+  (setq-default
+   magit-display-buffer-function 'me/magit-display-buffer-same
+   magit-popup-display-buffer-action '((display-buffer-same-window))
+   magit-refs-show-commit-count 'all
+   magit-section-show-child-count t))
+
+(use-package go-mode
+  :mode "\\.go\\'"
+  :mode "\\.toml\\'"
+  :init
+  (add-hook 'before-save-hook #'gofmt-before-save))
+
+(use-package go-eldoc
+  :init
+  (add-hook 'go-mode-hook 'go-eldoc-setup))
+
+(use-package go-add-tags)
+
+(use-package enh-ruby-mode
+  :mode "\\.rb\\'"
+  :mode "\\.rake\\'"
+  :mode "\\.ru\\'"
+  :mode "Gemfile\\'"
+  :mode "Rakefile\\'"
+  :mode "Capfile\\'" 
+  :mode "\\.gemspec\\'"
+  :config
+  (setq enh-ruby-add-encoding-comment-on-save nil
+        enh-ruby-deep-indent-paren nil
+        enh-ruby-hanging-brace-indent-level 2
+        enh-ruby-use-encoding-map nil
+        rspec-autosave-buffer t
+        rspec-compilation-buffer-name "*rspec-compilation*"
+        rspec-use-opts-file-when-available nil
+        rspec-use-rake-flag nil
+        ruby-deep-arglist nil
+        ruby-deep-indent-paren nil
+        ruby-end-insert-newline nil
+        ruby-insert-encoding-magic-comment nil
+        ruby-indent-level 2
+        ruby-indent-tabs-mode nil)
+)
+
+(use-package ruby-block
+  :ensure enh-ruby-mode
+  :commands ruby-block-mode
+  :init
+  (add-hook 'enh-ruby-mode-hook '(lambda () (ruby-block-mode t)))
+  :config
+  (setq ruby-block-highlight-toggle t))
+
+(use-package yari
+  :after enh-ruby-mode
+  :init
+  (add-hook 'enh-ruby-mode-hook (lambda () (local-set-key [f1] 'yari))))
+
+(use-package inf-ruby
+  :after enh-ruby-mode
+  :init
+  (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode))
+
+(use-package rspec-mode
+  :after enh-ruby-mode)
+
+(use-package rvm
+  :after enh-ruby-mode
+  :config
+  (rvm-use-default))
+
+(use-package feature-mode
+  :commands feature-mode
+  :config
+  (setq feature-default-language "en"))
+
+(use-package which-key
+ :config
+ (which-key-mode 1)
+ (setq which-key-idle-delay 0.25))
+
+(use-package ace-window
+  :config
+  :bind* ("M-o" . ace-window))
+
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+(setq epg-gpg-program "gpg2")
+(setf epa-pinentry-mode 'loopback)
+(setq epa-file-inhibit-auto-save t)
+
+(dolist (mode
+  '(global-prettify-symbols-mode        ; Greek letters should look greek
+    global-auto-revert-mode             ; Reload files when change, please
+    show-paren-mode                     ; Highlight matching parentheses
+    cua-mode                            ; Global Cmd-c, Cmd-x to copy & paste
+    global-display-line-numbers-mode    ; Native line numbers
+    ))
+  (funcall mode 1))
+
+(use-package tramp
+  :config
+  (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "/etc/ssh_config") (tramp-parse-sconfig "~/.ssh/config"))))
+
+(use-package smartparens
+  :defer 1
+  :config
+  (show-paren-mode 0)
+  (require 'smartparens-config)
+  (setq-default
+   sp-highlight-pair-overlay nil
+   sp-highlight-wrap-overlay nil
+   sp-highlight-wrap-tag-overlay nil)
+  (smartparens-global-mode 1))
+
+(use-package org
+  :init
+  (setq org-support-shift-select t
+        org-return-follows-link t
+        org-hide-emphasis-markers t
+        org-outline-path-complete-in-steps nil
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t
+        org-confirm-babel-evaluate nil
+        calendar-date-style (quote european)
+        calendar-latitude 60.1     ; Roughly Helsinki
+        calendar-longitude 24.9    ; Roughly Helsinki
+        calendar-week-start-day 1  ; Weeks start on Monday
+        calendar-today-visible-hook (quote (calendar-mark-today))   
+        org-log-done t
+        org-journal-date-format "%A, %d.%m.%Y"
+        org-journal-dir "/keybase/private/spavi/org/diary/"
+        org-directory "/keybase/private/spavi/org/"
+        org-default-notes-file "/keybase/private/spavi/org/refile.org.gpg"
+	org-refile-targets '((nil :maxlevel . 9)
+                             (org-agenda-files :maxlevel . 9))
+        org-refile-use-outline-path t                                
+        org-outline-path-complete-in-steps nil
+        org-completion-use-ido t
+        ido-everywhere t
+        ido-max-directory-size 100000
+	ido-default-file-method 'selected-window
+        ido-default-buffer-method 'selected-window
+	org-indirect-buffer-display 'current-window
+        org-fast-tag-selection-include-todo t
+        org-use-fast-todo-selection t
+        org-startup-indented t)
+  
+  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
+  (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))
+  (add-hook 'org-mode-hook 'yas-minor-mode-on)
+  (add-hook 'org-mode-hook 'auto-fill-mode)
+  (add-hook 'org-journal-mode-hook 'auto-fill-mode)
+  :bind (("C-c l" . org-store-link)
+         ("C-c n" . org-capture)
+         ("C-c a" . org-agenda))
+  :config
+  (font-lock-add-keywords            
+   'org-mode `(("^\\*+ \\(TODO\\) "
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑")
+                          nil)))
+               ("^\\*+ \\(PROGRESSING\\) "
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐")
+                          nil)))
+               ("^\\*+ \\(CANCELED\\) "
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘")
+                          nil)))
+               ("^\\*+ \\(DONE\\) "
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔")
+                          nil)))))
+
+  (setq org-tag-alist '((:startgroup) ("@w0rk" . ?w) ("@home" . ?h) (:endgroup) ("PERSONAL" . ?p) ("NOTE" . ?n))
+        org-todo-keywords '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
+	                    (sequence "INACTIVE(i@/!)" "|" "CANCELLED(c@/!)"))
+        org-todo-keyword-faces
+        '(("TODO" :foreground "red" :weight bold)
+          ("PROGRESSING" :foreground "blue" :weight bold)
+	  ("DONE" :foreground "forest green" :weight bold)
+	  ("INACTIVE" :foreground "magenta" :weight bold)
+	  ("CANCELLED" :foreground "brown" :weight bold)))
+ 
+ (define-key org-mode-map [remap org-return] (lambda () (interactive)
+                                                (if (org-in-src-block-p)
+                                                    (org-return)
+                                                  (org-return-indent)))))
+
+(use-package org-mime
+  )
+
+(defvar org-capture-templates
+  '(
+    ("t" "To-do task." 
+     entry 
+     (file+headline org-default-notes-file "Tasks")
+     "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+    ("w" "Work task." 
+     entry 
+     (file+headline org-default-notes-file "Work Task")
+     "* TODO %?\n%u\n%a\n" 
+     :clock-in t 
+     :clock-resume t)
+    ("a" "Apointment" 
+     entry 
+     (file "/keybase/private/spavi/org/schedule.org.gpg") 
+     (file "~/.emacs.d/org-templates/events.orgcaptmpl")
+     :empty-lines-before 1)
+    ("l" "Link: Something interesting?"
+     entry
+     (file+headline org-default-notes-file "Links")
+     (file "~/.emacs.d/org-templates/links.orgcaptmpl"))
+    ("j" "Journal daily." 
+     entry 
+     (file (expand-file-name (format-time-string "%Y%m%d") org-journal-dir))
+     "*%(sp/my-timestamp)\n\n**%(format-time-string \"%H:%M\")%?" 
+     :kill-buffer t)
+    ("i" "Idea came up." 
+     entry 
+     (file org-default-notes-file)
+     "* %? :IDEA: \n%u" :clock-in t :clock-resume t)))
+
+(defun sp/my-timestamp ()
+  (format-time-string "%A, %d.%m.%Y"))
+
+(load-library "find-lisp")
+(setq org-agenda-files
+   (find-lisp-find-files "/keybase/private/spavi/org" "\.org.gpg$"))
+
+(defun meeting-notes ()
+  "Call this after creating an org-mode heading for where the notes for the meeting
+should be. After calling this function, call 'meeting-done' to reset the environment."
+  (interactive)
+  (outline-mark-subtree)                              ;; Select org-mode section
+  (narrow-to-region (region-beginning) (region-end))  ;; Only show that region
+  (deactivate-mark)
+  (delete-other-windows)                              ;; Get rid of other windows
+  (text-scale-set 2)                                  ;; Text is now readable by others
+  (fringe-mode 0)
+  (message "When finished taking your notes, run meeting-done."))
+
+(defun meeting-done ()
+  "Attempt to 'undo' the effects of taking meeting notes."
+  (interactive)
+  (widen)                                       ;; Opposite of narrow-to-region
+  (text-scale-set 0)                            ;; Reset the font size increase
+  (fringe-mode 1)
+  (winner-undo))                                ;; Put the windows back in place
+
+(use-package org-bullets
+  :after org
+  :hook
+  (org-mode . (lambda () (org-bullets-mode 1))))
+
+(use-package projectile
+  :defer 1
+  :init
+  (setq-default
+   projectile-cache-file (expand-file-name ".projectile-cache" user-emacs-directory)
+   projectile-keymap-prefix (kbd "C-c C-p")
+   projectile-known-projects-file (expand-file-name
+                                   ".projectile-bookmarks" user-emacs-directory))
+  :config
+  (projectile-global-mode 1)
+  (setq-default
+   projectile-completion-system 'ido
+   projectile-enable-caching t
+   projectile-mode-line '(:eval (projectile-project-name))))
+
+(use-package highlight)
+
+(use-package treemacs
+  :config
+  (progn
+    (setq treemacs-follow-after-init t
+          treemacs-width 35
+          treemacs-indentation 1
+          treemacs-recenter-after-file-follow nil
+          treemacs-collapse-dirs (if (executable-find "python") 3 0)
+          treemacs-silent-refresh t
+          treemacs-silent-filewatch t
+          treemacs-change-root-without-asking t
+          treemacs-sorting 'alphabetic-desc
+          treemacs-show-hidden-files t
+          treemacs-never-persist nil
+          treemacs-is-never-other-window t
+          treemacs-indentation-string (propertize " ǀ " 'face 'font-lock-comment-face))
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode t)
+
+  :bind
+  (:map global-map
+        ([f8] . treemacs)
+        ("C-c f" . treemacs-select-window))))
+
+(use-package treemacs-projectile
+  :after treemacs projectile
+  :bind (:map global-map
+("C-c o p" . treemacs-projectile)))
