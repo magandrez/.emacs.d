@@ -217,11 +217,6 @@
         org-src-fontify-natively t
         org-src-tab-acts-natively t
         org-confirm-babel-evaluate nil
-        calendar-date-style (quote european)
-        calendar-latitude 60.1     ; Roughly Helsinki
-        calendar-longitude 24.9    ; Roughly Helsinki
-        calendar-week-start-day 1  ; Weeks start on Monday
-        calendar-today-visible-hook (quote (calendar-mark-today))   
         org-log-done t           
         org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
         org-refile-use-outline-path t                                
@@ -331,6 +326,17 @@ should be. After calling this function, call 'meeting-done' to reset the environ
   :after org
   :hook
   (org-mode . (lambda () (org-bullets-mode 1))))
+
+(use-package suomalainen-kalenteri
+  :after org
+  :config
+  (setq calendar-date-style 'european
+        calendar-latitude 60.1     ; Roughly Helsinki
+        calendar-longitude 24.9    ; Roughly Helsinki
+        calendar-week-start-day 1  ; Weeks start on Monday
+        calendar-today-visible-hook ('(calendar-mark-today))
+        calendar-holidays suomalainen-kalenteri
+        org-agenda-include-diary t))
 
 (use-package projectile
   :defer 1
