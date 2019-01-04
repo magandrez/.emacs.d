@@ -262,6 +262,12 @@
                                                   (if (org-in-src-block-p)
                                                       (org-return) (org-return-indent)))))
 
+(use-package org-journal  
+  :config
+  (setq org-journal-date-format "%A, %d.%m.%Y"
+        org-journal-file-format "%Y%m%d"
+        org-journal-dir "/keybase/private/spavi/org/diary/"))
+
 (defvar org-capture-templates
   '(
     ("t" "To-do task." 
@@ -283,24 +289,10 @@
      entry
      (file+headline org-default-notes-file "Links")
      (file "~/.emacs.d/org-templates/links.orgcaptmpl"))
-    ("j" "Journal daily." 
-     entry 
-     (file (expand-file-name (format-time-string "%Y%m%d") org-journal-dir))
-     "*%(sp/my-timestamp)\n\n**%(format-time-string \"%H:%M\")%?" 
-     :kill-buffer t)
     ("i" "Idea came up." 
      entry 
      (file org-default-notes-file)
      "* %? :IDEA: \n%u" :clock-in t :clock-resume t)))
-
-(defun sp/my-timestamp ()
-  (format-time-string "%A, %d.%m.%Y"))
-
-(use-package org-journal  
-  :config
-  (setq org-journal-date-format "%A, %d.%m.%Y"
-        org-journal-file-format "%Y%m%d"
-        org-journal-dir "/keybase/private/spavi/org/diary/"))
 
 (defun meeting-notes ()
   "Call this after creating an org-mode heading for where the notes for the meeting
@@ -334,7 +326,7 @@ should be. After calling this function, call 'meeting-done' to reset the environ
         calendar-latitude 60.1     ; Roughly Helsinki
         calendar-longitude 24.9    ; Roughly Helsinki
         calendar-week-start-day 1  ; Weeks start on Monday
-        calendar-today-visible-hook ('(calendar-mark-today))
+        calendar-today-visible-hook 'calendar-mark-today
         calendar-holidays suomalainen-kalenteri
         org-agenda-include-diary t))
 

@@ -488,6 +488,17 @@ Adding org files for agenda
 #+END_SRC
 
 
+Org journaling
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-journal
+  :config
+  (setq org-journal-date-format "%A, %d.%m.%Y"
+        org-journal-file-format "%Y%m%d"
+        org-journal-dir "/keybase/private/spavi/org/diary/"))
+#+END_SRC
+
+
 Org template custom configurations
 
 #+BEGIN_SRC emacs-lisp
@@ -512,33 +523,12 @@ Org template custom configurations
      entry
      (file+headline org-default-notes-file "Links")
      (file "~/.emacs.d/org-templates/links.orgcaptmpl"))
-    ("j" "Journal daily." 
-     entry 
-     (file (expand-file-name (format-time-string "%Y%m%d") org-journal-dir))
-     "*%(sp/my-timestamp)\n\n**%(format-time-string \"%H:%M\")%?" 
-     :kill-buffer t)
     ("i" "Idea came up." 
      entry 
      (file org-default-notes-file)
      "* %? :IDEA: \n%u" :clock-in t :clock-resume t)))
 #+END_SRC
 
-Hack to work around %A having different meaning for capture mode vs. format-time-string
-
-#+BEGIN_SRC emacs-lisp
-(defun sp/my-timestamp ()
-  (format-time-string "%A, %d.%m.%Y"))
-#+END_SRC
-
-Org journaling
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-journal  
-  :config
-  (setq org-journal-date-format "%A, %d.%m.%Y"
-        org-journal-file-format "%Y%m%d"
-        org-journal-dir "/keybase/private/spavi/org/diary/"))
-#+END_SRC
 
 Meeting note taking (source: [[https://github.com/howardabrams/dot-files/][Howard Abrams' Github]])
 
@@ -585,7 +575,7 @@ Calendar modifications (Finnish calendar, etc)
         calendar-latitude 60.1     ; Roughly Helsinki
         calendar-longitude 24.9    ; Roughly Helsinki
         calendar-week-start-day 1  ; Weeks start on Monday
-        calendar-today-visible-hook (quote (calendar-mark-today))
+        calendar-today-visible-hook 'calendar-mark-today
         calendar-holidays suomalainen-kalenteri
         org-agenda-include-diary t))
 #+END_SRC
