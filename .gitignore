@@ -12,3 +12,4 @@ elpa/
 *.elc
 .cache
 .projectile-*
+bookmarks
