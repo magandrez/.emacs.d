@@ -57,7 +57,8 @@
    mac-command-modifier 'meta                        ; Map Meta to Cmd
    mac-option-modifier nil                           ; Don't use Option key 
    mac-right-option-modifier nil                     ; Disable the right Alt key
-   ns-pop-up-frames nil))                              ; Visit files in same frame
+   ns-pop-up-frames nil                              ; Visit files in same frame
+   dired-use-ls-dired nil))                          ; macOS command ls doesn't support --dired option
 
 (setq backup-by-copying t
       backup-directory-alist '(("." . "~/.emacs.d/backup"))
@@ -217,9 +218,9 @@
         org-src-fontify-natively t
         org-src-tab-acts-natively t
         org-confirm-babel-evaluate nil
-        org-log-done t           
+        org-log-done t
         org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
-        org-refile-use-outline-path t                                
+        org-refile-use-outline-path t
         org-outline-path-complete-in-steps nil
         org-completion-use-ido t
         ido-everywhere t
@@ -229,16 +230,21 @@
         org-indirect-buffer-display 'current-window
         org-fast-tag-selection-include-todo t
         org-use-fast-todo-selection t
-        org-startup-indented t)
+        org-startup-indented t
+        org-agenda-use-tag-inheritance nil
+        org-agenda-ignore-drawer-properties '(effort appt category)
+        org-agenda-dim-blocked-tasks nil)
   (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
   (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-journal-mode-hook 'auto-fill-mode)
+  (add-hook 'org-agenda-mode-hook (lambda () (projectile-mode -1)))
+  (add-hook 'org-mode-hook (lambda () (projectile-mode -1)))
   :bind (("C-c l" . org-store-link)
          ("C-c n" . org-capture)
          ("C-c a" . org-agenda))
   :config
-  (font-lock-add-keywords            
+  (font-lock-add-keywords
    'org-mode `(("^\\*+ \\(TODO\\) "
                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑") nil)))
                ("^\\*+ \\(PROGRESSING\\) "
@@ -257,12 +263,12 @@
             ("DONE" :foreground "forest green" :weight bold)
             ("INACTIVE" :foreground "magenta" :weight bold)
             ("CANCELLED" :foreground "brown" :weight bold)))
- 
+
    (define-key org-mode-map [remap org-return] (lambda () (interactive)
                                                   (if (org-in-src-block-p)
                                                       (org-return) (org-return-indent)))))
 
-(use-package org-journal  
+(use-package org-journal
   :config
   (setq org-journal-date-format "%A, %d.%m.%Y"
         org-journal-file-format "%Y%m%d"
@@ -280,11 +286,6 @@
      "* TODO %?\n%u\n%a\n" 
      :clock-in t 
      :clock-resume t)
-    ("a" "Apointment" 
-     entry 
-     (file "/keybase/private/spavi/org/schedule.org.gpg") 
-     (file "~/.emacs.d/org-templates/events.orgcaptmpl")
-     :empty-lines-before 1)
     ("l" "Link: Something interesting?"
      entry
      (file+headline org-default-notes-file "Links")
@@ -341,6 +342,9 @@ should be. After calling this function, call 'meeting-done' to reset the environ
   :config
   (projectile-global-mode 1)
   (setq-default
+   projectile-indexing-method 'alien
+   projectile-globally-ignored-modes '("org-mode" "org-agenda-mode")
+   projectile-globally-ignored-file-suffixes '(".gpg")
    projectile-completion-system 'ido
    projectile-enable-caching t
    projectile-mode-line '(:eval (projectile-project-name))))
