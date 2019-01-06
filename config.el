@@ -246,27 +246,30 @@
   :config
   (font-lock-add-keywords
    'org-mode `(("^\\*+ \\(TODO\\) "
-               (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑") nil)))
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑") nil)))
                ("^\\*+ \\(PROGRESSING\\) "
-               (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐") nil)))
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐") nil)))
                ("^\\*+ \\(CANCELED\\) "
-               (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
                ("^\\*+ \\(DONE\\) "
-               (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
 
-  (setq org-tag-alist '((:startgroup) ("@w0rk" . ?w) ("@home" . ?h) (:endgroup) ("PERSONAL" . ?p) ("NOTE" . ?n))
+  (setq org-tag-alist '((:startgroup) ("@w0rk" . ?w) ("@home" . ?h) (:endgroup))
         org-todo-keywords '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
                             (sequence "INACTIVE(i@/!)" "|" "CANCELLED(c@/!)"))
         org-todo-keyword-faces
-          '(("TODO" :foreground "red" :weight bold)
-            ("PROGRESSING" :foreground "blue" :weight bold)
-            ("DONE" :foreground "forest green" :weight bold)
-            ("INACTIVE" :foreground "magenta" :weight bold)
-            ("CANCELLED" :foreground "brown" :weight bold)))
+        '(("TODO" :foreground "red" :weight bold)
+          ("PROGRESSING" :foreground "blue" :weight bold)
+          ("DONE" :foreground "forest green" :weight bold)
+          ("INACTIVE" :foreground "magenta" :weight bold)
+          ("CANCELLED" :foreground "brown" :weight bold)))
+  (setq org-agenda-custom-commands
+        '(("w" "Work" tags-todo "@w0rk")
+          ("h" "Home" tags-todo "@home")))
 
-   (define-key org-mode-map [remap org-return] (lambda () (interactive)
-                                                  (if (org-in-src-block-p)
-                                                      (org-return) (org-return-indent)))))
+  (define-key org-mode-map [remap org-return] (lambda () (interactive)
+                                                (if (org-in-src-block-p)
+                                                    (org-return) (org-return-indent)))))
 
 (use-package org-journal
   :config
