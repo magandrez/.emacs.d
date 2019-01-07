@@ -25,11 +25,24 @@
 (setq-default scroll-up-aggressively 0.01
               scroll-down-aggressively 0.01)
 
+;; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
+(setq utf-translate-cjk-mode nil)
+
 (prefer-coding-system 'utf-8)
+(setq default-file-name-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment 'utf-8)
+(set-language-environment 'utf-8)
+(setq locale-coding-system 'utf-8)
+
+(if (boundp buffer-file-coding-system)
+    (setq buffer-file-coding-system 'utf-8)
+  (setq default-buffer-file-coding-system 'utf-8))
+
+;; Treat clipboard input as UTF-8 string first; compound text next, etc.
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 (global-set-key (kbd "C-+") 'text-scale-increase)        ; Bigger
 (global-set-key (kbd "C--") 'text-scale-decrease)        ; Smaller
