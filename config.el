@@ -249,6 +249,7 @@
         org-agenda-dim-blocked-tasks nil)
   (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
   (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))
+  (add-to-list 'org-modules 'org-habit)
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-journal-mode-hook 'auto-fill-mode)
   (add-hook 'org-agenda-mode-hook (lambda () (projectile-mode -1)))
