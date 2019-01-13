@@ -80,13 +80,6 @@ Use `C-x C-0` to restore font size.
 (global-set-key (kbd "M-p") 'previous-multiframe-window) ; Cycle through frames
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-;(setq custom-file (expand-file-name ".custom.el" user-emacs-directory))
-;(when (file-exists-p custom-file)
-;  (load custom-file))
-#+END_SRC
-
-
 ** Theme
 
 Use monokai theme for Emacs.
