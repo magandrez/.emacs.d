@@ -13,7 +13,7 @@ Remove all the stuff I don't use.
 (customize-set-variable 'tool-bar-mode nil)
 #+END_SRC
 
-Yes or no -> y-or-n
+Yes or no: y-or-n
 
 #+BEGIN_SRC emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -210,7 +210,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 
 ** Magit
 
-Magit is <3 for Emacs.
+Magit is love for Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
@@ -356,6 +356,7 @@ Use [[https://cucumber.io/][Cucumber]] for BDD
 
 
 
+
 ** Ace
 
 Use ace-window to cycle through windows
@@ -393,6 +394,7 @@ EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/Easy
 #+END_SRC
 
 
+
 ** Misc
 
 #+BEGIN_SRC emacs-lisp
@@ -408,6 +410,7 @@ EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/Easy
 
 
 
+
 ** Tramp mode
 
 Use tramp to shell into other machines.
@@ -417,6 +420,7 @@ Use tramp to shell into other machines.
   :config
   (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "/etc/ssh_config") (tramp-parse-sconfig "~/.ssh/config"))))
 #+END_SRC
+
 
 
 
@@ -430,6 +434,7 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
   :init
     (add-hook 'enh-ruby-mode-hook 'smartparens-strict-mode))
 #+END_SRC
+
 
 
 
@@ -457,7 +462,7 @@ The thick of it
           org-src-fontify-natively t
           org-src-tab-acts-natively t
           org-confirm-babel-evaluate nil
-          org-log-done tg
+          org-log-done t
           org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
           org-refile-use-outline-path t
           org-outline-path-complete-in-steps nil
@@ -615,6 +620,7 @@ Some org-agenda and habits specific configs.
 #+END_SRC
 
 
+
 ** Projectile
 
 Use Projectile for jumping around code, etc.
@@ -647,6 +653,7 @@ Use Projectile for jumping around code, etc.
 #+BEGIN_SRC emacs-lisp
 (use-package highlight)
 #+END_SRC
+
 
 
 
@@ -690,6 +697,7 @@ Use Projectile for jumping around code, etc.
   ("M-m" . yafolding-toggle-all))
   :init
   (add-hook 'enh-ruby-mode-hook 'yafolding-mode))
+  ;;(define-key yafolding-mode-map (kbd "M-m") 'yafolding-toggle-all)  
+  ;;(define-key yafolding-mode-map (kbd "C-RET") 'yafolding-toggle-element)
 #+END_SRC
-  (define-key yafolding-mode-map (kbd "M-m") 'yafolding-toggle-all)  
-  (define-key yafolding-mode-map (kbd "C-RET") 'yafolding-toggle-element))
+  
