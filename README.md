@@ -41,6 +41,8 @@ Thus, `init.el` should be ignored from the repo:
 
 `git update-index --assume-unchanged init.el`
 
-- Adding new packages would mean:
+Adding new packages would mean:
+
   - Editing the block in `config.org` where packages are requried.
+  - Remove config.el generated.
   - Stop and start emacs server, letting Org-babel load the new packages/functions.
