@@ -688,7 +688,7 @@ Use Projectile for jumping around code, etc.
         treemacs-sorting 'alphabetic-desc
         treemacs-show-hidden-files t
         treemacs-never-persist nil
-        treemacs-is-never-other-window f
+        treemacs-is-never-other-window nil
         treemacs-indentation-string (propertize " ǀ " 'face 'font-lock-comment-face)
         treemacs-follow-mode t
         treemacs-filewatch-mode t
