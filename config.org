@@ -362,12 +362,35 @@ Use ace-window to cycle through windows
 
 
 
+
 ** Ibuffer
 
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-#+END_SRC
+(defun my-org-agenda-filter ()
+  (let ((fname (buffer-file-name)))
+    (and fname
+         (member (file-truename fname)
+                 (mapcar 'file-truename (org-agenda-files))))))
 
+(setq ibuffer-expert t
+      ibuffer-show-empty-filter-groups nil
+      ibuffer-saved-filter-groups
+      (list
+       (cons "default"
+             (append
+               '(("Org Agenda"  (name . "\*Org Agenda\*"))
+                ("Magit" (name . "\*magit"))
+                ("Emacs" (name . "^\\*"))
+                ("Org" (or (mode . org-agenda-mode)
+                           (mode . diary-mode)
+                           (predicate . (my-org-agenda-filter)))))))))
+
+(add-hook 'ibuffer-mode-hook
+  (lambda ()
+    (ibuffer-auto-mode 1)
+    (ibuffer-switch-to-saved-filter-groups "default")))
+#+END_SRC
 
 
 ** Encryption
