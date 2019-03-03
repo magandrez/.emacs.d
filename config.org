@@ -331,8 +331,6 @@ Use [[https://cucumber.io/][Cucumber]] for BDD
 
 * Features
 
-
-
 ** Which-key
 
 #+BEGIN_SRC emacs-lisp
@@ -773,4 +771,15 @@ Magit is love for Emacs.
    magit-auto-revert-mode nil
    magit-refs-show-commit-count 'all
    magit-section-show-child-count t))
+#+END_SRC
+
+
+** Diff-hl
+
+#+BEGIN_SRC emacs-lisp
+(use-package diff-hl
+  :ensure t
+  :init
+  (global-diff-hl-mode)
+  (diff-hl-margin-mode))
 #+END_SRC
