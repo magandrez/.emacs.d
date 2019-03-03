@@ -327,23 +327,7 @@ Use [[https://cucumber.io/][Cucumber]] for BDD
   (setq feature-default-language "en"))
 #+END_SRC
 
-** Restclient
 
-Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explore APIs
-
-#+begin_src emacs-lisp
-(use-package restclient
-  :ensure t
-  :mode "\\.rest$"
-  :config
-  (progn
-    ;; Add hook to override C-c C-c in this mode to stay in window
-    (add-hook 'restclient-mode-hook
-              '(lambda ()
-                 (local-set-key
-                  (kbd "C-c C-c")
-                  'restclient-http-send-current-stay-in-window)))))
-#+end_src
 
 * Features
 
@@ -754,3 +738,39 @@ Use Projectile for jumping around code, etc.
   ;;(define-key yafolding-mode-map (kbd "C-RET") 'yafolding-toggle-element)
 #+END_SRC
   
+
+
+** Restclient
+
+Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explore APIs
+
+#+begin_src emacs-lisp
+(use-package restclient
+  :ensure t
+  :mode "\\.rest$"
+  :config
+  (progn
+    ;; Add hook to override C-c C-c in this mode to stay in window
+    (add-hook 'restclient-mode-hook
+              '(lambda ()
+                 (local-set-key
+                  (kbd "C-c C-c")
+                  'restclient-http-send-current-stay-in-window)))))
+#+end_src
+
+
+
+** Magit
+
+Magit is love for Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :config
+  :bind (("C-x g" . magit-status))
+  :init
+  (setq-default
+   magit-auto-revert-mode nil
+   magit-refs-show-commit-count 'all
+   magit-section-show-child-count t))
+#+END_SRC
