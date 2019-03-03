@@ -441,7 +441,15 @@ EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/Easy
   (funcall mode 1))
 #+END_SRC
 
+Filters marked packages from Packages buffer.
 
+#+begin_src emacs-lisp
+(defun package-menu-find-marks ()
+  "Find packages marked for action in *Packages*."
+  (interactive)
+  (occur "^[A-Z]"))
+(define-key package-menu-mode-map "a" #'package-menu-find-marks)
+#+end_src
 
 
 ** Tramp mode
