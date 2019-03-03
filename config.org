@@ -80,6 +80,7 @@ Use `C-x C-0` to restore font size.
 (global-set-key (kbd "M-p") 'previous-multiframe-window) ; Cycle through frames
 #+END_SRC
 
+
 ** Theme
 
 Use monokai theme for Emacs.
@@ -147,6 +148,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 
 * Languages / frameworks
 
+
 ** Docker
 
 #+BEGIN_SRC emacs-lisp
@@ -156,6 +158,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 #+END_SRC
 
 
+
 ** HTML
 
 #+BEGIN_SRC emacs-lisp
@@ -163,6 +166,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
   :mode "\\.html\\'"
   :config (setq-default sgml-basic-offset 2))
 #+END_SRC
+
 
 
 ** Markdown
@@ -182,6 +186,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 #+END_SRC
 
 
+
 ** YAML
 
 #+BEGIN_SRC emacs-lisp
@@ -191,6 +196,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 #+END_SRC
 
 
+
 ** CSV
 
 #+BEGIN_SRC emacs-lisp
@@ -198,19 +204,6 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
   :mode "\\.[Cc][Ss][Vv]\\'"
   :init (setq csv-separators '("," ";" "|" " "))
   :config (use-package csv-nav))
-#+END_SRC
-
-
-** Magit
-
-Magit is love for Emacs.
-
-#+BEGIN_SRC emacs-lisp
-(use-package magit
-  :config
-  (setq-default
-   magit-refs-show-commit-count 'all
-   magit-section-show-child-count t))
 #+END_SRC
 
 
@@ -230,6 +223,7 @@ Magit is love for Emacs.
 
 (use-package go-add-tags)
 #+END_SRC
+
 
 
 ** Ruby
@@ -321,6 +315,7 @@ Uses [[https://rvm.io/][RVM]] to manage gems.
 #+END_SRC
 
 
+
 ** Cucumber
 
 Use [[https://cucumber.io/][Cucumber]] for BDD
@@ -353,6 +348,7 @@ Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explo
 * Features
 
 
+
 ** Which-key
 
 #+BEGIN_SRC emacs-lisp
@@ -367,6 +363,7 @@ Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explo
 
 
 
+
 ** Ace
 
 Use ace-window to cycle through windows
@@ -376,6 +373,7 @@ Use ace-window to cycle through windows
   :config
   :bind* ("M-o" . ace-window))
 #+END_SRC
+
 
 
 
@@ -410,6 +408,7 @@ Use ace-window to cycle through windows
 #+END_SRC
 
 
+
 ** Encryption
 
 EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/EasyPG]])
@@ -425,6 +424,7 @@ EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/Easy
   :config
   (pinentry-start))
 #+END_SRC
+
 
 
 
@@ -452,6 +452,7 @@ Filters marked packages from Packages buffer.
 #+end_src
 
 
+
 ** Tramp mode
 
 Use tramp to shell into other machines.
@@ -461,6 +462,7 @@ Use tramp to shell into other machines.
   :config
   (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "/etc/ssh_config") (tramp-parse-sconfig "~/.ssh/config"))))
 #+END_SRC
+
 
 
 
@@ -475,6 +477,7 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
   :init
     (add-hook 'enh-ruby-mode-hook 'smartparens-strict-mode))
 #+END_SRC
+
 
 
 
@@ -666,6 +669,7 @@ Using org habits to track repeating tasks.
 #+end_src
 
 
+
 ** Projectile
 
 
@@ -694,11 +698,13 @@ Use Projectile for jumping around code, etc.
 #+END_SRC
 
 
+
 ** Highlight
 
 #+BEGIN_SRC emacs-lisp
 (use-package highlight)
 #+END_SRC
+
 
 
 
@@ -732,6 +738,7 @@ Use Projectile for jumping around code, etc.
   :bind 
   (("C-c o p" . treemacs-projectile)))
 #+END_SRC
+
 
 
 ** Yafolding
