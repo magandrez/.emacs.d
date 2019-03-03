@@ -727,15 +727,12 @@ Use Projectile for jumping around code, etc.
 
 #+BEGIN_SRC emacs-lisp
 (use-package yafolding
-  :bind 
-  (("M-RET" . yafolding-toggle-element)
-  ("M-m" . yafolding-toggle-all))
   :init
-  (add-hook 'enh-ruby-mode-hook 'yafolding-mode))
-  ;;(define-key yafolding-mode-map (kbd "M-m") 'yafolding-toggle-all)  
-  ;;(define-key yafolding-mode-map (kbd "C-RET") 'yafolding-toggle-element)
+  (add-hook 'enh-ruby-mode-hook 'yafolding-mode)
+  :bind
+  (("M-n" . yafolding-toggle-element)
+  ("M-m" . yafolding-toggle-all)))
 #+END_SRC
-  
 
 
 ** Restclient
