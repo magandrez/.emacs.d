@@ -741,16 +741,7 @@ Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explo
 
 #+begin_src emacs-lisp
 (use-package restclient
-  :ensure t
-  :mode "\\.rest$"
-  :config
-  (progn
-    ;; Add hook to override C-c C-c in this mode to stay in window
-    (add-hook 'restclient-mode-hook
-              '(lambda ()
-                 (local-set-key
-                  (kbd "C-c C-c")
-                  'restclient-http-send-current-stay-in-window)))))
+  :mode ("\\.http\\'" . restclient-mode))
 #+end_src
 
 
