@@ -554,11 +554,11 @@ Org template custom configurations
   '(
     ("t" "To-do task." 
      entry 
-     (file+headline org-default-notes-file "Tasks")
+     (file+headline org-default-notes-file "To-do tasks")
      "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
     ("w" "Work task." 
      entry 
-     (file+headline org-default-notes-file "Work Task")
+     (file+headline org-default-notes-file "Work tasks")
      "* TODO %?\n%u\n%a\n" 
      :clock-in t 
      :clock-resume t)
