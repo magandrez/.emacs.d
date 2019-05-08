@@ -14,3 +14,4 @@ elpa/
 .cache
 .projectile-*
 bookmarks
+transient/
