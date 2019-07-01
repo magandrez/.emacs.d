@@ -771,3 +771,22 @@ Magit is love for Emacs.
   (global-diff-hl-mode)
   (diff-hl-margin-mode))
 #+END_SRC
+
+
+** Company completion
+
+#+begin_src emacs-lisp
+(use-package company
+  :ensure t
+  :defer t
+  :init (global-company-mode)
+  :config
+  (progn
+    ;; Use Company for completion
+    (bind-key [remap completion-at-point] #'company-complete company-mode-map)
+
+    (setq company-tooltip-align-annotations t
+          ;; Easy navigation to candidates with M-<n>
+          company-show-numbers t)
+    (setq company-dabbrev-downcase nil)))
+#+end_src
