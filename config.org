@@ -45,29 +45,26 @@ Scrolling defaults.
               scroll-down-aggressively 0.01)
 #+END_SRC
 
-UTF-8 everywhere, because it is the standard.
+UTF-8 everywhere, because it is the standard and disable CJK
+coding/encoding (Chinese/Japanese/Korean characters).
 
 #+BEGIN_SRC emacs-lisp
-;; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
-(setq utf-translate-cjk-mode nil)
+(setq utf-translate-cjk-mode nil
+      default-file-name-coding-system 'utf-8
+      locale-coding-system 'utf-8
+      x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 (prefer-coding-system 'utf-8)
-(setq default-file-name-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment 'utf-8)
 (set-language-environment 'utf-8)
-(setq locale-coding-system 'utf-8)
 
 (if (boundp buffer-file-coding-system)
     (setq buffer-file-coding-system 'utf-8)
   (setq default-buffer-file-coding-system 'utf-8))
-
-;; Treat clipboard input as UTF-8 string first; compound text next, etc.
-(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 #+END_SRC
-
 
 ** Misc keybindings
 
@@ -80,7 +77,6 @@ Use `C-x C-0` to restore font size.
 (global-set-key (kbd "M-p") 'previous-multiframe-window) ; Cycle through frames
 #+END_SRC
 
-
 ** Theme
 
 Use monokai theme for Emacs.
@@ -90,8 +86,6 @@ Use monokai theme for Emacs.
   :init
   (load-theme 'monokai t))
 #+END_SRC
-
-
 
 ** OS X
 
@@ -129,7 +123,6 @@ The values can be 'control, 'alt, 'meta, 'super, 'hyper, nil (setting to nil all
    dired-use-ls-dired nil))                          ; macOS command ls doesn't support --dired option
 #+END_SRC
 
-
 ** Backups
 
 As default write backup files on ~/.emacs.d/backup and disables lock files, it gets messy on mounted network file systems like Keybase FS (https://keybase.io/).
@@ -144,11 +137,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
       create-lockfiles nil
       vc-follow-symlinks t)
 #+END_SRC
-
-
 * Languages / frameworks
-
-
 ** Docker
 
 #+BEGIN_SRC emacs-lisp
@@ -157,8 +146,6 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
   :mode "Dockerfile.test\\'")
 #+END_SRC
 
-
-
 ** HTML
 
 #+BEGIN_SRC emacs-lisp
@@ -166,8 +153,6 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
   :mode "\\.html\\'"
   :config (setq-default sgml-basic-offset 2))
 #+END_SRC
-
-
 
 ** Markdown
 
@@ -185,8 +170,6 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
    markdown-split-window-direction 'right))
 #+END_SRC
 
-
-
 ** YAML
 
 #+BEGIN_SRC emacs-lisp
@@ -194,8 +177,6 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
   :mode "\\.yml\\'"  
   :mode "\\.yaml\\'")
 #+END_SRC
-
-
 
 ** CSV
 
@@ -205,8 +186,6 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
   :init (setq csv-separators '("," ";" "|" " "))
   :config (use-package csv-nav))
 #+END_SRC
-
-
 
 ** Go
 
@@ -223,8 +202,6 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 
 (use-package go-add-tags)
 #+END_SRC
-
-
 
 ** Ruby
 
@@ -281,7 +258,6 @@ gem rdoc --all --ri --no-rdoc
 rvm docs generate all
 #+END_SRC
 
-
 *** Ruby REPL
 
 #+BEGIN_SRC emacs-lisp
@@ -292,7 +268,6 @@ rvm docs generate all
 
 #+END_SRC
 
-
 *** Ruby tests
 
 Uses [[http://rspec.info/][RSpec]] which is the defacto test suite for Ruby development.
@@ -301,7 +276,6 @@ Uses [[http://rspec.info/][RSpec]] which is the defacto test suite for Ruby deve
 (use-package rspec-mode
   :after enh-ruby-mode)
 #+END_SRC
-
 
 *** Ruby environment manager
 
@@ -314,8 +288,6 @@ Uses [[https://rvm.io/][RVM]] to manage gems.
   (rvm-use-default))
 #+END_SRC
 
-
-
 ** Cucumber
 
 Use [[https://cucumber.io/][Cucumber]] for BDD
@@ -326,8 +298,6 @@ Use [[https://cucumber.io/][Cucumber]] for BDD
   :config
   (setq feature-default-language "en"))
 #+END_SRC
-
-
 
 * Features
 
@@ -342,10 +312,6 @@ Use [[https://cucumber.io/][Cucumber]] for BDD
   (setq which-key-idle-delay 0.25))
 #+END_SRC
 
-
-
-
-
 ** Ace
 
 Use ace-window to cycle through windows
@@ -355,10 +321,6 @@ Use ace-window to cycle through windows
   :config
   :bind* ("M-o" . ace-window))
 #+END_SRC
-
-
-
-
 
 ** Ibuffer
 
@@ -389,8 +351,6 @@ Use ace-window to cycle through windows
     (ibuffer-switch-to-saved-filter-groups "default")))
 #+END_SRC
 
-
-
 ** Encryption
 
 EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/EasyPG]])
@@ -407,18 +367,19 @@ EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/Easy
   (pinentry-start))
 #+END_SRC
 
-
-
-
 ** Misc
+
+Greek letters should look greek; reload files when change, please;
+highlight matching parenthesis; global Cmd-c, Cmd-x to copy & paste;
+native line numbers
 
 #+BEGIN_SRC emacs-lisp
 (dolist (mode
-  '(global-prettify-symbols-mode        ; Greek letters should look greek
-    global-auto-revert-mode             ; Reload files when change, please
-    show-paren-mode                     ; Highlight matching parentheses
-    cua-mode                            ; Global Cmd-c, Cmd-x to copy & paste
-    global-display-line-numbers-mode    ; Native line numbers
+  '(global-prettify-symbols-mode
+    global-auto-revert-mode
+    show-paren-mode
+    cua-mode
+    global-display-line-numbers-mode
     ))
   (funcall mode 1))
 #+END_SRC
@@ -433,8 +394,6 @@ Filters marked packages from Packages buffer.
 (define-key package-menu-mode-map "a" #'package-menu-find-marks)
 #+end_src
 
-
-
 ** Tramp mode
 
 Use tramp to shell into other machines.
@@ -444,10 +403,6 @@ Use tramp to shell into other machines.
   :config
   (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "/etc/ssh_config") (tramp-parse-sconfig "~/.ssh/config"))))
 #+END_SRC
-
-
-
-
 
 ** Smart parens
 
@@ -459,10 +414,6 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
   :init
     (add-hook 'enh-ruby-mode-hook 'smartparens-strict-mode))
 #+END_SRC
-
-
-
-
 
 ** Org
 
@@ -579,11 +530,11 @@ Meeting note taking (source: [[https://github.com/howardabrams/dot-files/][Howar
   "Call this after creating an org-mode heading for where the notes for the meeting
 should be. After calling this function, call 'meeting-done' to reset the environment."
   (interactive)
-  (outline-mark-subtree)                              ;; Select org-mode section
-  (narrow-to-region (region-beginning) (region-end))  ;; Only show that region
+  (outline-mark-subtree)
+  (narrow-to-region (region-beginning) (region-end))
   (deactivate-mark)
-  (delete-other-windows)                              ;; Get rid of other windows
-  (text-scale-set 2)                                  ;; Text is now readable by others
+  (delete-other-windows)
+  (text-scale-set 2)
   (fringe-mode 0)
   (message "When finished taking your notes, run meeting-done."))
 #+END_SRC
@@ -592,10 +543,10 @@ should be. After calling this function, call 'meeting-done' to reset the environ
 (defun meeting-done ()
   "Attempt to 'undo' the effects of taking meeting notes."
   (interactive)
-  (widen)                                       ;; Opposite of narrow-to-region
-  (text-scale-set 0)                            ;; Reset the font size increase
+  (widen)
+  (text-scale-set 0)
   (fringe-mode 1)
-  (winner-undo))                                ;; Put the windows back in place
+  (winner-undo))
 #+END_SRC
 
 Bullets!
@@ -614,9 +565,9 @@ Calendar modifications (Finnish calendar, etc)
   :after org
   :config
   (setq calendar-date-style 'european
-        calendar-latitude 60.1     ; Roughly Helsinki
-        calendar-longitude 24.9    ; Roughly Helsinki
-        calendar-week-start-day 1  ; Weeks start on Monday
+        calendar-latitude 60.1
+        calendar-longitude 24.9
+        calendar-week-start-day 1
         calendar-today-visible-hook 'calendar-mark-today
         calendar-holidays suomalainen-kalenteri
         org-agenda-include-diary t))
@@ -650,10 +601,7 @@ Using org habits to track repeating tasks.
       org-habit-show-habits t)
 #+end_src
 
-
-
 ** Projectile
-
 
 Use Projectile for jumping around code, etc.
 
@@ -679,17 +627,11 @@ Use Projectile for jumping around code, etc.
    (add-hook 'org-mode-hook (lambda () (projectile-mode -1))))
 #+END_SRC
 
-
-
 ** Highlight
 
 #+BEGIN_SRC emacs-lisp
 (use-package highlight)
 #+END_SRC
-
-
-
-
 
 ** Treemacs
 
@@ -721,8 +663,6 @@ Use Projectile for jumping around code, etc.
   (("C-c o p" . treemacs-projectile)))
 #+END_SRC
 
-
-
 ** Yafolding
 
 #+BEGIN_SRC emacs-lisp
@@ -734,7 +674,6 @@ Use Projectile for jumping around code, etc.
   ("M-m" . yafolding-toggle-all)))
 #+END_SRC
 
-
 ** Restclient
 
 Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explore APIs
@@ -743,8 +682,6 @@ Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explo
 (use-package restclient
   :mode ("\\.http\\'" . restclient-mode))
 #+end_src
-
-
 
 ** Magit
 
@@ -761,7 +698,6 @@ Magit is love for Emacs.
    magit-section-show-child-count t))
 #+END_SRC
 
-
 ** Diff-hl
 
 #+BEGIN_SRC emacs-lisp
@@ -771,7 +707,6 @@ Magit is love for Emacs.
   (global-diff-hl-mode)
   (diff-hl-margin-mode))
 #+END_SRC
-
 
 ** Company completion
 
