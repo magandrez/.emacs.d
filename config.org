@@ -299,6 +299,24 @@ Use [[https://cucumber.io/][Cucumber]] for BDD
   (setq feature-default-language "en"))
 #+END_SRC
 
+** Erlang
+Using standard erlang.el
+
+#+begin_src emacs-lisp
+(use-package erlang
+  :init
+  (add-to-list 'auto-mode-alist '("\\.P\\'" . erlang-mode))
+  (add-to-list 'auto-mode-alist '("\\.E\\'" . erlang-mode))
+  (add-to-list 'auto-mode-alist '("\\.S\\'" . erlang-mode))
+  (add-to-list 'auto-mode-alist '("\\.erl?$" . erlang-mode))
+      :config
+  (add-hook 'erlang-mode-hook
+            (lambda ()
+              (setq mode-name "erlang"
+                    erlang-compile-extra-opts '((i . "../include"))
+                    erlang-root-dir "/usr/local/lib/erlang"))))
+#+end_src
+
 * Features
 
 ** Which-key
