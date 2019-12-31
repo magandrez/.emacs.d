@@ -77,6 +77,11 @@ Use `C-x C-0` to restore font size.
 (global-set-key (kbd "M-p") 'previous-multiframe-window) ; Cycle through frames
 #+END_SRC
 
+Set C-x C-m as a sequence for M-x. And the "backup" C-c C-m for misstyping.
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-x C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c C-m") 'execute-extended-command)
+#+end_src
 ** Theme
 
 Use monokai theme for Emacs.
