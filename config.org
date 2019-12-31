@@ -573,12 +573,6 @@ Calendar modifications (Finnish calendar, etc)
         org-agenda-include-diary t))
 #+END_SRC
 
-I want my <s TAB expansions back!.
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'org-modules 'org-tempo)
-#+END_SRC
-
 Some org-agenda specific configs.
 
 #+BEGIN_SRC emacs-lisp
