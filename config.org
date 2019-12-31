@@ -99,6 +99,14 @@ Use monokai theme for Emacs.
   (load-theme 'monokai t))
 #+END_SRC
 
+Stronger highlight for search results. Selected
+by listing the faces (M-x list-faces-display, and then
+searching for 'lazy-highlight', which corresponds to the
+search results for a given ISearch.
+#+begin_src emacs-lisp
+(custom-set-faces
+ '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
+#+end_src
 ** OS X
 
 Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] when loading Emacs outside the console.
