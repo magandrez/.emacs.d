@@ -78,9 +78,16 @@ Use `C-x C-0` to restore font size.
 #+END_SRC
 
 Set C-x C-m as a sequence for M-x. And the "backup" C-c C-m for misstyping.
+
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
+#+end_src
+
+Kill word tied to C-i
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-i") 'backward-kill-word)
 #+end_src
 ** Theme
 
