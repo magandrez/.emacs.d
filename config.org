@@ -730,21 +730,6 @@ Magit is love for Emacs.
    magit-section-show-child-count t))
 #+END_SRC
 
-** Diff-hl
-
-#+BEGIN_SRC emacs-lisp
-(use-package diff-hl
-  :ensure t
-  :config
-  (add-hook 'prog-mode-hook #'diff-hl-mode)
-  (add-hook 'org-mode-hook #'diff-hl-mode)
-  (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
-  (unless (display-graphic-p) (diff-hl-margin-mode))
-  (setq diff-hl-fringe-bmp-function 'diff-hl-fringe-bmp-from-type)
-  (diff-hl-margin-mode)
-  (setq diff-hl-margin-side 'right))
-#+END_SRC
-
 ** Company completion
 
 #+begin_src emacs-lisp
