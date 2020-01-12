@@ -458,11 +458,11 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
 Adding org files for agenda
 
 #+BEGIN_SRC emacs-lisp
-(setq org-directory "/keybase/private/spavi/org/")
+(setq org-directory "/Volumes/Keybase/private/spavi/org/")
 (require 'find-lisp)
 (setq org-agenda-files
       (find-lisp-find-files org-directory "\.org.gpg$"))
-(setq org-default-notes-file "/keybase/private/spavi/org/refile.org.gpg")
+(setq org-default-notes-file "/Volumes/Keybase/private/spavi/org/refile.org.gpg")
 #+END_SRC
 
 The thick of it
@@ -533,7 +533,7 @@ Org journaling
   :config
   (setq org-journal-date-format "%A, %d.%m.%Y"
         org-journal-file-format "%Y%m%d"
-        org-journal-dir "/keybase/private/spavi/org/diary/"))
+        org-journal-dir "/Volumes/Keybase/private/spavi/org/diary/"))
 #+END_SRC
 
 Org template custom configurations
