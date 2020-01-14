@@ -262,44 +262,6 @@ C-M-a / C-M-e
 )
 #+END_SRC
 
-
-*** Ruby documentation
-
-Uses [[https://www.emacswiki.org/emacs/YARI][YARI]] to display Ruby documentation.
-
-#+BEGIN_SRC emacs-lisp
-(use-package yari
-  :after enh-ruby-mode
-  :init
-  (add-hook 'enh-ruby-mode-hook (lambda () (local-set-key [f1] 'yari))))
-#+END_SRC
-
-Use F1 when placing the point on some function. To generate the documentation
-
-#+BEGIN_SRC
-gem rdoc --all --ri --no-rdoc
-rvm docs generate all
-#+END_SRC
-
-*** Ruby REPL
-
-#+BEGIN_SRC emacs-lisp
-(use-package inf-ruby
-  :after enh-ruby-mode
-  :init
-  (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode))
-
-#+END_SRC
-
-*** Ruby tests
-
-Uses [[http://rspec.info/][RSpec]] which is the defacto test suite for Ruby development.
-
-#+BEGIN_SRC emacs-lisp
-(use-package rspec-mode
-  :after enh-ruby-mode)
-#+END_SRC
-
 *** Ruby environment manager
 
 Uses [[https://rvm.io/][RVM]] to manage gems.
