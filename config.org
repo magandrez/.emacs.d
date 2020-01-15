@@ -92,6 +92,11 @@ Bind backward-kill-word to C-w
 (global-set-key (kbd "C-c C-k") 'kill-region)
 #+end_src
 
+Moving things up and down (related defuns under a different heading)
+#+begin_src emacs-lisp
+(global-set-key [(control shift up)]  'move-line-up)
+(global-set-key [(control shift down)]  'move-line-down)
+#+end_src
 ** Theme
 
 Use monokai theme for Emacs.
@@ -395,6 +400,32 @@ Filters marked packages from Packages buffer.
   (interactive)
   (occur "^[A-Z]"))
 (define-key package-menu-mode-map "a" #'package-menu-find-marks)
+#+end_src
+
+Reloads Emacs config without having to restart the service.
+
+#+begin_src emacs-lisp
+(defun emacs-reload ()
+  "Reload emacs config"
+  (interactive)
+  (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
+#+end_src
+
+#+begin_src emacs-lisp
+(defun move-line-up ()
+  "Move up the current line."
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2)
+  (indent-according-to-mode))
+
+(defun move-line-down ()
+  "Move down the current line."
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1)
+  (indent-according-to-mode))
 #+end_src
 
 ** Tramp mode
