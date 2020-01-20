@@ -757,3 +757,12 @@ Magit is love for Emacs.
           company-show-numbers t)
     (setq company-dabbrev-downcase nil)))
 #+end_src
+** Flycheck
+
+On-the-fly syntax checking
+
+#+begin_src emacs-lisp
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+#+end_src
