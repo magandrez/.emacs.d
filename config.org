@@ -285,6 +285,15 @@ Uses [[https://rvm.io/][RVM]] to manage gems.
   (rvm-use-default))
 #+END_SRC
 
+*** Rubocop
+
+Rubocop for all things Ruby
+
+#+begin_src emacs-lisp
+(use-package rubocop
+  :hook (enh-ruby-mode . rubocop-mode))
+#+end_src
+
 ** Cucumber
 
 Use [[https://cucumber.io/][Cucumber]] for BDD
@@ -739,7 +748,8 @@ Magit is love for Emacs.
 (use-package company
   :ensure t
   :defer t
-  :init (global-company-mode)
+  :init
+  (global-company-mode t)
   :config
   (progn
     (bind-key [remap completion-at-point] #'company-complete company-mode-map)
