@@ -166,6 +166,13 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
       vc-follow-symlinks t)
 #+END_SRC
 * Languages / frameworks
+
+** Dot
+
+#+begin_src emacs-lisp
+(use-package dot-mode
+  :mode "\\.dot$")
+#+end_src
 ** Docker
 
 #+BEGIN_SRC emacs-lisp
