@@ -240,15 +240,8 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 
 ** Ruby
 
-Keystrokes to remember:
-
-C-M-p / C-M-n
-    Moves to the beginning / end of a block.
-C-M-a / C-M-e
-    Moves to the beginning / end of a function.
-
 #+BEGIN_SRC emacs-lisp
-(use-package enh-ruby-mode
+(use-package ruby-mode
   :mode "\\.rb\\'"
   :mode "\\.rake\\'"
   :mode "\\.ru\\'"
@@ -256,31 +249,19 @@ C-M-a / C-M-e
   :mode "Rakefile\\'"
   :mode "Capfile\\'" 
   :mode "\\.gemspec\\'"
-  :config
-  (setq enh-ruby-add-encoding-comment-on-save nil
-        enh-ruby-deep-indent-paren nil
-        enh-ruby-hanging-brace-indent-level 2
-        enh-ruby-use-encoding-map nil
-        rspec-autosave-buffer t
-        rspec-compilation-buffer-name "*rspec-compilation*"
-        rspec-use-opts-file-when-available nil
-        rspec-use-rake-flag nil
-        ruby-deep-arglist nil
-        ruby-deep-indent-paren nil
-        ruby-end-insert-newline nil
-        ruby-insert-encoding-magic-comment nil
-        ruby-indent-level 2
-        ruby-indent-tabs-mode nil)
-)
+  :init
+  (setq ruby-insert-encoding-magic-comment nil
+        ruby-indent-tabs-mode nil
+        ruby-mode-hook 2))
 #+END_SRC
 
-*** Ruby environment manager
+*** Ruby environment managqer
 
 Uses [[https://rvm.io/][RVM]] to manage gems.
 
 #+BEGIN_SRC emacs-lisp
 (use-package rvm
-  :after enh-ruby-mode
+  :ensure t
   :config
   (rvm-use-default))
 #+END_SRC
@@ -291,7 +272,7 @@ Rubocop for all things Ruby
 
 #+begin_src emacs-lisp
 (use-package rubocop
-  :hook (enh-ruby-mode . rubocop-mode))
+  :hook (ruby-mode-hook . rubocop-mode))
 #+end_src
 
 ** Cucumber
@@ -462,7 +443,7 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
 (use-package smartparens
   :ensure t
   :init
-    (add-hook 'enh-ruby-mode-hook 'smartparens-strict-mode))
+    (add-hook 'ruby-mode-hook 'smartparens-strict-mode))
 #+END_SRC
 
 ** Org
@@ -712,7 +693,7 @@ Use Projectile for jumping around code, etc.
 #+BEGIN_SRC emacs-lisp
 (use-package yafolding
   :init
-  (add-hook 'enh-ruby-mode-hook 'yafolding-mode)
+  (add-hook 'ruby-mode-hook 'yafolding-mode)
   :bind
   (("M-n" . yafolding-toggle-element)
   ("M-m" . yafolding-toggle-all)))
