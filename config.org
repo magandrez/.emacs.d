@@ -745,5 +745,8 @@ On-the-fly syntax checking
 #+begin_src emacs-lisp
 (use-package flycheck
   :ensure t
-  :init (global-flycheck-mode))
+  :init (global-flycheck-mode)
+  :config
+  (setq flycheck-check-syntax-automatically '(save mode-enable)))
+
 #+end_src
