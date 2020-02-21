@@ -626,6 +626,12 @@ Using org habits to track repeating tasks.
       org-habit-show-habits t)
 #+end_src
 
+Make code blocks the old way with `<s TAB`
+
+#+begin_src emacs-lisp
+(require 'org-tempo)
+#+end_src
+
 ** Projectile
 
 Use Projectile for jumping around code, etc.
