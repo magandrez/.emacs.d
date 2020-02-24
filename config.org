@@ -474,11 +474,6 @@ The thick of it
           org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
           org-refile-use-outline-path t
           org-outline-path-complete-in-steps nil
-          org-completion-use-ido t
-          ido-everywhere t
-          ido-max-directory-size 100000
-          ido-default-file-method 'selected-window
-          ido-default-buffer-method 'selected-window
           org-indirect-buffer-display 'current-window
           org-fast-tag-selection-include-todo t
           org-use-fast-todo-selection t
@@ -651,7 +646,7 @@ Use Projectile for jumping around code, etc.
    projectile-indexing-method 'alien
    projectile-globally-ignored-modes '("org-mode" "org-agenda-mode")
    projectile-globally-ignored-file-suffixes '(".gpg")
-   projectile-completion-system 'ido
+   projectile-completion-system 'ivy
    projectile-enable-caching t
    projectile-mode-line '(:eval (projectile-project-name)))
    (add-hook 'org-agenda-mode-hook (lambda () (projectile-mode -1)))
@@ -755,4 +750,52 @@ On-the-fly syntax checking
   :config
   (setq flycheck-check-syntax-automatically '(save mode-enable)))
 
+#+end_src
+** Ivy + Swiper + Counsel
+
+Ivy basics
+
+#+begin_src emacs-lisp
+(use-package ivy
+  :ensure t
+  :init (ivy-mode 1)
+  :config
+  (setq ivy-use-virtual-buffers t
+        enable-recursive-minibuffers t
+        ivy-count-format "(%d/%d) "))
+#+end_src
+
+Beautiful ivy
+
+#+begin_src emacs-lisp
+(use-package ivy-rich
+  :after ivy
+  :custom
+  (ivy-virtual-abbreviate 'full
+                          ivy-rich-switch-buffer-align-virtual-buffer t
+                          ivy-rich-path-style 'abbrev)
+  :config
+  (ivy-set-display-transformer 'ivy-switch-buffer
+                               'ivy-rich-switch-buffer-transformer))
+#+end_src
+
+Swiper basics
+
+#+begin_src emacs-lisp
+(use-package swiper
+  :ensure t
+  :after ivy
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper)))
+#+end_src
+
+Counsel basics
+
+#+begin_src emacs-lisp
+(use-package counsel
+  :ensure t
+  :after ivy
+  :config (counsel-mode)
+  :bind (("C-c g" . counsel-git)
+         ("C-c j" . counsel-git-grep)))
 #+end_src
