@@ -216,10 +216,11 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 ** CSV
 
 #+BEGIN_SRC emacs-lisp
-(use-package csv-mode
-  :mode "\\.[Cc][Ss][Vv]\\'"
-  :init (setq csv-separators '("," ";" "|" " "))
-  :config (use-package csv-nav))
+(when (eq system-type 'darwin)
+  (use-package csv-mode
+    :mode "\\.[Cc][Ss][Vv]\\'"
+    :init (setq csv-separators '("," ";" "|" " "))
+    :config (use-package csv-nav)))
 #+END_SRC
 
 ** Go
@@ -367,9 +368,10 @@ EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/Easy
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-(use-package pinentry
+(when (eq system-type 'darwin)
+  (use-package pinentry
   :config
-  (pinentry-start))
+  (pinentry-start)))
 #+END_SRC
 
 ** Misc
