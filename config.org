@@ -173,6 +173,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 (use-package dot-mode
   :mode "\\.dot$")
 #+end_src
+
 ** Docker
 
 #+BEGIN_SRC emacs-lisp
@@ -288,6 +289,7 @@ Use [[https://cucumber.io/][Cucumber]] for BDD
 #+END_SRC
 
 ** Erlang
+
 Using standard erlang.el
 
 #+begin_src emacs-lisp
@@ -297,7 +299,7 @@ Using standard erlang.el
   (add-to-list 'auto-mode-alist '("\\.E\\'" . erlang-mode))
   (add-to-list 'auto-mode-alist '("\\.S\\'" . erlang-mode))
   (add-to-list 'auto-mode-alist '("\\.erl?$" . erlang-mode))
-      :config
+  :config
   (add-hook 'erlang-mode-hook
             (lambda ()
               (setq mode-name "erlang"
@@ -305,8 +307,39 @@ Using standard erlang.el
                     erlang-root-dir "/usr/local/lib/erlang"))))
 #+end_src
 
-* Features
+** Clojure
 
+Minimal setup to begin with, clojure-mode.
+
+#+begin_src emacs-lisp
+(use-package clojure-mode
+  :ensure t
+  :mode (("\\.clj\\'" . clojure-mode)
+         ("\\.edn\\'" . clojure-mode))
+  :init
+  (add-hook 'clojure-mode-hook #'subword-mode)
+  (add-hook 'clojure-mode-hook #'smartparens-mode)
+  (add-hook 'clojure-mode-hook #'eldoc-mode))
+#+end_src
+
+Now [[https://github.com/clojure-emacs/cider][CIDER]]. Another creation from bbatsov :+1:
+
+#+begin_src emacs-lisp
+(use-package cider
+  :ensure t
+  :defer t
+  :config
+    (setq nrepl-log-messages t
+          cider-repl-display-in-current-window t
+          cider-repl-use-clojure-font-lock t
+          cider-prompt-save-file-on-load 'always-save
+          cider-font-lock-dynamically '(macro core function var)
+          nrepl-hide-special-buffers t
+          cider-overlays-use-font-lock t)
+    (cider-repl-toggle-pretty-printing))
+#+end_src
+
+* Features
 ** Which-key
 
 #+BEGIN_SRC emacs-lisp
