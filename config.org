@@ -93,10 +93,46 @@ Bind backward-kill-word to C-w
 #+end_src
 
 Moving things up and down (related defuns under a different heading)
+
 #+begin_src emacs-lisp
 (global-set-key [(control shift up)]  'move-line-up)
 (global-set-key [(control shift down)]  'move-line-down)
 #+end_src
+
+Global Copy & Paste in Unix
+
+#+begin_src emacs-lisp
+  ;; Copy to clipboard
+  (defun copy-to-clipboard ()
+    "Copies selection to x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (message "Yanked region to x-clipboard!")
+          (call-interactively 'clipboard-kill-ring-save)
+          )
+      (if (region-active-p)
+          (progn
+            (shell-command-on-region (region-beginning) (region-end) "xsel -i -b")
+            (message "Yanked region to clipboard!")
+            (deactivate-mark))
+        (message "No region active; can't yank to clipboard!")))
+    )
+
+  ;; Paste from clipboard
+  (defun paste-from-clipboard ()
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (clipboard-yank)
+          (message "graphics active")
+          )
+      (insert (shell-command-to-string "xsel -o -b"))
+      )
+    )
+#+end_src
+
+
 ** Theme
 
 Use monokai theme for Emacs.
