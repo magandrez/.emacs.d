@@ -11,6 +11,7 @@ Remove all the stuff I don't use.
 (customize-set-variable 'horizontal-scroll-bar-mode nil)
 (customize-set-variable 'blink-cursor-mode nil)
 (customize-set-variable 'tool-bar-mode nil)
+(customize-set-variable 'menu-bar-mode nil)
 #+END_SRC
 
 Yes or no: y-or-n
