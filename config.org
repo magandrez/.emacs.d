@@ -133,7 +133,6 @@ Global Copy & Paste in Unix
     )
 #+end_src
 
-
 ** Theme
 
 Use monokai theme for Emacs.
@@ -152,6 +151,7 @@ search results for a given ISearch.
 (custom-set-faces
  '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
 #+end_src
+
 ** OS X
 
 Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] when loading Emacs outside the console.
@@ -202,6 +202,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
       create-lockfiles nil
       vc-follow-symlinks t)
 #+END_SRC
+
 * Languages / frameworks
 
 ** Dot
@@ -816,6 +817,7 @@ Magit is love for Emacs.
           company-show-numbers t)
     (setq company-dabbrev-downcase nil)))
 #+end_src
+
 ** Flycheck
 
 On-the-fly syntax checking
@@ -828,6 +830,7 @@ On-the-fly syntax checking
   (setq flycheck-check-syntax-automatically '(save mode-enable)))
 
 #+end_src
+
 ** Ivy + Swiper + Counsel
 
 Ivy basics
