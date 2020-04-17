@@ -7,13 +7,20 @@ This is an emacs configuration written as Org file(s). Literate configs are a si
 Remove all the stuff I don't use.
 
 #+BEGIN_SRC emacs-lisp
-(customize-set-variable 'scroll-bar-mode nil)
-(customize-set-variable 'horizontal-scroll-bar-mode nil)
-(customize-set-variable 'blink-cursor-mode nil)
-(customize-set-variable 'tool-bar-mode nil)
-(customize-set-variable 'menu-bar-mode nil)
+(custom-set-variables
+ '(scroll-bar-mode nil)
+ '(horizontal-scroll-bar-mode nil)
+ '(blink-cursor-mode nil)
+ '(tool-bar-mode nil)
+ '(menu-bar-mode nil))
 #+END_SRC
 
+Custom faces
+#+begin_src emacs-lisp
+(custom-set-faces
+ '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
+
+#+end_src
 Yes or no: y-or-n
 
 #+BEGIN_SRC emacs-lisp
@@ -24,15 +31,15 @@ Some miscelaneous defaults.
 #+BEGIN_SRC emacs-lisp
 (setq-default inhibit-startup-screen t
               initial-scratch-message ""
-	      	  visible-bell nil                               ; No shaking
-	          confirm-nonexistent-file-or-buffer nil         ; Remove confirm dialog on new buffers
-	          show-paren-delay 0                             ; No delay when showing matching parenthesis
-	          confirm-kill-emacs 'y-or-n-p                   ; Confirm exiting Emacs
-	          display-time-default-load-average nil          ; Don't display load average
-	          indent-tabs-mode nil                           ; No tabs for indentation
-	          select-enable-clipboard t                      ; Unite Emacs & system clipboard
-	          window-combination-resize t                    ; Create new windows proportionally
-	          use-package-always-ensure t)                    ; Install packages if not found on the system
+	      visible-bell nil                               ; No shaking
+	      confirm-nonexistent-file-or-buffer nil         ; Remove confirm dialog on new buffers
+	      show-paren-delay 0                             ; No delay when showing matching parenthesis
+	      confirm-kill-emacs 'y-or-n-p                   ; Confirm exiting Emacs
+	      display-time-default-load-average nil          ; Don't display load average
+	      indent-tabs-mode nil                           ; No tabs for indentation
+	      select-enable-clipboard t                      ; Unite Emacs & system clipboard
+	      window-combination-resize t                    ; Create new windows proportionally
+	      use-package-always-ensure t)                    ; Install packages if not found on the system
 #+END_SRC
 
 Scrolling defaults.
@@ -202,6 +209,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
       create-lockfiles nil
       vc-follow-symlinks t)
 #+END_SRC
+
 
 * Languages / frameworks
 
@@ -377,7 +385,9 @@ Now [[https://github.com/clojure-emacs/cider][CIDER]]. Another creation from bba
     (cider-repl-toggle-pretty-printing))
 #+end_src
 
+
 * Features
+
 ** Which-key
 
 #+BEGIN_SRC emacs-lisp
@@ -641,9 +651,7 @@ should be. After calling this function, call 'meeting-done' to reset the environ
   (text-scale-set 2)
   (fringe-mode 0)
   (message "When finished taking your notes, run meeting-done."))
-#+END_SRC
 
-#+BEGIN_SRC emacs-lisp
 (defun meeting-done ()
   "Attempt to 'undo' the effects of taking meeting notes."
   (interactive)
@@ -705,6 +713,7 @@ Make code blocks the old way with `<s TAB`
 #+end_src
 
 Setup Google Calendar integration
+
 #+begin_src emacs-lisp
 (setq package-check-signature nil)
 
