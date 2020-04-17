@@ -673,8 +673,7 @@ Calendar modifications (Finnish calendar, etc)
         calendar-longitude 24.9
         calendar-week-start-day 1
         calendar-today-visible-hook 'calendar-mark-today
-        calendar-holidays suomalainen-kalenteri
-        org-agenda-include-diary t))
+        calendar-holidays suomalainen-kalenteri))
 #+END_SRC
 
 Some org-agenda specific configs.
@@ -705,6 +704,29 @@ Make code blocks the old way with `<s TAB`
 (require 'org-tempo)
 #+end_src
 
+Setup Google Calendar integration
+#+begin_src emacs-lisp
+(setq package-check-signature nil)
+
+(require 'json)
+(defun get-gcal-config-value (key)
+  "Return the value of the json file gcal_secret for key"
+  (cdr (assoc key (json-read-file "~/.emacs.d/org-gcal/gcal.json"))))
+
+(use-package org-gcal
+  :ensure t
+  :config
+  (if (eq system-type 'darwin)
+      (setq org-gcal-file-alist '(("manuel@compensate.com" . "/Volumes/Keybase/private/spavi/org/schedule.org.gpg")))
+    (setq org-gcal-file-alist '(("manuel@compensate.com" . "/keybase/private/spavi/org/schedule.org.gpg"))))
+  (setq org-gcal-client-id (get-gcal-config-value 'org-gcal-client-id)
+        org-gcal-client-secret (get-gcal-config-value 'org-gcal-client-secret)))
+(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+
+(custom-set-variables
+ '(org-gcal-down-days 10)
+ '(org-gcal-up-days 10))
+#+end_src
 ** Projectile
 
 Use Projectile for jumping around code, etc.

@@ -4,7 +4,8 @@ auto-save-list/*
 *~
 backup/*
 ido.last
-org-gcal/.org-gcal-token
+org-gcal/*
+request/*
 .org-id-locations
 tramp
 elpa/
