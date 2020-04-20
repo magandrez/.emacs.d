@@ -734,6 +734,20 @@ Setup Google Calendar integration
  '(org-gcal-down-days 10)
  '(org-gcal-up-days 10))
 #+end_src
+
+Org-babel languages to interpret in Org code blocks (by default, only
+Lisp is understood).
+
+Ditaa is a nice (Java) tool to generate images from ASCII. More info:
+https://github.com/stathissideris/ditaa
+
+#+begin_src emacs-lisp
+(org-babel-do-load-languages 'org-babel-load-languages '(
+                                                         (python . t) 
+                                                         (ditaa . t)))
+(setq org-ditaa-jar-path "/usr/bin/ditaa")
+#+end_src
+
 ** Projectile
 
 Use Projectile for jumping around code, etc.
