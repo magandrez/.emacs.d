@@ -74,6 +74,12 @@ coding/encoding (Chinese/Japanese/Korean characters).
   (setq default-buffer-file-coding-system 'utf-8))
 #+END_SRC
 
+Default shell
+
+#+begin_src emacs-lisp
+(setq-default explicit-shell-file-name "/usr/bin/zsh")
+#+end_src
+
 ** Misc keybindings
 
 Use `C-x C-0` to restore font size.
