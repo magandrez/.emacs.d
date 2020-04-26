@@ -279,6 +279,9 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 
 ** Go
 
+Golang setup. Autocompletion et al provided by LSP (see related config
+block).
+
 #+BEGIN_SRC emacs-lisp
   (use-package go-mode
     :mode "\\.go\\'"
@@ -391,6 +394,10 @@ Now [[https://github.com/clojure-emacs/cider][CIDER]]. Another creation from bba
     (cider-repl-toggle-pretty-printing))
 #+end_src
 
+Autocompletion and documentation support provided by LSP (see related
+config block).
+
+Note: for LSP integration to work, installing [[https://github.com/snoe/clojure-lsp][clojure-lsp]] is a requirement.
 
 * Features
 
@@ -852,6 +859,11 @@ Magit is love for Emacs.
 #+END_SRC
 
 ** LSP
+
+The Language Server Protocol is becoming a standard, and it rocks.
+
+Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
+
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :ensure t
@@ -861,12 +873,16 @@ Magit is love for Emacs.
     (setq lsp-gopls-staticcheck t)
     (setq lsp-eldoc-render-all t)
     (setq lsp-gopls-complete-unimported t)
+    (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
-           (go-mode . lsp-deferred)))
+           (go-mode . lsp-deferred)
+           (clojure-mode . lsp-deferred)
+           (clojurec-mode . lsp-deferred)
+           (clojurescript-mode . lsp-deferred)))
 
-(use-package company-lsp
-  :ensure t
-  :config (push 'company-lsp company-backends))
+  (use-package company-lsp
+    :ensure t
+    :config (push 'company-lsp company-backends))
 
   (use-package lsp-ui
     :ensure t
