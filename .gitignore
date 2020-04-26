@@ -18,3 +18,4 @@ bookmarks
 transient/
 network-security.data
 *.eld
+.lsp-*
