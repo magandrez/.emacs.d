@@ -538,8 +538,8 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
   :ensure t
-  :init
-    (add-hook 'ruby-mode-hook 'smartparens-strict-mode))
+  :hook
+    ((ruby-mode go-mode) . smartparens-strict-mode))
 #+END_SRC
 
 ** Org
