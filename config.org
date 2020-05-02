@@ -399,6 +399,7 @@ config block).
 
 Note: for LSP integration to work, installing [[https://github.com/snoe/clojure-lsp][clojure-lsp]] is a requirement.
 
+
 * Features
 
 ** Which-key
@@ -850,6 +851,7 @@ Magit is love for Emacs.
 #+BEGIN_SRC emacs-lisp
 (use-package magit
   :config
+    (setq magit-log-arguments '("-n256" "--graph" "--decorate" "--color"))
   :bind (("C-x g" . magit-status))
   :init
   (setq-default
