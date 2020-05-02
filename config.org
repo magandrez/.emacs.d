@@ -869,16 +869,20 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
     :ensure t
     :commands (lsp lsp-deferred)
     :config
-    (setq lsp-keymap-prefix "C-l")
-    (setq lsp-gopls-staticcheck t)
-    (setq lsp-eldoc-render-all t)
-    (setq lsp-gopls-complete-unimported t)
+    (setq lsp-keymap-prefix "C-l"
+          lsp-gopls-staticcheck t
+          lsp-eldoc-render-all nil
+          lsp-gopls-complete-unimported t
+          lsp-inhibit-message t
+          lsp-enable-file-watchers nil
+          ;; Performance tweaks
+          ;; https://github.com/emacs-lsp/lsp-mode#performance
+          gc-cons-threshold 100000000
+          read-process-output-max (* 1024 1024)
+          lsp-idle-delay 0.25)
     (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
-           (go-mode . lsp-deferred)
-           (clojure-mode . lsp-deferred)
-           (clojurec-mode . lsp-deferred)
-           (clojurescript-mode . lsp-deferred)))
+           ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)))
 
   (use-package company-lsp
     :ensure t
@@ -887,8 +891,10 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
   (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode
-    :init)
+    :config
+      (setq lsp-ui-doc-delay 5.0))
 #+end_src
+
 ** Company completion
 
 #+begin_src emacs-lisp
