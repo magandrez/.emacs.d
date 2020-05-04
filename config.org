@@ -601,7 +601,7 @@ The thick of it
                               (sequence "INACTIVE(i@/!)" "|" "CANCELLED(c@/!)"))
           org-todo-keyword-faces
           '(("TODO" :foreground "red" :weight bold)
-            ("PROGRESSING" :foreground "blue" :weight bold)
+            ("PROGRESSING" :foreground "deep sky blue" :weight bold)
             ("DONE" :foreground "forest green" :weight bold)
             ("INACTIVE" :foreground "magenta" :weight bold)
             ("CANCELLED" :foreground "brown" :weight bold)))
