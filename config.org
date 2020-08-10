@@ -410,7 +410,7 @@ Note: for LSP integration to work, installing [[https://github.com/snoe/clojure-
   (add-hook 'after-init-hook 'which-key-mode)
   :config
   (which-key-mode)
-  setq which-key-idle-delay 1.0)
+  (setq which-key-idle-delay 1.0)
   (setq which-key-idle-secondary-delay nil)
 #+END_SRC
 
