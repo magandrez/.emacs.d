@@ -1,3 +1,5 @@
+#+PROPERTY: header-args :tangle yes
+
 * Basics
 
 This is an emacs configuration written as Org file(s). Literate configs are a side of literate programming (https://en.wikipedia.org/wiki/Literate_programming) where configuration is written in a file along with its documentation. From this literate configuration file, configs applied are subject to be extracted into a "runnable" file (in this case into init.el), this process is called "tangling" (important Org functions for this are org-babel-tangle and org-babel-tangle-file, see: https://orgmode.org/manual/Extracting-source-code.html for more info on the subject).
@@ -411,7 +413,7 @@ Note: for LSP integration to work, installing [[https://github.com/snoe/clojure-
   :config
   (which-key-mode)
   (setq which-key-idle-delay 1.0)
-  (setq which-key-idle-secondary-delay nil)
+  (setq which-key-idle-secondary-delay nil))
 #+END_SRC
 
 ** Ace
