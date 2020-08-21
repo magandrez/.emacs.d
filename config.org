@@ -258,7 +258,8 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
   :config
   (setq-default
    markdown-asymmetric-header t
-   markdown-split-window-direction 'right))
+   markdown-split-window-direction 'right
+   markdown-command "/usr/bin/pandoc"))
 #+END_SRC
 
 ** YAML
