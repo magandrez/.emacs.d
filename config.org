@@ -298,6 +298,13 @@ block).
   (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 #+END_SRC
 
+Linter with golint https://github.com/golang/lint
+requires golint
+#+begin_src emacs-lisp
+  (use-package golint
+    :mode "\\.go\\'")
+#+end_src
+
 ** Ruby
 
 #+BEGIN_SRC emacs-lisp
