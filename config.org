@@ -588,7 +588,8 @@ The thick of it
           org-indirect-buffer-display 'current-window
           org-fast-tag-selection-include-todo t
           org-use-fast-todo-selection t
-          org-startup-indented t)
+          org-startup-indented t
+          org-treat-S-cursor-todo-selection-as-state-change nil)
     (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
     (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))
     (add-hook 'org-mode-hook 'auto-fill-mode)
@@ -600,26 +601,35 @@ The thick of it
     (font-lock-add-keywords
      'org-mode `(("^\\*+ \\(TODO\\) "
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑") nil)))
-                 ("^\\*+ \\(PROGRESSING\\) "
+                 ("^\\*+ \\(NEXT\\) "
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐") nil)))
-                 ("^\\*+ \\(CANCELED\\) "
+                 ("^\\*+ \\(CANCELLED\\) "
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
                  ("^\\*+ \\(DONE\\) "
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
 
     (setq org-tag-alist '((:startgroup) ("@w0rk" . ?w) ("@home" . ?h) (:endgroup))
-          org-todo-keywords '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
-                              (sequence "INACTIVE(i@/!)" "|" "CANCELLED(c@/!)"))
+          org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                              (sequence "WAITING(w@/!)"  "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))
           org-todo-keyword-faces
           '(("TODO" :foreground "red" :weight bold)
-            ("PROGRESSING" :foreground "deep sky blue" :weight bold)
+            ("NEXT" :foreground "deep sky blue" :weight bold)
             ("DONE" :foreground "forest green" :weight bold)
-            ("INACTIVE" :foreground "magenta" :weight bold)
-            ("CANCELLED" :foreground "brown" :weight bold)))
+            ("WAITING" :foreground "orange" :weight bold)
+            ("HOLD" :foreground "magenta" :weight bold)
+            ("CANCELLED" :foreground "forest green" :weight bold)
+            ("MEETING" :foreground "forest green" :weight bold)))
     (setq org-agenda-custom-commands
           '(("w" "Work" tags-todo "@w0rk")
             ("h" "Home" tags-todo "@home")))
-
+    (setq org-todo-state-tags-triggers
+          (quote (("CANCELLED" ("CANCELLED" . t))
+                  ("WAITING" ("WAITING" . t))
+                  ("HOLD" ("WAITING") ("HOLD" . t))
+                  (done ("WAITING") ("HOLD"))
+                  ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                  ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                  ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
     (define-key org-mode-map [remap org-return] (lambda () (interactive)
                                                   (if (org-in-src-block-p)
                                                       (org-return) (org-return-indent)))))
