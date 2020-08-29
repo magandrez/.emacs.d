@@ -815,22 +815,21 @@ The thick of it
     (font-lock-add-keywords
      'org-mode `(("^\\*+ \\(TODO\\) "
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑") nil)))
-                 ("^\\*+ \\(NEXT\\) "
+                 ("^\\*+ \\(PROGRESSING\\) "
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐") nil)))
                  ("^\\*+ \\(CANCELLED\\) "
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
                  ("^\\*+ \\(DONE\\) "
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
-    (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+    (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
                               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))
           org-todo-keyword-faces
           '(("TODO" :foreground "red" :weight bold)
-            ("NEXT" :foreground "deep sky blue" :weight bold)
+            ("PROGRESSING" :foreground "deep sky blue" :weight bold)
             ("DONE" :foreground "forest green" :weight bold)
             ("WAITING" :foreground "orange" :weight bold)
             ("HOLD" :foreground "magenta" :weight bold)
-            ("CANCELLED" :foreground "forest green" :weight bold)
-            ("MEETING" :foreground "forest green" :weight bold)))
+            ("CANCELLED" :foreground "forest green" :weight bold)))
    (setq org-agenda-custom-commands
       '(("h" "Leisure agenda"
          ((agenda "")
