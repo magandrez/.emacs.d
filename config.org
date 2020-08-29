@@ -821,9 +821,7 @@ The thick of it
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
                  ("^\\*+ \\(DONE\\) "
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
-
-    (setq org-tag-alist '((:startgroup) ("@w0rk" . ?w) ("@home" . ?h) (:endgroup))
-          org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+    (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
                               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))
           org-todo-keyword-faces
           '(("TODO" :foreground "red" :weight bold)
@@ -833,9 +831,6 @@ The thick of it
             ("HOLD" :foreground "magenta" :weight bold)
             ("CANCELLED" :foreground "forest green" :weight bold)
             ("MEETING" :foreground "forest green" :weight bold)))
-    (setq org-agenda-custom-commands
-          '(("w" "Work" tags-todo "@w0rk")
-            ("h" "Home" tags-todo "@home")))
     (setq org-todo-state-tags-triggers
           (quote (("CANCELLED" ("CANCELLED" . t))
                   ("WAITING" ("WAITING" . t))
