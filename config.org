@@ -872,7 +872,7 @@ Org template custom configurations
     ("i" "Idea came up." 
      entry 
      (file+headline org-default-notes-file "Ideas")
-     "*** %? :IDEA: \n%u")))
+     "*** %? :idea:%^G \n Captured on %U")))
 #+END_SRC
 
 Meeting note taking (source: [[https://github.com/howardabrams/dot-files/][Howard Abrams' Github]])
