@@ -20,3 +20,4 @@ network-security.data
 *.eld
 .lsp-*
 recentf
+persist/
