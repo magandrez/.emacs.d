@@ -554,7 +554,221 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
     ((ruby-mode go-mode) . smartparens-strict-mode))
 #+END_SRC
 
-** Org
+** Projectile
+
+Use Projectile for jumping around code, etc.
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :defer 1
+  :init
+  (setq-default
+   projectile-cache-file (expand-file-name ".projectile-cache" user-emacs-directory)
+   projectile-keymap-prefix (kbd "C-c C-p")
+   projectile-known-projects-file (expand-file-name
+                                   ".projectile-bookmarks" user-emacs-directory))
+  :config
+  (projectile-global-mode 1)
+  (setq-default
+   projectile-indexing-method 'alien
+   projectile-globally-ignored-modes '("org-mode" "org-agenda-mode")
+   projectile-globally-ignored-file-suffixes '(".gpg")
+   projectile-completion-system 'ivy
+   projectile-enable-caching t
+   projectile-mode-line '(:eval (projectile-project-name)))
+   (add-hook 'org-agenda-mode-hook (lambda () (projectile-mode -1)))
+   (add-hook 'org-mode-hook (lambda () (projectile-mode -1))))
+#+END_SRC
+
+** Highlight
+
+#+BEGIN_SRC emacs-lisp
+(use-package highlight)
+#+END_SRC
+
+** Treemacs
+
+#+BEGIN_SRC emacs-lisp
+(use-package treemacs
+  :config
+  (setq treemacs-follow-after-init t
+        treemacs-width 35
+        treemacs-indentation 1
+        treemacs-recenter-after-file-follow nil
+        treemacs-silent-refresh t
+        treemacs-silent-filewatch t
+        treemacs-change-root-without-asking t
+        treemacs-sorting 'alphabetic-desc
+        treemacs-show-hidden-files t
+        treemacs-never-persist nil
+        treemacs-is-never-other-window nil
+        treemacs-indentation-string (propertize " ǀ " 'face 'font-lock-comment-face)
+        treemacs-follow-mode t
+        treemacs-filewatch-mode t
+        treemacs-fringe-indicator-mode t)
+  :bind
+  (([f8] . treemacs)
+   ("C-c f" . treemacs-select-window)))
+
+(use-package treemacs-projectile
+  :after treemacs projectile
+  :bind
+  (("C-c o p" . treemacs-projectile)))
+#+END_SRC
+
+** Yafolding
+
+#+BEGIN_SRC emacs-lisp
+(use-package yafolding
+  :init
+  (add-hook 'ruby-mode-hook 'yafolding-mode)
+  :bind
+  (("M-n" . yafolding-toggle-element)
+  ("M-m" . yafolding-toggle-all)))
+#+END_SRC
+
+** Restclient
+
+Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explore APIs
+
+#+begin_src emacs-lisp
+(use-package restclient
+  :mode ("\\.http\\'" . restclient-mode))
+#+end_src
+
+** Magit
+
+Magit is love for Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :config
+    (setq magit-log-arguments '("-n256" "--graph" "--decorate" "--color"))
+  :bind (("C-x g" . magit-status))
+  :init
+  (setq-default
+   magit-auto-revert-mode nil
+   magit-refs-show-commit-count 'all
+   magit-section-show-child-count t))
+#+END_SRC
+
+** LSP
+
+The Language Server Protocol is becoming a standard, and it rocks.
+
+Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :ensure t
+    :commands (lsp lsp-deferred)
+    :config
+    (setq lsp-keymap-prefix "C-l"
+          lsp-gopls-staticcheck t
+          lsp-eldoc-render-all nil
+          lsp-gopls-complete-unimported t
+          lsp-inhibit-message t
+          lsp-enable-file-watchers nil
+          ;; Performance tweaks
+          ;; https://github.com/emacs-lsp/lsp-mode#performance
+          gc-cons-threshold 100000000
+          read-process-output-max (* 1024 1024)
+          lsp-idle-delay 0.25)
+    (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
+    :hook ((lsp-mode . lsp-enable-which-key-integration)
+           ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)))
+
+  (use-package company-lsp
+    :ensure t
+    :config (push 'company-lsp company-backends))
+
+  (use-package lsp-ui
+    :ensure t
+    :commands lsp-ui-mode
+    :config
+      (setq lsp-ui-doc-delay 5.0))
+#+end_src
+
+** Company completion
+
+#+begin_src emacs-lisp
+(use-package company
+  :ensure t
+  :defer t
+  :init
+  (global-company-mode t)
+  :custom
+    (company-begin-commands '(self-insert-command))
+    (company-tooltip-align-annotations t)
+    (company-idle-delay 0)
+    (company-minimum-prefix-length 1)
+    (company-show-numbers t))
+#+end_src
+
+** Flycheck
+
+On-the-fly syntax checking
+
+#+begin_src emacs-lisp
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode)
+  :config
+  (setq flycheck-check-syntax-automatically '(save mode-enable)))
+
+#+end_src
+
+** Ivy + Swiper + Counsel
+
+Ivy basics
+
+#+begin_src emacs-lisp
+(use-package ivy
+  :ensure t
+  :init (ivy-mode 1)
+  :config
+  (setq ivy-use-virtual-buffers t
+        enable-recursive-minibuffers t
+        ivy-count-format "(%d/%d) "))
+#+end_src
+
+Beautiful ivy
+
+#+begin_src emacs-lisp
+(use-package ivy-rich
+  :after ivy
+  :custom
+  (ivy-virtual-abbreviate 'full
+                          ivy-rich-switch-buffer-align-virtual-buffer t
+                          ivy-rich-path-style 'abbrev)
+  :config
+  (ivy-set-display-transformer 'ivy-switch-buffer
+                               'ivy-rich-switch-buffer-transformer))
+#+end_src
+
+Swiper basics
+
+#+begin_src emacs-lisp
+(use-package swiper
+  :ensure t
+  :after ivy
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper)))
+#+end_src
+
+Counsel basics
+
+#+begin_src emacs-lisp
+(use-package counsel
+  :ensure t
+  :after ivy
+  :config (counsel-mode)
+  :bind (("C-c g" . counsel-git)
+         ("C-c j" . counsel-git-grep)))
+#+end_src
+
+
+* Org
 
 Adding org files for agenda
 
@@ -610,7 +824,7 @@ The thick of it
 
     (setq org-tag-alist '((:startgroup) ("@w0rk" . ?w) ("@home" . ?h) (:endgroup))
           org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                              (sequence "WAITING(w@/!)"  "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))
+                              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))
           org-todo-keyword-faces
           '(("TODO" :foreground "red" :weight bold)
             ("NEXT" :foreground "deep sky blue" :weight bold)
@@ -777,217 +991,4 @@ https://github.com/stathissideris/ditaa
                                                          (python . t) 
                                                          (ditaa . t)))
 (setq org-ditaa-jar-path "/usr/bin/ditaa")
-#+end_src
-
-** Projectile
-
-Use Projectile for jumping around code, etc.
-
-#+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :defer 1
-  :init
-  (setq-default
-   projectile-cache-file (expand-file-name ".projectile-cache" user-emacs-directory)
-   projectile-keymap-prefix (kbd "C-c C-p")
-   projectile-known-projects-file (expand-file-name
-                                   ".projectile-bookmarks" user-emacs-directory))
-  :config
-  (projectile-global-mode 1)
-  (setq-default
-   projectile-indexing-method 'alien
-   projectile-globally-ignored-modes '("org-mode" "org-agenda-mode")
-   projectile-globally-ignored-file-suffixes '(".gpg")
-   projectile-completion-system 'ivy
-   projectile-enable-caching t
-   projectile-mode-line '(:eval (projectile-project-name)))
-   (add-hook 'org-agenda-mode-hook (lambda () (projectile-mode -1)))
-   (add-hook 'org-mode-hook (lambda () (projectile-mode -1))))
-#+END_SRC
-
-** Highlight
-
-#+BEGIN_SRC emacs-lisp
-(use-package highlight)
-#+END_SRC
-
-** Treemacs
-
-#+BEGIN_SRC emacs-lisp
-(use-package treemacs
-  :config
-  (setq treemacs-follow-after-init t
-        treemacs-width 35
-        treemacs-indentation 1
-        treemacs-recenter-after-file-follow nil
-        treemacs-silent-refresh t
-        treemacs-silent-filewatch t
-        treemacs-change-root-without-asking t
-        treemacs-sorting 'alphabetic-desc
-        treemacs-show-hidden-files t
-        treemacs-never-persist nil
-        treemacs-is-never-other-window nil
-        treemacs-indentation-string (propertize " ǀ " 'face 'font-lock-comment-face)
-        treemacs-follow-mode t
-        treemacs-filewatch-mode t
-        treemacs-fringe-indicator-mode t)
-  :bind
-  (([f8] . treemacs)
-   ("C-c f" . treemacs-select-window)))
-
-(use-package treemacs-projectile
-  :after treemacs projectile
-  :bind 
-  (("C-c o p" . treemacs-projectile)))
-#+END_SRC
-
-** Yafolding
-
-#+BEGIN_SRC emacs-lisp
-(use-package yafolding
-  :init
-  (add-hook 'ruby-mode-hook 'yafolding-mode)
-  :bind
-  (("M-n" . yafolding-toggle-element)
-  ("M-m" . yafolding-toggle-all)))
-#+END_SRC
-
-** Restclient
-
-Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explore APIs
-
-#+begin_src emacs-lisp
-(use-package restclient
-  :mode ("\\.http\\'" . restclient-mode))
-#+end_src
-
-** Magit
-
-Magit is love for Emacs.
-
-#+BEGIN_SRC emacs-lisp
-(use-package magit
-  :config
-    (setq magit-log-arguments '("-n256" "--graph" "--decorate" "--color"))
-  :bind (("C-x g" . magit-status))
-  :init
-  (setq-default
-   magit-auto-revert-mode nil
-   magit-refs-show-commit-count 'all
-   magit-section-show-child-count t))
-#+END_SRC
-
-** LSP
-
-The Language Server Protocol is becoming a standard, and it rocks.
-
-Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
-
-#+begin_src emacs-lisp
-  (use-package lsp-mode
-    :ensure t
-    :commands (lsp lsp-deferred)
-    :config
-    (setq lsp-keymap-prefix "C-l"
-          lsp-gopls-staticcheck t
-          lsp-eldoc-render-all nil
-          lsp-gopls-complete-unimported t
-          lsp-inhibit-message t
-          lsp-enable-file-watchers nil
-          ;; Performance tweaks
-          ;; https://github.com/emacs-lsp/lsp-mode#performance
-          gc-cons-threshold 100000000
-          read-process-output-max (* 1024 1024)
-          lsp-idle-delay 0.25)
-    (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
-    :hook ((lsp-mode . lsp-enable-which-key-integration)
-           ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)))
-
-  (use-package company-lsp
-    :ensure t
-    :config (push 'company-lsp company-backends))
-
-  (use-package lsp-ui
-    :ensure t
-    :commands lsp-ui-mode
-    :config
-      (setq lsp-ui-doc-delay 5.0))
-#+end_src
-
-** Company completion
-
-#+begin_src emacs-lisp
-(use-package company
-  :ensure t
-  :defer t
-  :init
-  (global-company-mode t)
-  :custom
-    (company-begin-commands '(self-insert-command))
-    (company-tooltip-align-annotations t)
-    (company-idle-delay 0)
-    (company-minimum-prefix-length 1)
-    (company-show-numbers t))
-#+end_src
-
-** Flycheck
-
-On-the-fly syntax checking
-
-#+begin_src emacs-lisp
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode)
-  :config
-  (setq flycheck-check-syntax-automatically '(save mode-enable)))
-
-#+end_src
-
-** Ivy + Swiper + Counsel
-
-Ivy basics
-
-#+begin_src emacs-lisp
-(use-package ivy
-  :ensure t
-  :init (ivy-mode 1)
-  :config
-  (setq ivy-use-virtual-buffers t
-        enable-recursive-minibuffers t
-        ivy-count-format "(%d/%d) "))
-#+end_src
-
-Beautiful ivy
-
-#+begin_src emacs-lisp
-(use-package ivy-rich
-  :after ivy
-  :custom
-  (ivy-virtual-abbreviate 'full
-                          ivy-rich-switch-buffer-align-virtual-buffer t
-                          ivy-rich-path-style 'abbrev)
-  :config
-  (ivy-set-display-transformer 'ivy-switch-buffer
-                               'ivy-rich-switch-buffer-transformer))
-#+end_src
-
-Swiper basics
-
-#+begin_src emacs-lisp
-(use-package swiper
-  :ensure t
-  :after ivy
-  :bind (("C-s" . swiper)
-         ("C-r" . swiper)))
-#+end_src
-
-Counsel basics
-
-#+begin_src emacs-lisp
-(use-package counsel
-  :ensure t
-  :after ivy
-  :config (counsel-mode)
-  :bind (("C-c g" . counsel-git)
-         ("C-c j" . counsel-git-grep)))
 #+end_src
