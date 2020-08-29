@@ -831,6 +831,17 @@ The thick of it
             ("HOLD" :foreground "magenta" :weight bold)
             ("CANCELLED" :foreground "forest green" :weight bold)
             ("MEETING" :foreground "forest green" :weight bold)))
+   (setq org-agenda-custom-commands
+      '(("h" "Leisure agenda"
+         ((agenda "")
+          (tags-todo "personal")
+          (tags-todo "computing")
+          (tags-todo "photography")))
+        ("w" "Work agenda"
+         ((agenda "")
+          (tags-todo "compensate")
+          (tags-todo "calculators")
+          (tags-todo "platform")))))
     (setq org-todo-state-tags-triggers
           (quote (("CANCELLED" ("CANCELLED" . t))
                   ("WAITING" ("WAITING" . t))
