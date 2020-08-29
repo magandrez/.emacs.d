@@ -652,13 +652,9 @@ Org template custom configurations
 #+BEGIN_SRC emacs-lisp
 (defvar org-capture-templates
   '(
-    ("t" "To-do task." 
+    ("t" "Inbox recipient."
      entry 
-     (file+headline org-default-notes-file "To-do tasks")
-     (file "~/.emacs.d/org-templates/schedule.orgcaptmpl"))
-    ("w" "Work task." 
-     entry 
-     (file+headline org-default-notes-file "Work tasks")
+     (file+headline org-default-notes-file "Inbox")
      (file "~/.emacs.d/org-templates/schedule.orgcaptmpl"))
     ("l" "Link: Something interesting?"
      entry
@@ -666,8 +662,8 @@ Org template custom configurations
      (file "~/.emacs.d/org-templates/links.orgcaptmpl"))
     ("i" "Idea came up." 
      entry 
-     (file org-default-notes-file)
-     "* %? :IDEA: \n%u" :clock-in t :clock-resume t)))
+     (file+headline org-default-notes-file "Ideas")
+     "*** %? :IDEA: \n%u")))
 #+END_SRC
 
 Meeting note taking (source: [[https://github.com/howardabrams/dot-files/][Howard Abrams' Github]])
