@@ -31,17 +31,19 @@ Yes or no: y-or-n
 
 Some miscelaneous defaults.
 #+BEGIN_SRC emacs-lisp
-(setq-default inhibit-startup-screen t
-              initial-scratch-message ""
-	      visible-bell nil                               ; No shaking
-	      confirm-nonexistent-file-or-buffer nil         ; Remove confirm dialog on new buffers
-	      show-paren-delay 0                             ; No delay when showing matching parenthesis
-	      confirm-kill-emacs 'y-or-n-p                   ; Confirm exiting Emacs
-	      display-time-default-load-average nil          ; Don't display load average
-	      indent-tabs-mode nil                           ; No tabs for indentation
-	      select-enable-clipboard t                      ; Unite Emacs & system clipboard
-	      window-combination-resize t                    ; Create new windows proportionally
-	      use-package-always-ensure t)                    ; Install packages if not found on the system
+  (setq-default inhibit-startup-screen t
+                initial-scratch-message ""
+                visible-bell nil                               ; No shaking
+                confirm-nonexistent-file-or-buffer nil         ; Remove confirm dialog on new buffers
+                show-paren-delay 0                             ; No delay when showing matching parenthesis
+                confirm-kill-emacs 'y-or-n-p                   ; Confirm exiting Emacs
+                display-time-default-load-average nil          ; Don't display load average
+                indent-tabs-mode nil                           ; No tabs for indentation
+                select-enable-clipboard t                      ; Unite Emacs & system clipboard
+                window-combination-resize t                    ; Create new windows proportionally
+                use-package-always-ensure t                    ; Install packages if not found on the system
+                line-number-mode t                             ; Line number
+                column-number-mode t)                          ; Column number
 #+END_SRC
 
 Scrolling defaults.
