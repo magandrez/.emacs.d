@@ -169,6 +169,22 @@ search results for a given ISearch.
  '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
 #+end_src
 
+
+*** Column enforce mode
+Because 80 columns is THE
+rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
+
+fci-mode is not a global mode, so it needs to be enabled per buffer,
+to aid on this, one can use a hook for each programming mode like:
+
+(add-hook 'prog-mode-hook (lambda () (fci-mode 1)))
+
+#+begin_src emacs-lisp
+(use-package fill-column-indicator
+ :ensure t
+ :config (setq fci-rule-column 80))
+#+end_src
+
 ** OS X
 
 Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] when loading Emacs outside the console.
@@ -288,16 +304,17 @@ Golang setup. Autocompletion et al provided by LSP (see related config
 block).
 
 #+BEGIN_SRC emacs-lisp
-  (use-package go-mode
-    :mode "\\.go\\'"
-    :mode "\\.toml\\'"
-    :init
-    (add-hook 'before-save-hook #'gofmt-before-save))
+(use-package go-mode
+  :mode "\\.go\\'"
+  :mode "\\.toml\\'"
+  :init
+  (add-hook 'before-save-hook #'gofmt-before-save)
+  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
+  (add-hook 'go-mode-hook (lambda () (fci-mode 1)))
 
-  (defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    (add-hook 'before-save-hook #'lsp-organize-imports t t))
-  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
 #+END_SRC
 
 Linter with golint https://github.com/golang/lint
@@ -321,7 +338,8 @@ requires golint
   :init
   (setq ruby-insert-encoding-magic-comment nil
         ruby-indent-tabs-mode nil
-        ruby-mode-hook 2))
+        ruby-mode-hook 2)
+  (add-hook 'ruby-mode-hook (lambda () (fci-mode 1))))
 #+END_SRC
 
 *** Ruby environment managqer
@@ -371,7 +389,8 @@ Using standard erlang.el
             (lambda ()
               (setq mode-name "erlang"
                     erlang-compile-extra-opts '((i . "../include"))
-                    erlang-root-dir "/usr/local/lib/erlang"))))
+                    erlang-root-dir "/usr/local/lib/erlang")))
+  (add-hook 'erlang-mode-hook (lambda () (fci-mode 1))))
 #+end_src
 
 ** Clojure
@@ -386,7 +405,8 @@ Minimal setup to begin with, clojure-mode.
   :init
   (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'smartparens-mode)
-  (add-hook 'clojure-mode-hook #'eldoc-mode))
+  (add-hook 'clojure-mode-hook #'eldoc-mode)
+  (add-hook clojure-mode-hook (lambda () (fci-mode 1))))
 #+end_src
 
 Now [[https://github.com/clojure-emacs/cider][CIDER]]. Another creation from bbatsov :+1:
