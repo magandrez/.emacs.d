@@ -307,10 +307,25 @@ block).
 (use-package go-mode
   :mode "\\.go\\'"
   :mode "\\.toml\\'"
-  :init
-  (add-hook 'before-save-hook #'gofmt-before-save)
-  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
-  (add-hook 'go-mode-hook (lambda () (fci-mode 1)))
+  :init (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
+    (setq compilation-read-command nil)
+    (add-hook 'before-save-hook #'gofmt-before-save)
+    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+    (add-hook 'go-mode-hook (lambda () (fci-mode 1)))
+  :bind (("M-," . compile)))
+
+(setq compilation-window-height 14)
+(defun my-compilation-hook ()
+  (when (not (get-buffer-window "*compilation*"))
+    (save-selected-window
+      (save-excursion
+	(let* ((w (split-window-vertically))
+	       (h (window-height w)))
+	  (select-window w)
+	  (switch-to-buffer "*compilation*")
+	  (shrink-window (- h compilation-window-height)))))))
+(add-hook 'compilation-mode-hook 'my-compilation-hook)
+(setq compilation-scroll-output t)
 
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -320,8 +335,7 @@ block).
 Linter with golint https://github.com/golang/lint
 requires golint
 #+begin_src emacs-lisp
-  (use-package golint
-    :mode "\\.go\\'")
+(use-package golint)
 #+end_src
 
 ** Ruby
