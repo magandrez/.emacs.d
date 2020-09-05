@@ -431,6 +431,29 @@ config block).
 
 Note: for LSP integration to work, installing [[https://github.com/snoe/clojure-lsp][clojure-lsp]] is a requirement.
 
+** Terraform
+
+Some basics to get Terraform files to be understood by Emacs.
+
+#+begin_src emacs-lisp
+(use-package terraform-mode
+  :ensure t
+  :mode "\\.tf\\'"
+  :mode "\\.tfstate\\'"
+  :mode "\\.tfvars\\'"
+  :init
+  (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
+#+end_src
+
+And completions based on company-mode
+
+#+begin_src emacs-lisp
+(use-package company-terraform
+  :ensure t
+  :after company
+  :init (company-terraform-init))
+#+end_src
+
 
 * Features
 
