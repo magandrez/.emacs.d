@@ -406,7 +406,7 @@ Minimal setup to begin with, clojure-mode.
   (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'smartparens-mode)
   (add-hook 'clojure-mode-hook #'eldoc-mode)
-  (add-hook clojure-mode-hook (lambda () (fci-mode 1))))
+  (add-hook 'clojure-mode-hook (lambda () (fci-mode 1))))
 #+end_src
 
 Now [[https://github.com/clojure-emacs/cider][CIDER]]. Another creation from bbatsov :+1:
