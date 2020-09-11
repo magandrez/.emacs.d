@@ -488,9 +488,9 @@ And completions based on company-mode
 Use ace-window to cycle through windows
 
 #+BEGIN_SRC emacs-lisp
-(use-package ace-window
-  :config
-  :bind* ("M-o" . ace-window))
+  (use-package ace-window
+    :config (setq aw-dispatch-when-more-than 5)
+    :bind ("M-o" . ace-window))
 #+END_SRC
 
 ** Ibuffer
