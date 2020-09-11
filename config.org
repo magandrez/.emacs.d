@@ -468,6 +468,18 @@ And completions based on company-mode
   :init (company-terraform-init))
 #+end_src
 
+** Kubernetes
+
+Just a basic mode for K8s artifacts (a wrapper for YAML with calls to
+docs, if you will).
+
+#+begin_src emacs-lisp
+(use-package k8s-mode
+  :ensure t
+  :config (setq k8s-site-docs-version "v1.19")
+  :bind ("M-ä" . k8s-mode))
+#+end_src
+
 
 * Features
 
