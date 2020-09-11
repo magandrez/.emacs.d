@@ -826,6 +826,29 @@ Counsel basics
          ("C-c j" . counsel-git-grep)))
 #+end_src
 
+** YASnippet
+
+A template system for filling in the knowledge blanks ;) Set hook per language
+
+#+begin_src emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :init
+   (add-hook 'k8s-mode-hook #'yas-minor-mode)
+   (add-hook 'go-mode-hook #'yas-minor-mode)
+   (add-hook 'terraform-mode-hook #'yas-minor-mode)
+   (add-hook 'ruby-mode-hook #'yas-minor-mode)
+   (add-hook 'clojure-mode-hook #'yas-minor-mode)
+   (add-hook 'dockerfile-mode-hook #'yas-minor-mode)
+   (add-hook 'makefile-mode-hook #'yas-minor-mode)
+   (add-hook 'sh-mode-hook #'yas-minor-mode)
+   (add-hook 'erlang-mode-hook #'yas-minor-mode)
+  :config
+    (setq yas-snippet-dirs '("~/emacs.d/snippets"
+                           "/usr/share/yasnippet-snippets"))
+   (yas-reload-all))
+#+end_src
+
 
 * Org
 
