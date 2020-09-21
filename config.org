@@ -856,7 +856,7 @@ A template system for filling in the knowledge blanks ;) Set hook per language
    (add-hook 'sh-mode-hook #'yas-minor-mode)
    (add-hook 'erlang-mode-hook #'yas-minor-mode)
   :config
-    (setq yas-snippet-dirs '("~/emacs.d/snippets"
+    (setq yas-snippet-dirs '("~/.emacs.d/snippets"
                            "/usr/share/yasnippet-snippets"))
    (yas-reload-all))
 #+end_src
