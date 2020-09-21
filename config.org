@@ -298,7 +298,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
     :config (use-package csv-nav)))
 #+END_SRC
 
-** Go
+** Golang
 
 Golang setup. Autocompletion et al provided by LSP (see related config
 block).
@@ -311,7 +311,7 @@ block).
     (setq compilation-read-command nil)
     (add-hook 'before-save-hook #'gofmt-before-save)
     (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-    (add-hook 'go-mode-hook (lambda () (fci-mode 1)))
+    (add-hook 'go-mode-hook (lambda () (fci-mode 1) (company-mode)))
   :bind (("M-," . compile)))
 
 (setq compilation-window-height 14)
@@ -331,6 +331,13 @@ block).
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 #+END_SRC
+
+Install company-go
+#+begin_src emacs-lisp
+(use-package company-go
+  :ensure t
+  :config (push 'company-go company-backends))
+#+end_src
 
 Linter with golint https://github.com/golang/lint
 requires golint
@@ -766,8 +773,6 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
 (use-package company
   :ensure t
   :defer t
-  :init
-  (global-company-mode t)
   :custom
     (company-begin-commands '(self-insert-command))
     (company-tooltip-align-annotations t)
