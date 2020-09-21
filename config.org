@@ -864,6 +864,7 @@ A template system for filling in the knowledge blanks ;) Set hook per language
     (setq yas-snippet-dirs '("~/.emacs.d/snippets"
                            "/usr/share/yasnippet-snippets"))
    (yas-reload-all))
+(global-set-key (kbd "C-c y") 'yas-insert-snippet)
 #+end_src
 
 
