@@ -487,6 +487,37 @@ docs, if you will).
   :bind ("M-ä" . k8s-mode))
 #+end_src
 
+** React
+
+#+begin_src emacs-lisp
+(defun setup-tide-mode ()
+  "Set up Tide mode."
+  (interactive)
+  (tide-setup)
+  (flycheck-mode 1)
+  (setq flycheck-check-syntax-automatically '(save-mode-enabled))
+  (eldoc-mode 1)
+  (tide-hl-identifier-mode 1)
+  (company-mode 1))
+
+(use-package tide
+  :ensure t
+  :config
+  (setq company-tooltip-align-annotations t)
+  :init
+  (add-hook 'before-save-hook 'tide-format-before-save)
+  (add-hook 'js-mode-hook #'setup-tide-mode)
+  (add-hook 'typescript-mode-hook #'setup-tide-mode)
+  (add-hook 'js-mode-hook 'prettier-mode))
+#+end_src
+
+Setup prettier-js
+
+#+begin_src emacs-lisp
+(use-package prettier
+  :ensure t)
+#+end_src
+
 
 * Features
 
@@ -790,8 +821,8 @@ On-the-fly syntax checking
   :ensure t
   :init (global-flycheck-mode)
   :config
-  (setq flycheck-check-syntax-automatically '(save mode-enable)))
-
+  (setq flycheck-check-syntax-automatically '(save mode-enable)
+        flycheck-javascript-standard-executable "/home/manuel/.nvm/versions/node/v15.0.1/bin/standardx"))
 #+end_src
 
 ** Ivy + Swiper + Counsel
