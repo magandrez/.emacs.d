@@ -380,7 +380,7 @@ Rubocop for all things Ruby
 
 #+begin_src emacs-lisp
 (use-package rubocop
-  :hook (ruby-mode-hook . rubocop-mode))
+  :hook (ruby-mode . rubocop-mode))
 #+end_src
 
 ** Cucumber
