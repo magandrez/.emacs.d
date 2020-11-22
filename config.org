@@ -253,6 +253,36 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 
 * Languages / frameworks
 
+Random modes without specific configuration blocks.
+
+#+begin_src emacs-lisp
+      (setq auto-mode-alist
+          (append '(
+                    ("\\.pl$"        . perl-mode)
+                    ("\\.pm$"        . perl-mode)
+                    ("\\.java$"      . java-mode)
+                    ("\\.js$"        . js-mode)
+                    ("\\.groovy$"       . groovy-mode)
+                    ("\\.txt$"       . text-mode)
+                    ("\\.http$"       . restclient-mode)
+                    ("\\.sql$"       . sql-mode)
+                    ("\\.conf$" . conf-mode)
+                    ("\\.erb$"      . web-mode)
+                    ("\\.css$"       . css-mode)
+                    ("\\.scss" . scss-mode))
+                  auto-mode-alist))
+#+end_src
+
+** JSON
+
+Edit JSON files and treat them as JSON, not as Javascript (without the
+need to start tide or run prettier on them).
+#+begin_src emacs-lisp
+(use-package json-mode
+  :ensure t
+  :mode "\\.json$")
+#+end_src
+
 ** Dot
 
 #+begin_src emacs-lisp
@@ -264,15 +294,25 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 
 #+BEGIN_SRC emacs-lisp
 (use-package dockerfile-mode
-  :mode "Dockerfile\\'" 
-  :mode "Dockerfile.test\\'")
+  :mode "Dockerfile$"
+  :mode "Dockerfile.test$")
 #+END_SRC
+
+Docker compose as well
+
+#+begin_src emacs-lisp
+(use-package docker-compose-mode
+  :ensure t
+  :mode "\\compose.yml"
+  :mode "\\compose.yaml")
+#+end_src
 
 ** HTML
 
 #+BEGIN_SRC emacs-lisp
 (use-package sgml-mode
-  :mode "\\.html\\'"
+  :mode "\\.html$"
+  :mode "\\.htm$"
   :config (setq-default sgml-basic-offset 2))
 #+END_SRC
 
@@ -280,12 +320,12 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
-  :mode "INSTALL\\'"
-  :mode "CONTRIBUTORS\\'"
-  :mode "LICENSE\\'"
-  :mode "README\\'"
-  :mode "\\.markdown\\'"
-  :mode "\\.md\\'"
+  :mode "INSTALL$"
+  :mode "CONTRIBUTORS$"
+  :mode "LICENSE$"
+  :mode "README$"
+  :mode "\\.markdown$"
+  :mode "\\.md$"
   :config
   (setq-default
    markdown-asymmetric-header t
@@ -296,9 +336,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 ** YAML
 
 #+BEGIN_SRC emacs-lisp
-(use-package yaml-mode
-  :mode "\\.yml\\'"  
-  :mode "\\.yaml\\'")
+(use-package yaml-mode)
 #+END_SRC
 
 ** CSV
@@ -306,7 +344,7 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 #+BEGIN_SRC emacs-lisp
 (when (eq system-type 'darwin)
   (use-package csv-mode
-    :mode "\\.[Cc][Ss][Vv]\\'"
+    :mode "\\.[Cc][Ss][Vv]$"
     :init (setq csv-separators '("," ";" "|" " "))
     :config (use-package csv-nav)))
 #+END_SRC
@@ -318,8 +356,8 @@ block).
 
 #+BEGIN_SRC emacs-lisp
 (use-package go-mode
-  :mode "\\.go\\'"
-  :mode "\\.toml\\'"
+  :mode "\\.go$"
+  :mode "\\.toml$"
   :init (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
     (setq compilation-read-command nil)
     (add-hook 'before-save-hook #'gofmt-before-save)
@@ -362,13 +400,13 @@ requires golint
 
 #+BEGIN_SRC emacs-lisp
 (use-package ruby-mode
-  :mode "\\.rb\\'"
-  :mode "\\.rake\\'"
-  :mode "\\.ru\\'"
-  :mode "Gemfile\\'"
-  :mode "Rakefile\\'"
-  :mode "Capfile\\'" 
-  :mode "\\.gemspec\\'"
+  :mode "\\.rb$"
+  :mode "\\.rake$'"
+  :mode "\\.ru$"
+  :mode "Gemfile$"
+  :mode "Rakefile$"
+  :mode "Capfile$"
+  :mode "\\.gemspec$"
   :init
   (setq ruby-insert-encoding-magic-comment nil
         ruby-indent-tabs-mode nil
@@ -402,6 +440,7 @@ Use [[https://cucumber.io/][Cucumber]] for BDD
 
 #+BEGIN_SRC emacs-lisp
 (use-package feature-mode
+  :mode "\\.feature$"
   :commands feature-mode
   :config
   (setq feature-default-language "en"))
@@ -413,11 +452,11 @@ Using standard erlang.el
 
 #+begin_src emacs-lisp
 (use-package erlang
-  :init
-  (add-to-list 'auto-mode-alist '("\\.P\\'" . erlang-mode))
-  (add-to-list 'auto-mode-alist '("\\.E\\'" . erlang-mode))
-  (add-to-list 'auto-mode-alist '("\\.S\\'" . erlang-mode))
-  (add-to-list 'auto-mode-alist '("\\.erl?$" . erlang-mode))
+  :ensure t
+  :mode "\\.P$"
+  :mode "\\.E$"
+  :mode "\\.S$"
+  :mode "\\.erl?$"
   :config
   (add-hook 'erlang-mode-hook
             (lambda ()
@@ -434,8 +473,8 @@ Minimal setup to begin with, clojure-mode.
 #+begin_src emacs-lisp
 (use-package clojure-mode
   :ensure t
-  :mode (("\\.clj\\'" . clojure-mode)
-         ("\\.edn\\'" . clojure-mode))
+  :mode (("\\.clj$" . clojure-mode)
+         ("\\.edn$" . clojure-mode))
   :init
   (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'smartparens-mode)
@@ -472,9 +511,9 @@ Some basics to get Terraform files to be understood by Emacs.
 #+begin_src emacs-lisp
 (use-package terraform-mode
   :ensure t
-  :mode "\\.tf\\'"
-  :mode "\\.tfstate\\'"
-  :mode "\\.tfvars\\'"
+  :mode "\\.tf$"
+  :mode "\\.tfstate$"
+  :mode "\\.tfvars$"
   :init
   (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
 #+end_src
@@ -500,7 +539,7 @@ docs, if you will).
   :bind ("M-ä" . k8s-mode))
 #+end_src
 
-** React
+** Javascript
 
 #+begin_src emacs-lisp
 (defun setup-tide-mode ()
