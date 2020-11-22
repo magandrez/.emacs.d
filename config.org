@@ -78,12 +78,6 @@ coding/encoding (Chinese/Japanese/Korean characters).
   (setq default-buffer-file-coding-system 'utf-8))
 #+END_SRC
 
-Default shell
-
-#+begin_src emacs-lisp
-(setq-default explicit-shell-file-name "/usr/bin/zsh")
-#+end_src
-
 ** Misc keybindings
 
 Use `C-x C-0` to restore font size.
@@ -185,7 +179,7 @@ to aid on this, one can use a hook for each programming mode like:
  :config (setq fci-rule-column 80))
 #+end_src
 
-** OS X
+** OS customizations
 
 Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] when loading Emacs outside the console.
 
@@ -210,16 +204,25 @@ The variables available for binding the modifier keys on Mac keyboards are the f
 - mac-right-option-modifier
 
 The values can be 'control, 'alt, 'meta, 'super, 'hyper, nil (setting to nil allows the OS to assign values). Sources: [[https://www.emacswiki.org/emacs/EmacsForMacOS#toc31][emacswiki.org]] 
-[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Mac-_002f-GNUstep-Events.html#Mac-_002f-GNUstep-Events][gnu.org]]
+[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Mac-_002f-GNUstep-Events.html#Mac-_002f-GNUstep-Events][gnu.org]].
+
+Set, among other details, different shells for OSs. For GNU/Linux,
+uses [fish](https://fishshell.com/) see functions loaded and [omf](https://github.com/oh-my-fish/oh-my-fish)
 #+BEGIN_SRC emacs-lisp
-(when (eq system-type 'darwin)
-  (setq-default
-   exec-path (append exec-path '("/usr/local/bin"))  ; Add Homebrew path
-   mac-command-modifier 'meta                        ; Map Meta to Cmd
-   mac-option-modifier nil                           ; Don't use Option key 
-   mac-right-option-modifier nil                     ; Disable the right Alt key
-   ns-pop-up-frames nil                              ; Visit files in same frame
-   dired-use-ls-dired nil))                          ; macOS command ls doesn't support --dired option
+  (cond ((eq system-type 'darwin)
+
+         (setq-default
+          exec-path (append exec-path '("/usr/local/bin"))  ; Add Homebrew path
+          mac-command-modifier 'meta                        ; Map Meta to Cmd
+          mac-option-modifier nil                           ; Don't use Option key
+          mac-right-option-modifier nil                     ; Disable the right Alt key
+          ns-pop-up-frames nil                              ; Visit files in same frame
+          dired-use-ls-dired nil)                           ; macOS command ls doesn't support --dired option
+         (setq-default explicit-shell-file-name "/usr/bin/zsh"))
+
+        ((eq system-type 'gnu/linux)
+         (setq-default explicit-shell-file-name "/bin/fish")
+         ))
 #+END_SRC
 
 ** Backups
