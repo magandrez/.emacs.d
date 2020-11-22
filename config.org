@@ -225,6 +225,11 @@ uses [fish](https://fishshell.com/) see functions loaded and [omf](https://githu
          ))
 #+END_SRC
 
+Add node to the exec path
+
+#+begin_src emacs-lisp
+(setq exec-path (append exec-path '(shell-command-to-string "/usr/local/bin/node")))
+#+end_src
 ** Backups
 
 As default write backup files on ~/.emacs.d/backup and disables lock files, it gets messy on mounted network file systems like Keybase FS (https://keybase.io/).
@@ -256,21 +261,20 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 Random modes without specific configuration blocks.
 
 #+begin_src emacs-lisp
-      (setq auto-mode-alist
-          (append '(
-                    ("\\.pl$"        . perl-mode)
-                    ("\\.pm$"        . perl-mode)
-                    ("\\.java$"      . java-mode)
-                    ("\\.js$"        . js-mode)
-                    ("\\.groovy$"       . groovy-mode)
-                    ("\\.txt$"       . text-mode)
-                    ("\\.http$"       . restclient-mode)
-                    ("\\.sql$"       . sql-mode)
-                    ("\\.conf$" . conf-mode)
-                    ("\\.erb$"      . web-mode)
-                    ("\\.css$"       . css-mode)
-                    ("\\.scss" . scss-mode))
-                  auto-mode-alist))
+  (setq auto-mode-alist
+      (append '(
+                ("\\.pl$"     . perl-mode)
+                ("\\.pm$"     . perl-mode)
+                ("\\.java$"   . java-mode)
+                ("\\.groovy$" . groovy-mode)
+                ("\\.txt$"    . text-mode)
+                ("\\.http$"   . restclient-mode)
+                ("\\.sql$"    . sql-mode)
+                ("\\.conf$"   . conf-mode)
+                ("\\.erb$"    . web-mode)
+                ("\\.css$"    . css-mode)
+                ("\\.scss"    . scss-mode))
+              auto-mode-alist))
 #+end_src
 
 ** JSON
@@ -547,10 +551,20 @@ docs, if you will).
   (interactive)
   (tide-setup)
   (flycheck-mode 1)
-  (setq flycheck-check-syntax-automatically '(save-mode-enabled))
+  (setq flycheck-check-syntax-automatically '(save-mode-enabled)
+        lsp-prefer-flymake nil)
   (eldoc-mode 1)
   (tide-hl-identifier-mode 1)
   (company-mode 1))
+
+(use-package typescript-mode
+  :mode "\\.ts$"
+  :ensure t)
+
+(use-package js2-mode
+  :mode "\\.js$"
+  :mode "\\.jsx$"
+  :ensure t)
 
 (use-package tide
   :ensure t
@@ -558,14 +572,10 @@ docs, if you will).
   (setq company-tooltip-align-annotations t)
   :init
   (add-hook 'before-save-hook 'tide-format-before-save)
-  (add-hook 'js-mode-hook #'setup-tide-mode)
+  (add-hook 'js2-mode-hook #'setup-tide-mode)
   (add-hook 'typescript-mode-hook #'setup-tide-mode)
-  (add-hook 'js-mode-hook 'prettier-mode))
-#+end_src
+  (add-hook 'js2-mode-hook 'prettier-mode))
 
-Setup prettier-js
-
-#+begin_src emacs-lisp
 (use-package prettier
   :ensure t)
 #+end_src
