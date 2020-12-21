@@ -23,8 +23,8 @@ Custom faces
  '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
 
 #+end_src
-Yes or no: y-or-n
 
+Yes or no: y-or-n
 #+BEGIN_SRC emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
@@ -1287,4 +1287,24 @@ backend)
 
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
+#+end_src
+
+Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-files-with-dired.html][here]].
+#+begin_src emacs-lisp
+(require 'gnus-dired)
+;; make the `gnus-dired-mail-buffers' function also work on
+;; message-mode derived modes, such as mu4e-compose-mode
+(defun gnus-dired-mail-buffers ()
+  "Return a list of active message buffers."
+  (let (buffers)
+    (save-current-buffer
+      (dolist (buffer (buffer-list t))
+        (set-buffer buffer)
+        (when (and (derived-mode-p 'message-mode)
+                (null message-sent-message-via))
+          (push (buffer-name buffer) buffers))))
+    (nreverse buffers)))
+
+(setq gnus-dired-mail-mode 'mu4e-user-agent)
+(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 #+end_src
