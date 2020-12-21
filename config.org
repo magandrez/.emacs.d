@@ -859,6 +859,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
           lsp-gopls-complete-unimported t
           lsp-inhibit-message t
           lsp-enable-file-watchers nil
+          lsp-enable-semantic-highlighting t
           ;; Performance tweaks
           ;; https://github.com/emacs-lsp/lsp-mode#performance
           gc-cons-threshold 100000000
@@ -866,7 +867,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
           lsp-idle-delay 0.25)
     (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
-           ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)))
+          ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)))
 
   (use-package company-lsp
     :ensure t
@@ -876,7 +877,16 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
     :ensure t
     :commands lsp-ui-mode
     :config
-      (setq lsp-ui-doc-delay 5.0))
+    (setq lsp-ui-doc-enable t
+          lsp-ui-doc-header nil
+          lsp-ui-doc-include-signature t
+          lsp-ui-doc-position 'bottom
+          lsp-ui-doc-alignment 'window
+          lsp-ui-doc-use-childframe t
+          lsp-ui-doc-use-webkit nil
+          lsp-ui-doc-delay 0.2
+          lsp-ui-sideline-enable nil
+          lsp-ui-imenu-enable t))
 #+end_src
 
 ** Company completion
