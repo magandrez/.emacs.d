@@ -990,7 +990,24 @@ A template system for filling in the knowledge blanks ;) Set hook per language
 (global-set-key (kbd "C-c y") 'yas-insert-snippet)
 #+end_src
 
+** Flyspell
 
+Use flyspell for highlighting and correcting spelling mistakes.
+
+#+begin_src emacs-lisp
+(use-package flyspell
+  :ensure t
+  :defer t
+  :hook
+    (prog-mode . flyspell-prog-mode)
+    (text-mode . flyspell-mode))
+
+(use-package flyspell-correct-ivy
+  :after flyspell
+  :bind (:map flyspell-mode-map
+        ("C-;" . flyspell-correct-wrapper))
+  :custom (flyspell-correct-interface 'flyspell-correct-ivy))
+#+end_src
 * Org
 
 Adding org files for agenda
