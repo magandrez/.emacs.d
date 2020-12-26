@@ -864,7 +864,8 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
           ;; https://github.com/emacs-lsp/lsp-mode#performance
           gc-cons-threshold 100000000
           read-process-output-max (* 1024 1024)
-          lsp-idle-delay 0.25)
+          lsp-idle-delay 0.25
+          lsp-keep-workspace-alive nil)
     (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
           ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)))
