@@ -870,10 +870,6 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
     :hook ((lsp-mode . lsp-enable-which-key-integration)
           ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)))
 
-  (use-package company-lsp
-    :ensure t
-    :config (push 'company-lsp company-backends))
-
   (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode
