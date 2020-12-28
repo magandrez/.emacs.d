@@ -999,7 +999,6 @@ Use flyspell for highlighting and correcting spelling mistakes.
   :ensure t
   :defer t
   :hook
-    (prog-mode . flyspell-prog-mode)
     (text-mode . flyspell-mode))
 
 (use-package flyspell-correct-ivy
