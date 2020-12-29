@@ -570,8 +570,7 @@ docs, if you will).
   (interactive)
   (tide-setup)
   (flycheck-mode 1)
-  (setq flycheck-check-syntax-automatically '(save-mode-enabled)
-        lsp-prefer-flymake nil)
+  (setq flycheck-check-syntax-automatically '(save-mode-enabled))
   (eldoc-mode 1)
   (tide-hl-identifier-mode 1)
   (company-mode 1))
@@ -865,7 +864,8 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
           gc-cons-threshold 100000000
           read-process-output-max (* 1024 1024)
           lsp-idle-delay 0.25
-          lsp-keep-workspace-alive nil)
+          lsp-keep-workspace-alive nil
+          lsp-prefer-flymake nil)
     (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
           ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)))
@@ -1003,6 +1003,7 @@ Use flyspell for highlighting and correcting spelling mistakes.
         ("C-;" . flyspell-correct-wrapper))
   :custom (flyspell-correct-interface 'flyspell-correct-ivy))
 #+end_src
+
 * Org
 
 Adding org files for agenda
