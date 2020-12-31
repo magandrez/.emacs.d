@@ -1019,6 +1019,24 @@ Use flyspell for highlighting and correcting spelling mistakes.
   :custom (flyspell-correct-interface 'flyspell-correct-ivy))
 #+end_src
 
+** Dictionaries and stuff
+
+#+begin_src emacs-lisp
+(use-package dictionary
+  :ensure t
+  :bind (("C-d" . dictionary-search)
+         ("C-m" . dictionary-match)))
+(global-set-key (kbd "C-c s") 'dictionary-search)
+(global-set-key (kbd "C-c m") 'dictionary-match-words)
+#+end_src
+
+A thesaurus for synonyms
+
+#+begin_src emacs-lisp
+(use-package powerthesaurus
+  :ensure t)
+(global-set-key (kbd "C-c t") 'powerthesaurus-lookup-word-at-point)
+#+end_src
 
 * Org
 
