@@ -607,6 +607,13 @@ docs, if you will).
   (setq which-key-idle-secondary-delay nil))
 #+END_SRC
 
+** Try
+
+For trying packages
+#+begin_src emacs-lisp
+(use-package try)
+#+end_src
+
 ** Ace
 
 Use ace-window to cycle through windows
