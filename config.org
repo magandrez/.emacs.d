@@ -6,6 +6,12 @@ This is an emacs configuration written as Org file(s). Literate configs are a si
 
 ** Basic defaults
 
+Open this file
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "ESC ESC c")(lambda() (interactive)(find-file "~/.emacs.d/config.org")))
+#+end_src
+
 Remove all the stuff I don't use.
 
 #+BEGIN_SRC emacs-lisp
@@ -18,6 +24,7 @@ Remove all the stuff I don't use.
 #+END_SRC
 
 Custom faces
+
 #+begin_src emacs-lisp
 (custom-set-faces
  '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
@@ -25,11 +32,13 @@ Custom faces
 #+end_src
 
 Yes or no: y-or-n
+
 #+BEGIN_SRC emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
 Some miscelaneous defaults.
+
 #+BEGIN_SRC emacs-lisp
   (setq-default inhibit-startup-screen t
                 initial-scratch-message ""
@@ -47,6 +56,7 @@ Some miscelaneous defaults.
 #+END_SRC
 
 Scrolling defaults.
+
 #+BEGIN_SRC emacs-lisp
 (setq scroll-margin 1
       scroll-conservatively 0
@@ -77,6 +87,7 @@ coding/encoding (Chinese/Japanese/Korean characters).
     (setq buffer-file-coding-system 'utf-8)
   (setq default-buffer-file-coding-system 'utf-8))
 #+END_SRC
+
 
 ** Misc keybindings
 
@@ -208,6 +219,7 @@ The values can be 'control, 'alt, 'meta, 'super, 'hyper, nil (setting to nil all
 
 Set, among other details, different shells for OSs. For GNU/Linux,
 uses [fish](https://fishshell.com/) see functions loaded and [omf](https://github.com/oh-my-fish/oh-my-fish)
+
 #+BEGIN_SRC emacs-lisp
   (cond ((eq system-type 'darwin)
 
@@ -230,6 +242,7 @@ Add node to the exec path
 #+begin_src emacs-lisp
 (setq exec-path (append exec-path '(shell-command-to-string "/usr/local/bin/node")))
 #+end_src
+
 ** Backups
 
 As default write backup files on ~/.emacs.d/backup and disables lock files, it gets messy on mounted network file systems like Keybase FS (https://keybase.io/).
@@ -1336,6 +1349,7 @@ backend)
 #+end_src
 
 Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-files-with-dired.html][here]].
+
 #+begin_src emacs-lisp
 (require 'gnus-dired)
 ;; make the `gnus-dired-mail-buffers' function also work on
