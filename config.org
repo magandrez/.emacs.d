@@ -847,7 +847,6 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
     :commands (lsp lsp-deferred)
     :config
     (setq lsp-keymap-prefix "C-l"
-          lsp-gopls-staticcheck t
           lsp-eldoc-render-all nil
           lsp-gopls-complete-unimported t
           lsp-inhibit-message t
@@ -859,7 +858,9 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
           read-process-output-max (* 1024 1024)
           lsp-idle-delay 0.25
           lsp-keep-workspace-alive nil
-          lsp-prefer-flymake nil)
+          lsp-prefer-flymake nil
+          lsp-enable-snippet t
+          lsp-enable-completion-at-point t)
     (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
     :hook ((lsp-mode . lsp-enable-which-key-integration)
           ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)))
@@ -997,6 +998,7 @@ Use flyspell for highlighting and correcting spelling mistakes.
         ("C-;" . flyspell-correct-wrapper))
   :custom (flyspell-correct-interface 'flyspell-correct-ivy))
 #+end_src
+
 
 * Org
 
