@@ -413,12 +413,6 @@ Install company-go
   :config (push 'company-go company-backends))
 #+end_src
 
-Linter with golint https://github.com/golang/lint
-requires golint
-#+begin_src emacs-lisp
-(use-package golint)
-#+end_src
-
 ** Ruby
 
 #+BEGIN_SRC emacs-lisp
