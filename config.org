@@ -1038,6 +1038,39 @@ A thesaurus for synonyms
 (global-set-key (kbd "C-c t") 'powerthesaurus-lookup-word-at-point)
 #+end_src
 
+** RSS
+
+Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
+
+#+begin_src emacs-lisp
+(use-package elfeed
+  :ensure t
+  :bind (:map elfeed-search-mode-map
+   ("m" . elfeed-toggle-star)))
+
+(use-package elfeed-goodies
+  :ensure t
+  :after elfeed
+  :config
+ (elfeed-goodies/setup))
+
+
+(use-package elfeed-org
+  :ensure t
+  :after elfeed
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/feeds/rss.org")))
+
+(use-package elfeed-dashboard
+  :after elfeed
+  :ensure t
+  :config
+  (setq elfeed-dashboard-file "~/feeds/dashboard.org")
+  ;; update feed counts on elfeed-quit
+  (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
+#+end_src
+
 * Org
 
 Adding org files for agenda
