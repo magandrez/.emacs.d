@@ -1043,6 +1043,8 @@ A thesaurus for synonyms
 Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 
 #+begin_src emacs-lisp
+(global-set-key (kbd "C-c e") 'elfeed)
+
 (use-package elfeed
   :ensure t
   :bind (:map elfeed-search-mode-map
@@ -1052,8 +1054,11 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
   :ensure t
   :after elfeed
   :config
- (elfeed-goodies/setup))
-
+  (elfeed-goodies/setup)
+  (setq elfeed-goodies/entry-pane-position 'bottom
+        elfeed-goodies/switch-to-entry nil
+        elfeed-goodies/feed-source-column-width 25
+        elfeed-goodies/tag-column-width 27))
 
 (use-package elfeed-org
   :ensure t
@@ -1070,6 +1075,7 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
   ;; update feed counts on elfeed-quit
   (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
 #+end_src
+
 
 * Org
 
