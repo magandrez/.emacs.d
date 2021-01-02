@@ -1023,9 +1023,7 @@ Use flyspell for highlighting and correcting spelling mistakes.
 
 #+begin_src emacs-lisp
 (use-package dictionary
-  :ensure t
-  :bind (("C-d" . dictionary-search)
-         ("C-m" . dictionary-match)))
+  :ensure t)
 (global-set-key (kbd "C-c s") 'dictionary-search)
 (global-set-key (kbd "C-c m") 'dictionary-match-words)
 #+end_src
