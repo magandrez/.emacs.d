@@ -983,8 +983,8 @@ Use flyspell for highlighting and correcting spelling mistakes.
 #+begin_src emacs-lisp
 (use-package dictionary
   :ensure t)
-(global-set-key (kbd "C-c s") 'dictionary-search)
-(global-set-key (kbd "C-c m") 'dictionary-match-words)
+(global-set-key (kbd "C-c C-c s") 'dictionary-search)
+(global-set-key (kbd "C-c C-c m") 'dictionary-match-words)
 #+end_src
 
 A thesaurus for synonyms
