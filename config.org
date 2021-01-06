@@ -88,7 +88,6 @@ coding/encoding (Chinese/Japanese/Korean characters).
   (setq default-buffer-file-coding-system 'utf-8))
 #+END_SRC
 
-
 ** Misc keybindings
 
 Use `C-x C-0` to restore font size.
@@ -1074,6 +1073,16 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
   (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
 #+end_src
 
+** Ripgrep
+
+`ripgrep` is a fast grep tool built in Rust. [[https://github.com/dajva/rg.el][rg]] is a `ripgrep`
+frontend for Emacs.
+
+#+begin_src emacs-lisp
+(use-package rg
+  :ensure t
+  :init (rg-enable-default-bindings))
+#+end_src
 
 * Org
 
