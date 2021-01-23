@@ -1364,6 +1364,8 @@ package (hence the requires).
 
   (add-hook 'message-send-hook 'sign-or-encrypt-message)
 
+  (set-face-foreground 'mu4e-unread-face "yellow")
+
   (defun sign-or-encrypt-message ()
     (let ((answer (read-from-minibuffer "Sign or encrypt?\nEmpty to do nothing.\n[s/e]: ")))
       (cond
