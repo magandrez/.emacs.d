@@ -642,6 +642,13 @@ EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/Easy
   (pinentry-start)))
 #+END_SRC
 
+For credentials, use `auth-source-pass`, included in Emacs 26. See
+more [[https://github.com/DamienCassou/auth-source-pass][here]].
+
+#+begin_src emacs-lisp
+(auth-source-pass-enable)
+#+end_src
+
 ** Misc
 
 Greek letters should look greek; reload files when change, please;
@@ -1044,6 +1051,7 @@ frontend for Emacs.
   :init (rg-enable-default-bindings))
 #+end_src
 
+
 * Org
 
 Adding org files for agenda
@@ -1277,98 +1285,102 @@ https://github.com/stathissideris/ditaa
 
 * Mail
 
-Preliminary blob of config for a mail client (`mu4e` and `mbsync` as
-backend)
+Configuration emailing with `mu4e` client and `mbsync` as backend. The
+package is not available in MELPA/ELPA/GNU, but rather a system
+package (hence the requires).
 
 #+begin_src emacs-lisp
-(require 'mu4e)
-(require 'mu4e-contrib)
-(require 'org-mu4e)
-(require 'smtpmail)
+  (require 'mu4e)
+  (require 'mu4e-contrib)
+  (require 'org-mu4e)
+  (require 'smtpmail)
 
-(setq mail-user-agent "mu4e"
-      user-full-name  "Manuel González"
-      mu4e-attachment-dir "~/Downloads"
-      mu4e-change-filenames-when-moving t
-      mu4e-completing-read-function 'completing-read
-      mu4e-compose-complete-addresses t
-      mu4e-compose-context-policy nil
-      mu4e-compose-dont-reply-to-self t
-      mu4e-compose-keep-self-cc nil
-      mu4e-context-policy 'pick-first
-      mu4e-get-mail-command "mbsync -a"
-      mu4e-headers-date-format "%d-%m-%Y %H:%M"
-      mu4e-headers-fields '((:date . 22)
-                            (:flags . 6)
-                            (:from . 22)
-                            (:subject))
-      mu4e-headers-include-related t
-      mu4e-view-show-addresses t
-      mu4e-view-show-images t
-      auth-source-debug t
-      auth-source-do-cache nil
-      auth-sources '(password-store)
-      message-kill-buffer-on-exit t
-      message-send-mail-function 'smtpmail-send-it
-      smtpmail-debug-info t
-      smtpmail-stream-type 'starttls
-      mm-sign-option 'guided
-      mu4e-contexts
-      `( ,(make-mu4e-context
-           :name "manuel.is"
-           :enter-func (lambda ()
-                         (mu4e-message "Entering gmail context")
-                         (when (string-match-p (buffer-name (current-buffer)) "mu4e-main")
-                           (revert-buffer)))
-           :leave-func (lambda ()
-                         (mu4e-message "Leaving gmail context")
-                         (when (string-match-p (buffer-name (current-buffer)) "mu4e-main")
-                           (revert-buffer)))
-           :match-func (lambda (msg)
-                         (when msg
-                           (or (mu4e-message-contact-field-matches msg :to "manuel@manuel.is")
-                               (mu4e-message-contact-field-matches msg :from "manuel@manuel.is")
-                               (mu4e-message-contact-field-matches msg :cc "manuel@manuel.is")
-                               (mu4e-message-contact-field-matches msg :bcc "manuel@manuel.is")
-                               (string-match-p "^/manuel.is/Inbox" (mu4e-message-field msg :maildir)))))
-           :vars '( ( user-mail-address            . "manuel@manuel.is" )
-                    ( user-full-name               . "Manuel González"  )
-                    ( smtpmail-smtp-user           . "manuel@manuel.is" )
-                    ( smtpmail-smtp-server         . "mail.manuel.is" )
-                    ( smtpmail-smtp-service        . 587 )
-                    ( mu4e-maildir-shortcuts       . ((:maildir "/manuel.is/Inbox" :key ?i)))
-                    ( mu4e-bookmarks
-                      .
-                      (( :name  "Unread messages"
-                                :query "maildir:/manuel.is/Inbox AND flag:unread AND NOT flag:trashed AND NOT outdoorexperten"
-                                :key ?u)
-                       ( :name "Today's messages"
-                               :query "maildir:/manuel.is/Inbox AND date:today..now"
-                               :key ?t)
-                       ( :name "Last 7 days"
-                               :query "maildir:/manuel.is/Inbox AND date:7d..now"
-                               :hide-unread t
-                               :key ?w)
-                       ( :name "Deleted"
-                               :query "flag:trashed"
-                               :key ?d)))))))
+  (setq mail-user-agent "mu4e"
+        user-full-name  "Manuel González"
+        mu4e-attachment-dir "~/Downloads"
+        mu4e-change-filenames-when-moving t
+        mu4e-completing-read-function 'completing-read
+        mu4e-compose-complete-addresses t
+        mu4e-compose-context-policy nil
+        mu4e-compose-dont-reply-to-self t
+        mu4e-compose-keep-self-cc nil
+        mu4e-context-policy 'pick-first
+        mu4e-get-mail-command "mbsync -a"
+        mu4e-headers-date-format "%d-%m-%Y %H:%M"
+        mu4e-headers-fields '((:date . 22)
+                              (:flags . 6)
+                              (:from . 22)
+                              (:subject))
+        mu4e-headers-include-related t
+        mu4e-view-show-addresses t
+        mu4e-view-show-images t
+        auth-source-debug t
+        auth-source-do-cache nil
+        auth-sources '(password-store)
+        message-kill-buffer-on-exit t
+        message-send-mail-function 'smtpmail-send-it
+        smtpmail-debug-info t
+        smtpmail-stream-type 'starttls
+        mm-sign-option 'guided
+        mu4e-contexts
+        `( ,(make-mu4e-context
+             :name "manuel.is"
+             :enter-func (lambda ()
+                           (mu4e-message "Entering gmail context")
+                           (when (string-match-p (buffer-name (current-buffer)) "mu4e-main")
+                             (revert-buffer)))
+             :leave-func (lambda ()
+                           (mu4e-message "Leaving gmail context")
+                           (when (string-match-p (buffer-name (current-buffer)) "mu4e-main")
+                             (revert-buffer)))
+             :match-func (lambda (msg)
+                           (when msg
+                             (or (mu4e-message-contact-field-matches msg :to "manuel@manuel.is")
+                                 (mu4e-message-contact-field-matches msg :from "manuel@manuel.is")
+                                 (mu4e-message-contact-field-matches msg :cc "manuel@manuel.is")
+                                 (mu4e-message-contact-field-matches msg :bcc "manuel@manuel.is")
+                                 (string-match-p "^/manuel.is/Inbox" (mu4e-message-field msg :maildir)))))
+             :vars '( ( user-mail-address            . "manuel@manuel.is" )
+                      ( user-full-name               . "Manuel González"  )
+                      ( smtpmail-smtp-user           . "manuel@manuel.is" )
+                      ( smtpmail-smtp-server         . "mail.manuel.is" )
+                      ( smtpmail-smtp-service        . 587 )
+                      ( mu4e-maildir-shortcuts       . ((:maildir "/manuel.is/Inbox" :key ?i)))
+                      ( mu4e-bookmarks
+                        .
+                        (( :name  "Unread messages"
+                                  :query "maildir:/manuel.is/Inbox AND flag:unread AND NOT flag:trashed AND NOT outdoorexperten"
+                                  :key ?u)
+                         ( :name "Today's messages"
+                                 :query "maildir:/manuel.is/Inbox AND date:today..now"
+                                 :key ?t)
+                         ( :name "Last 7 days"
+                                 :query "maildir:/manuel.is/Inbox AND date:7d..now"
+                                 :hide-unread t
+                                 :key ?w)
+                         ( :name "Deleted"
+                                 :query "flag:trashed"
+                                 :key ?d)))))))
 
-(add-hook 'message-send-hook 'sign-or-encrypt-message)
+  (add-hook 'message-send-hook 'sign-or-encrypt-message)
 
-(defun sign-or-encrypt-message ()
-  (let ((answer (read-from-minibuffer "Sign or encrypt?\nEmpty to do nothing.\n[s/e]: ")))
-    (cond
-     ((string-equal answer "s") (progn
-                                  (message "Signing message.")
-                                  (mml-secure-message-sign-pgpmime)))
-     ((string-equal answer "e") (progn
-                                  (message "Encrypt and signing message.")
-                                  (mml-secure-message-encrypt-pgpmime)))
-     (t (progn
-          (message "Dont signing or encrypting message.")
-          nil)))))
-(auth-source-pass-enable)
+  (defun sign-or-encrypt-message ()
+    (let ((answer (read-from-minibuffer "Sign or encrypt?\nEmpty to do nothing.\n[s/e]: ")))
+      (cond
+       ((string-equal answer "s") (progn
+                                    (message "Signing message.")
+                                    (mml-secure-message-sign-pgpmime)))
+       ((string-equal answer "e") (progn
+                                    (message "Encrypt and signing message.")
+                                    (mml-secure-message-encrypt-pgpmime)))
+       (t (progn
+            (message "Dont signing or encrypting message.")
+            nil)))))
+#+end_src
 
+Viewing inline images, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Viewing-images-inline.html][here]].
+
+#+begin_src emacs-lisp
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
 #+end_src
@@ -1377,6 +1389,7 @@ Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-f
 
 #+begin_src emacs-lisp
 (require 'gnus-dired)
+
 ;; make the `gnus-dired-mail-buffers' function also work on
 ;; message-mode derived modes, such as mu4e-compose-mode
 (defun gnus-dired-mail-buffers ()
