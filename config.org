@@ -385,6 +385,13 @@ Install company-go
   :config (push 'company-go company-backends))
 #+end_src
 
+Use flycheck checker for golangci-lint
+#+begin_src emacs-lisp
+(use-package flycheck-golangci-lint
+  :ensure t
+  :hook (go-mode . flycheck-golangci-lint-setup))
+#+end_src
+
 ** Ruby
 
 #+BEGIN_SRC emacs-lisp
