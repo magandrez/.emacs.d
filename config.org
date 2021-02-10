@@ -389,8 +389,12 @@ Use flycheck checker for golangci-lint
 #+begin_src emacs-lisp
 (use-package flycheck-golangci-lint
   :ensure t
-  :hook (go-mode . flycheck-golangci-lint-setup))
+  :hook (go-mode . flycheck-golangci-lint-setup)
+  :config
+  (setq flycheck-golangci-lint-enable-linters '("deadcode" "errcheck" "gofmt" "golint" "gosimple" "govet" "ineffassign" "staticcheck" "structcheck" "typecheck" "unused" "varcheck")
+        flycheck-golangci-lint-deadline "1s"))
 #+end_src
+
 
 ** Ruby
 
