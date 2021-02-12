@@ -901,7 +901,7 @@ On-the-fly syntax checking
   :ensure t
   :init (global-flycheck-mode)
   :config
-  (setq flycheck-check-syntax-automatically '(save mode-enable)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled)
         flycheck-javascript-standard-executable "/home/manuel/.nvm/versions/node/v15.0.1/bin/standardx"))
 #+end_src
 
