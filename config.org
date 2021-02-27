@@ -583,6 +583,7 @@ docs, if you will).
 
 #+BEGIN_SRC emacs-lisp
  (use-package which-key
+  :diminish
   :init
   (add-hook 'after-init-hook 'which-key-mode)
   :config
@@ -741,6 +742,7 @@ Use Projectile for jumping around code, etc.
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
+  :delight '(:eval (concat " " (projectile-project-name)))
   :defer 1
   :init
   (setq-default
@@ -883,6 +885,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
 
 #+begin_src emacs-lisp
 (use-package company
+  :diminish
   :ensure t
   :defer t
   :custom
@@ -899,6 +902,7 @@ On-the-fly syntax checking
 
 #+begin_src emacs-lisp
 (use-package flycheck
+  :diminish
   :ensure t
   :init (global-flycheck-mode)
   :config
@@ -912,6 +916,7 @@ Ivy basics
 
 #+begin_src emacs-lisp
 (use-package ivy
+  :diminish
   :ensure t
   :init (ivy-mode 1)
   :config
@@ -961,6 +966,7 @@ A template system for filling in the knowledge blanks ;) Set hook per language
 
 #+begin_src emacs-lisp
 (use-package yasnippet
+  :delight
   :ensure t
   :init
    (add-hook 'k8s-mode-hook #'yas-minor-mode)
@@ -979,12 +985,14 @@ A template system for filling in the knowledge blanks ;) Set hook per language
 (global-set-key (kbd "C-c y") 'yas-insert-snippet)
 #+end_src
 
+
 ** Flyspell
 
 Use flyspell for highlighting and correcting spelling mistakes.
 
 #+begin_src emacs-lisp
 (use-package flyspell
+  :diminish
   :ensure t
   :defer t
   :hook
@@ -1061,6 +1069,29 @@ frontend for Emacs.
 (use-package rg
   :ensure t
   :init (rg-enable-default-bindings))
+#+end_src
+
+** Diminish
+
+Manages modeline for minor modes
+
+#+begin_src emacs-lisp
+(use-package diminish
+  :ensure t)
+
+(diminish 'eldoc-mode)
+(diminish 'org-indent-mode)
+(diminish 'auto-fill-mode)
+#+end_src
+
+
+** Delight
+
+Manages modeline for minor and major modes
+
+#+begin_src emacs-lisp
+(use-package delight
+  :ensure t)
 #+end_src
 
 
