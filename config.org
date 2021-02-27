@@ -375,7 +375,8 @@ block).
   :ensure t
   :hook ((go-mode . lsp-deferred)
          (go-mode . (lambda () (fci-mode 1) (company-mode)))
-         (before-save . lsp-format-buffer)))
+         (before-save . lsp-format-buffer)
+         (before-save . lsp-organize-imports)))
 #+END_SRC
 
 Install company-go
@@ -391,7 +392,7 @@ Use flycheck checker for golangci-lint
   :ensure t
   :hook (go-mode . flycheck-golangci-lint-setup)
   :config
-  (setq flycheck-golangci-lint-enable-linters '("deadcode" "errcheck" "gofmt" "golint" "gosimple" "govet" "ineffassign" "staticcheck" "structcheck" "typecheck" "unused" "varcheck")
+  (setq flycheck-golangci-lint-enable-linters '("deadcode" "errcheck" "gofmt" "golint" "gosimple" "govet" "ineffassign" "staticcheck" "structcheck" "typecheck" "unused" "varcheck" "bodyclose" "goimports")
         flycheck-golangci-lint-deadline "5s"))
 #+end_src
 
