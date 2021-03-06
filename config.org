@@ -374,7 +374,7 @@ block).
 (use-package go-mode
   :ensure t
   :hook ((go-mode . lsp-deferred)
-         (go-mode . (lambda () (fci-mode 1) (company-mode)))
+         (go-mode . (lambda () (company-mode)))
          (before-save . lsp-format-buffer)
          (before-save . lsp-organize-imports)))
 #+END_SRC
