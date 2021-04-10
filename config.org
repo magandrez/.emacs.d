@@ -730,6 +730,12 @@ Use Projectile for jumping around code, etc.
   :after treemacs projectile
   :bind
   (("C-c o p" . treemacs-projectile)))
+
+(use-package lsp-treemacs
+  :after treemacs lsp-mode)
+
+(with-eval-after-load 'lsp-mode
+  (lsp-treemacs-sync-mode 1))
 #+END_SRC
 
 ** Yafolding
