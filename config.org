@@ -88,72 +88,6 @@ coding/encoding (Chinese/Japanese/Korean characters).
   (setq default-buffer-file-coding-system 'utf-8))
 #+END_SRC
 
-** Misc keybindings
-
-Use `C-x C-0` to restore font size.
-
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-+") 'text-scale-increase)        ; Bigger
-(global-set-key (kbd "C--") 'text-scale-decrease)        ; Smaller
-(global-set-key (kbd "M-n") 'next-multiframe-window)     ; Cycle through frames
-(global-set-key (kbd "M-p") 'previous-multiframe-window) ; Cycle through frames
-#+END_SRC
-
-Set C-x C-m as a sequence for M-x. And the "backup" C-c C-m for misstyping.
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
-(global-set-key (kbd "C-c C-m") 'execute-extended-command)
-#+end_src
-
-Bind backward-kill-word to C-w
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-w") 'backward-kill-word)
-(global-set-key (kbd "C-x C-k") 'kill-region)
-(global-set-key (kbd "C-c C-k") 'kill-region)
-#+end_src
-
-Moving things up and down (related defuns under a different heading)
-
-#+begin_src emacs-lisp
-(global-set-key [(control shift up)]  'move-line-up)
-(global-set-key [(control shift down)]  'move-line-down)
-#+end_src
-
-Global Copy & Paste in Unix
-
-#+begin_src emacs-lisp
-  ;; Copy to clipboard
-  (defun copy-to-clipboard ()
-    "Copies selection to x-clipboard."
-    (interactive)
-    (if (display-graphic-p)
-        (progn
-          (message "Yanked region to x-clipboard!")
-          (call-interactively 'clipboard-kill-ring-save)
-          )
-      (if (region-active-p)
-          (progn
-            (shell-command-on-region (region-beginning) (region-end) "xsel -i -b")
-            (message "Yanked region to clipboard!")
-            (deactivate-mark))
-        (message "No region active; can't yank to clipboard!")))
-    )
-
-  ;; Paste from clipboard
-  (defun paste-from-clipboard ()
-    (interactive)
-    (if (display-graphic-p)
-        (progn
-          (clipboard-yank)
-          (message "graphics active")
-          )
-      (insert (shell-command-to-string "xsel -o -b"))
-      )
-    )
-#+end_src
-
 ** Theme
 
 Use monokai theme for Emacs.
@@ -395,7 +329,6 @@ Use flycheck checker for golangci-lint
   (setq flycheck-golangci-lint-enable-linters '("deadcode" "errcheck" "gofmt" "golint" "gosimple" "govet" "ineffassign" "staticcheck" "structcheck" "typecheck" "unused" "varcheck" "bodyclose" "goimports")
         flycheck-golangci-lint-deadline "5s"))
 #+end_src
-
 
 ** Ruby
 
@@ -1459,4 +1392,81 @@ Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-f
 
 (setq gnus-dired-mail-mode 'mu4e-user-agent)
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+#+end_src
+
+
+* Keybindings
+
+Use `C-x C-0` to restore font size.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-+") 'text-scale-increase)        ; Bigger
+(global-set-key (kbd "C--") 'text-scale-decrease)        ; Smaller
+(global-set-key (kbd "M-n") 'next-multiframe-window)     ; Cycle through frames
+(global-set-key (kbd "M-p") 'previous-multiframe-window) ; Cycle through frames
+#+END_SRC
+
+Set C-x C-m as a sequence for M-x. And the "backup" C-c C-m for misstyping.
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-x C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c C-m") 'execute-extended-command)
+#+end_src
+
+Bind backward-kill-word to C-w
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-w") 'backward-kill-word)
+(global-set-key (kbd "C-x C-k") 'kill-region)
+(global-set-key (kbd "C-c C-k") 'kill-region)
+#+end_src
+
+Moving things up and down (related defuns under a different heading)
+
+#+begin_src emacs-lisp
+(global-set-key [(control shift up)]  'move-line-up)
+(global-set-key [(control shift down)]  'move-line-down)
+#+end_src
+
+Global Copy & Paste in Unix
+
+#+begin_src emacs-lisp
+  ;; Copy to clipboard
+  (defun copy-to-clipboard ()
+    "Copies selection to x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (message "Yanked region to x-clipboard!")
+          (call-interactively 'clipboard-kill-ring-save)
+          )
+      (if (region-active-p)
+          (progn
+            (shell-command-on-region (region-beginning) (region-end) "xsel -i -b")
+            (message "Yanked region to clipboard!")
+            (deactivate-mark))
+        (message "No region active; can't yank to clipboard!")))
+    )
+
+  ;; Paste from clipboard
+  (defun paste-from-clipboard ()
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (clipboard-yank)
+          (message "graphics active")
+          )
+      (insert (shell-command-to-string "xsel -o -b"))
+      )
+    )
+#+end_src
+
+Miscellaneous keybindings
+
+#+begin_src emacs-lisp
+(define-key global-map [?\s-d] 'projectile-find-dir)       ;; Find folder in project
+(define-key global-map [?\s-p] 'projectile-switch-project) ;; Switch project
+(define-key global-map [?\s-f] 'projectile-find-file)      ;; Find file in project
+(define-key global-map [?\s-m] 'magit-status)              ;; Magit status
+(define-key global-map [?\s-l G j] 'lsp-ui-doc-focus-frame)  ;; Focus on the overlayed frame
 #+end_src
