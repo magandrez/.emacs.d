@@ -818,6 +818,10 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
           lsp-ui-doc-delay 0.2
           lsp-ui-sideline-enable nil
           lsp-ui-imenu-enable t))
+
+(with-eval-after-load 'lsp-mode
+  ;; :global/:workspace/:file
+  (setq lsp-modeline-diagnostics-scope :workspace))
 #+end_src
 
 ** Company completion
