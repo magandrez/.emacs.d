@@ -1412,8 +1412,6 @@ Use `C-x C-0` to restore font size.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-+") 'text-scale-increase)        ; Bigger
 (global-set-key (kbd "C--") 'text-scale-decrease)        ; Smaller
-(global-set-key (kbd "M-n") 'next-multiframe-window)     ; Cycle through frames
-(global-set-key (kbd "M-p") 'previous-multiframe-window) ; Cycle through frames
 #+END_SRC
 
 Set C-x C-m as a sequence for M-x. And the "backup" C-c C-m for misstyping.
