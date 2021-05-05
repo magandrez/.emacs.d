@@ -976,8 +976,6 @@ A thesaurus for synonyms
 Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c e") 'elfeed)
-
 (use-package elfeed
   :ensure t
   :bind (:map elfeed-search-mode-map
@@ -1475,6 +1473,7 @@ Miscellaneous keybindings
 (define-key global-map [?\s-f] 'projectile-find-file)      ;; Find file in project
 (define-key global-map [?\s-m] 'magit-status)              ;; Magit status
 (define-key global-map [?\s-l G j] 'lsp-ui-doc-focus-frame)  ;; Focus on the overlayed frame
+(global-set-key (kbd "C-c e") 'elfeed) ;; Elfeed
 #+end_src
 
 Resize window
