@@ -52,7 +52,8 @@ Some miscelaneous defaults.
                 window-combination-resize t                    ; Create new windows proportionally
                 use-package-always-ensure t                    ; Install packages if not found on the system
                 line-number-mode t                             ; Line number
-                column-number-mode t)                          ; Column number
+                column-number-mode t                           ; Column number
+                fill-column 80)                                ; 80 columns is the standard
 #+END_SRC
 
 Scrolling defaults.
@@ -276,6 +277,7 @@ Docker compose as well
   :mode "README$"
   :mode "\\.markdown$"
   :mode "\\.md$"
+  :hook ((markdown-mode . auto-fill-mode))
   :config
   (setq-default
    markdown-asymmetric-header t
@@ -1030,7 +1032,6 @@ Manages modeline for minor modes
 
 (diminish 'eldoc-mode)
 (diminish 'org-indent-mode)
-(diminish 'auto-fill-mode)
 #+end_src
 
 ** Delight
