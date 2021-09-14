@@ -1282,12 +1282,14 @@ package is not available in MELPA/ELPA/GNU, but rather a system
 package (hence the requires).
 
 #+begin_src emacs-lisp
+(when (eq system-type 'gnu/linux)
   (require 'mu4e)
   (require 'mu4e-contrib)
   (require 'org-mu4e)
   (require 'smtpmail)
 
-  (setq mail-user-agent "mu4e"
+  (setq mu4e-mu-binary "/bin/mu"
+        mail-user-agent "mu4e"
         user-full-name  "Manuel González"
         mu4e-attachment-dir "~/Downloads"
         mu4e-change-filenames-when-moving t
@@ -1370,6 +1372,7 @@ package (hence the requires).
        (t (progn
             (message "Dont signing or encrypting message.")
             nil)))))
+)
 #+end_src
 
 Viewing inline images, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Viewing-images-inline.html][here]].
