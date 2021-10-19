@@ -767,7 +767,8 @@ Magit is love for Emacs.
   (setq-default
    magit-auto-revert-mode nil
    magit-refs-show-commit-count 'all
-   magit-section-show-child-count t))
+   magit-section-show-child-count t
+   magit-log-section-commit-count 15))
 #+END_SRC
 
 ** LSP
