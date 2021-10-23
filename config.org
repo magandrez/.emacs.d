@@ -1080,7 +1080,8 @@ The thick of it
           org-fast-tag-selection-include-todo t
           org-use-fast-todo-selection t
           org-startup-indented t
-          org-treat-S-cursor-todo-selection-as-state-change nil)
+          org-treat-S-cursor-todo-selection-as-state-change nil
+          org-startup-with-inline-images t)
     (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
     (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))
     (add-hook 'org-mode-hook 'auto-fill-mode)
