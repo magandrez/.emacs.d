@@ -855,7 +855,7 @@ On-the-fly syntax checking
         flycheck-javascript-standard-executable "/home/manuel/.nvm/versions/node/v15.0.1/bin/standardx"))
 #+end_src
 
-** Selectrum + Marginalia
+** Selectrum + Marginalia + Consult
 
 [[https://github.com/raxod502/selectrum][Selectrum]] is an interesting alternative to Ivy + Swiper.
 
