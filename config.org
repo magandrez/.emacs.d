@@ -54,6 +54,9 @@ Some miscelaneous defaults.
                 line-number-mode t                             ; Line number
                 column-number-mode t                           ; Column number
                 fill-column 80)                                ; 80 columns is the standard
+
+'(italic ((t (:underline nil))))
+'(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
 #+END_SRC
 
 Scrolling defaults.
