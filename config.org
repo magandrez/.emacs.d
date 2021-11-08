@@ -688,7 +688,7 @@ Use Projectile for jumping around code, etc.
    projectile-indexing-method 'alien
    projectile-globally-ignored-modes '("org-mode" "org-agenda-mode")
    projectile-globally-ignored-file-suffixes '(".gpg")
-   projectile-completion-system 'ivy
+   projectile-completion-system 'default ;; Uses selectrum (based on Emacs API `completing-read`
    projectile-enable-caching t
    projectile-mode-line '(:eval (projectile-project-name)))
    (add-hook 'org-agenda-mode-hook (lambda () (projectile-mode -1)))
