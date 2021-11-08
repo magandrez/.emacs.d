@@ -1060,13 +1060,8 @@ Use flyspell for highlighting and correcting spelling mistakes.
   :ensure t
   :defer t
   :hook
-    (text-mode . flyspell-mode))
-
-(use-package flyspell-correct-ivy
-  :after flyspell
-  :bind (:map flyspell-mode-map
-        ("C-;" . flyspell-correct-wrapper))
-  :custom (flyspell-correct-interface 'flyspell-correct-ivy))
+    (text-mode . flyspell-mode)
+  :custom (setq flyspell-correct-interface #'flyspell-correct-dummy))
 #+end_src
 
 ** Dictionaries and stuff
