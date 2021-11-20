@@ -1541,7 +1541,7 @@ Miscellaneous keybindings
 (define-key global-map [?\s-p] 'projectile-switch-project) ;; Switch project
 (define-key global-map [?\s-f] 'projectile-find-file)      ;; Find file in project
 (define-key global-map [?\s-m] 'magit-status)              ;; Magit status
-(define-key global-map [?\s-l G j] 'lsp-ui-doc-focus-frame)  ;; Focus on the overlayed frame
+;(define-key global-map [?\s-l G j] 'lsp-ui-doc-focus-frame)  ;; Focus on the overlayed frame // Review this. Causes problems on Mac
 (global-set-key (kbd "C-c e") 'elfeed) ;; Elfeed
 #+end_src
 
