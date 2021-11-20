@@ -1352,7 +1352,6 @@ package (hence the requires).
   (require 'mu4e-contrib)
   (require 'org-mu4e)
   (require 'smtpmail)
-
   (setq mu4e-mu-binary "/bin/mu"
         mail-user-agent "mu4e"
         user-full-name  "Manuel González"
@@ -1419,11 +1418,12 @@ package (hence the requires).
                                  :key ?w)
                          ( :name "Deleted"
                                  :query "flag:trashed"
-                                 :key ?d)))))))
+                                 :key ?d)))))
 
   (add-hook 'message-send-hook 'sign-or-encrypt-message)
 
-  (set-face-foreground 'mu4e-unread-face "yellow")
+  (set-face-foreground 'mu4e-unread-face "yellow")))
+
 
   (defun sign-or-encrypt-message ()
     (let ((answer (read-from-minibuffer "Sign or encrypt?\nEmpty to do nothing.\n[s/e]: ")))
@@ -1443,15 +1443,14 @@ package (hence the requires).
 Viewing inline images, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Viewing-images-inline.html][here]].
 
 #+begin_src emacs-lisp
-(when (fboundp 'imagemagick-register-types)
-  (imagemagick-register-types))
+(if (eq system-type 'gnu/linux)
+  (when (fboundp 'imagemagick-register-types)
+    (imagemagick-register-types)))
 #+end_src
 
 Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-files-with-dired.html][here]].
 
 #+begin_src emacs-lisp
-(require 'gnus-dired)
-
 ;; make the `gnus-dired-mail-buffers' function also work on
 ;; message-mode derived modes, such as mu4e-compose-mode
 (defun gnus-dired-mail-buffers ()
@@ -1465,8 +1464,10 @@ Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-f
           (push (buffer-name buffer) buffers))))
     (nreverse buffers)))
 
-(setq gnus-dired-mail-mode 'mu4e-user-agent)
-(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+(if (eq system-type 'gnu/linux)
+  (when (require 'gnus-dired nil 'noerror)
+  (setq gnus-dired-mail-mode 'mu4e-user-agent)
+  (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)))
 #+end_src
 
 
