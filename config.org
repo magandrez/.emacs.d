@@ -1560,4 +1560,5 @@ Consult remapping
 (define-key global-map [?\s-g] 'consult-grep)       ;; Search with grep
 (define-key global-map [?\s-s] 'consult-line-multi) ;; Match in open buffers
 (define-key global-map [?\s-a] 'consult-find)       ;; Search for regexp in DIR
+(global-set-key (kbd "C-s") 'consult-line)
 #+end_src
