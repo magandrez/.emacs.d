@@ -132,13 +132,11 @@ to aid on this, one can use a hook for each programming mode like:
 Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] when loading Emacs outside the console.
 
 #+BEGIN_SRC emacs-lisp
-(use-package exec-path-from-shell
-  :ensure t
-  :init (exec-path-from-shell-initialize)
-  :config
-  (setq exec-path-from-shell-arguments '("-l"))
-  (exec-path-from-shell-copy-env "PATH")
-  (exec-path-from-shell-copy-env "GOPATH"))
+  (let*
+      ((fish-path (shell-command-to-string "/usr/bin/fish -i -c \"echo -n \\$PATH[1]; for val in \\$PATH[2..-1];echo -n \\\":\\$val\\\";end\""))
+       (full-path (append exec-path (split-string fish-path ":"))))
+    (setenv "PATH" fish-path)
+    (setq exec-path full-path))
 #+END_SRC
 
 The variables available for binding the modifier keys on Mac keyboards are the following:
