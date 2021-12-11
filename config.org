@@ -487,7 +487,8 @@ npm i -g prettier
 #+begin_src emacs-lisp
 (use-package rjsx-mode
   :mode ("\\.js\\'"
-         "\\.jsx\\'")
+         "\\.jsx\\'"
+         "\\.tsx\\'")
   :config
   (setq js2-mode-show-parse-errors nil
         js2-mode-show-strict-warnings nil
