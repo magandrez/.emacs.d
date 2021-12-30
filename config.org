@@ -302,7 +302,7 @@ Docker compose as well
     :config (use-package csv-nav)))
 #+END_SRC
 
-** Golang
+** Go
 
 Golang setup. Autocompletion et al provided by LSP (see related config
 block).
