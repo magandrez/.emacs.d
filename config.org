@@ -1106,6 +1106,29 @@ Manages modeline for minor and major modes
   :ensure t)
 #+end_src
 
+** Edit-server
+[[https://github.com/stsquad/emacs_chrome][edit-server]] is a feature that works in conjunction with browsers' plugins
+(depending on browser) to prompt an Emacs frame when editing text on the
+browser.
+
+#+begin_src emacs-lisp
+(use-package edit-server
+  :ensure t
+  :commands edit-server-start
+  :init (if after-init-time
+              (edit-server-start)
+            (add-hook 'after-init-hook
+                      #'(lambda() (edit-server-start))))
+  :config (setq edit-server-new-frame-alist
+                '((name . "Edit with Emacs FRAME")
+                  (top . 200)
+                  (left . 200)
+                  (width . 80)
+                  (height . 25)
+                  (minibuffer . t)
+                  (menu-bar-lines . t)
+                  (window-system . x))))
+#+end_src
 
 * Org
 
