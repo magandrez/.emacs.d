@@ -1,16 +1,13 @@
 #+PROPERTY: header-args :tangle yes
 
-* Basics
+* Config
+
+** Basics
+
 
 This is an emacs configuration written as Org file(s). Literate configs are a side of literate programming (https://en.wikipedia.org/wiki/Literate_programming) where configuration is written in a file along with its documentation. From this literate configuration file, configs applied are subject to be extracted into a "runnable" file (in this case into init.el), this process is called "tangling" (important Org functions for this are org-babel-tangle and org-babel-tangle-file, see: https://orgmode.org/manual/Extracting-source-code.html for more info on the subject).
 
-** Basic defaults
-
-Open this file
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "ESC ESC c")(lambda() (interactive)(find-file "~/.emacs.d/config.org")))
-#+end_src
+*** Basic defaults
 
 Remove all the stuff I don't use.
 
@@ -28,10 +25,7 @@ Custom faces
 #+begin_src emacs-lisp
 (custom-set-faces
   '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1"))))
-
-  '(italic ((t (:underline nil))))
-)
-
+  '(italic ((t (:underline nil)))))
 #+end_src
 
 Yes or no: y-or-n
@@ -43,20 +37,21 @@ Yes or no: y-or-n
 Some miscelaneous defaults.
 
 #+BEGIN_SRC emacs-lisp
-  (setq-default inhibit-startup-screen t
-                initial-scratch-message ""
-                visible-bell nil                               ; No shaking
-                confirm-nonexistent-file-or-buffer nil         ; Remove confirm dialog on new buffers
-                show-paren-delay 0                             ; No delay when showing matching parenthesis
-                confirm-kill-emacs 'y-or-n-p                   ; Confirm exiting Emacs
-                display-time-default-load-average nil          ; Don't display load average
-                indent-tabs-mode nil                           ; No tabs for indentation
-                select-enable-clipboard t                      ; Unite Emacs & system clipboard
-                window-combination-resize t                    ; Create new windows proportionally
-                use-package-always-ensure t                    ; Install packages if not found on the system
-                line-number-mode t                             ; Line number
-                column-number-mode t                           ; Column number
-                fill-column 80)                                ; 80 columns is the standard
+(setq-default inhibit-startup-screen t
+              initial-scratch-message ""
+              visible-bell nil                               ; No shaking
+              confirm-nonexistent-file-or-buffer nil         ; Remove confirm dialog on new buffers
+              show-paren-delay 0                             ; No delay when showing matching parenthesis
+              confirm-kill-emacs 'y-or-n-p                   ; Confirm exiting Emacs
+              display-time-default-load-average nil          ; Don't display load average
+              indent-tabs-mode nil                           ; No tabs for indentation
+              select-enable-clipboard t                      ; Unite Emacs & system clipboard
+              window-combination-resize t                    ; Create new windows proportionally
+              use-package-always-ensure t                    ; Install packages if not found on the system
+              line-number-mode t                             ; Line number
+              column-number-mode t                           ; Column number
+              fill-column 80                                 ; 80 columns is the standard
+              ns-pop-up-frames nil)                          ; Visit files in same frame
 #+END_SRC
 
 Scrolling defaults.
@@ -92,9 +87,9 @@ coding/encoding (Chinese/Japanese/Korean characters).
   (setq default-buffer-file-coding-system 'utf-8))
 #+END_SRC
 
-** Theme
+*** Theme
 
-Use monokai theme for Emacs.
+Use `monokai` theme for Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package monokai-theme
@@ -112,7 +107,7 @@ search results for a given ISearch.
 #+end_src
 
 
-*** Column enforce mode
+**** Column enforce mode
 Because 80 columns is THE
 rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 
@@ -127,9 +122,13 @@ to aid on this, one can use a hook for each programming mode like:
  :config (setq fci-rule-column 80))
 #+end_src
 
-** OS customizations
 
-Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] when loading Emacs outside the console.
+*** OS customizations
+**** Load $PATH.
+
+TODO: Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] when loading Emacs outside the
+console in OS X. In Linux, as I am using Fish shell, the below seems to work
+just fine.
 
 #+BEGIN_SRC emacs-lisp
   (let*
@@ -138,6 +137,8 @@ Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path
     (setenv "PATH" fish-path)
     (setq exec-path full-path))
 #+END_SRC
+
+**** Mac keys
 
 The variables available for binding the modifier keys on Mac keyboards are the following:
 
@@ -149,36 +150,31 @@ The variables available for binding the modifier keys on Mac keyboards are the f
 - mac-right-control-modifier
 - mac-right-option-modifier
 
-The values can be 'control, 'alt, 'meta, 'super, 'hyper, nil (setting to nil allows the OS to assign values). Sources: [[https://www.emacswiki.org/emacs/EmacsForMacOS#toc31][emacswiki.org]] 
+The values can be `'control`, `'alt`, `'meta`, `'super`, `'hyper` or `nil` (setting to nil allows the OS to assign values). Sources: [[https://www.emacswiki.org/emacs/EmacsForMacOS#toc31][emacswiki.org]] 
 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Mac-_002f-GNUstep-Events.html#Mac-_002f-GNUstep-Events][gnu.org]].
 
-Set, among other details, different shells for OSs. For GNU/Linux,
-uses [fish](https://fishshell.com/) see functions loaded and [omf](https://github.com/oh-my-fish/oh-my-fish)
-
-#+BEGIN_SRC emacs-lisp
-  (cond ((eq system-type 'darwin)
-
-         (setq-default
-          exec-path (append exec-path '("/usr/local/bin"))  ; Add Homebrew path
-          mac-command-modifier 'meta                        ; Map Meta to Cmd
-          mac-option-modifier nil                           ; Don't use Option key
-          mac-right-option-modifier nil                     ; Disable the right Alt key
-          ns-pop-up-frames nil                              ; Visit files in same frame
-          dired-use-ls-dired nil)                           ; macOS command ls doesn't support --dired option
-         (setq-default explicit-shell-file-name "/usr/bin/zsh"))
-
-        ((eq system-type 'gnu/linux)
-         (setq-default explicit-shell-file-name "/bin/fish")
-         ))
-#+END_SRC
-
-Add node to the exec path
-
 #+begin_src emacs-lisp
-(setq exec-path (append exec-path '(shell-command-to-string "/usr/local/bin/node")))
+(cond ((eq system-type 'darwin)
+       (setq-default mac-command-modifier 'meta                        ; Map Meta to Cmd
+                     mac-option-modifier nil                           ; Don't use Option key
+                     mac-right-option-modifier nil                     ; Disable the right Alt key        
+                     dired-use-ls-dired nil)))                         ; macOS command ls doesn't support --dired option
 #+end_src
 
-** Backups
+*** Shells
+Set, among other details, different shells for OSs. For GNU/Linux,
+use [[https://fishshell.com/][fish shell.]] See stuff loaded from ~/.config/fish/ and [[https://github.com/oh-my-fish/oh-my-fish][omf]].
+
+#+BEGIN_SRC emacs-lisp
+(cond ((eq system-type 'darwin)
+       (setq-default exec-path (append exec-path '("/usr/local/bin"))  ; Add Homebrew path
+                     explicit-shell-file-name "/usr/bin/zsh")
+
+      ((eq system-type 'gnu/linux)
+       (setq-default explicit-shell-file-name "/bin/fish"))))
+#+END_SRC
+
+*** Backups
 
 As default write backup files on ~/.emacs.d/backup and disables lock files, it gets messy on mounted network file systems like Keybase FS (https://keybase.io/).
 
@@ -204,7 +200,68 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
 #+END_SRC
 
 
-* Languages / frameworks
+
+
+
+*** Greek letters
+
+Greek letters should look greek; reload files when change, please;
+highlight matching parenthesis; global Cmd-c, Cmd-x to copy & paste;
+native line numbers
+
+#+BEGIN_SRC emacs-lisp
+(dolist (mode
+  '(global-prettify-symbols-mode
+    global-auto-revert-mode
+    show-paren-mode
+    cua-mode
+    global-display-line-numbers-mode
+    ))
+  (funcall mode 1))
+#+END_SRC
+
+*** Filter marked packages from Packages buffer.
+
+#+begin_src emacs-lisp
+(defun package-menu-find-marks ()
+  "Find packages marked for action in *Packages*."
+  (interactive)
+  (occur "^[A-Z]"))
+(define-key package-menu-mode-map "a" #'package-menu-find-marks)
+#+end_src
+
+*** Reload config
+
+Reloads Emacs config without having to restart the service.
+
+#+begin_src emacs-lisp
+(defun emacs-reload ()
+  "Reload emacs config"
+  (interactive)
+  (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
+#+end_src
+
+*** Move lines
+
+#+begin_src emacs-lisp
+(defun move-line-up ()
+  "Move up the current line."
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2)
+  (indent-according-to-mode))
+
+(defun move-line-down ()
+  "Move down the current line."
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1)
+  (indent-according-to-mode))
+#+end_src
+
+
+** Languages / frameworks
 
 Random modes without specific configuration blocks.
 
@@ -225,24 +282,25 @@ Random modes without specific configuration blocks.
               auto-mode-alist))
 #+end_src
 
-** JSON
+*** JSON
 
 Edit JSON files and treat them as JSON, not as Javascript (without the
 need to start tide or run prettier on them).
+
 #+begin_src emacs-lisp
 (use-package json-mode
   :ensure t
   :mode "\\.json$")
 #+end_src
 
-** Dot
+*** Dot
 
 #+begin_src emacs-lisp
 (use-package dot-mode
   :mode "\\.dot$")
 #+end_src
 
-** Docker
+*** Docker
 
 #+BEGIN_SRC emacs-lisp
 (use-package dockerfile-mode
@@ -259,7 +317,7 @@ Docker compose as well
   :mode "\\compose.yaml")
 #+end_src
 
-** HTML
+*** HTML
 
 #+BEGIN_SRC emacs-lisp
 (use-package sgml-mode
@@ -268,7 +326,7 @@ Docker compose as well
   :config (setq-default sgml-basic-offset 2))
 #+END_SRC
 
-** Markdown
+*** Markdown
 
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
@@ -286,13 +344,13 @@ Docker compose as well
    markdown-command "/usr/bin/pandoc"))
 #+END_SRC
 
-** YAML
+*** YAML
 
 #+BEGIN_SRC emacs-lisp
 (use-package yaml-mode)
 #+END_SRC
 
-** CSV
+*** CSV
 
 #+BEGIN_SRC emacs-lisp
 (when (eq system-type 'darwin)
@@ -302,7 +360,7 @@ Docker compose as well
     :config (use-package csv-nav)))
 #+END_SRC
 
-** Go
+*** Go
 
 Golang setup. Autocompletion et al provided by LSP (see related config
 block).
@@ -333,7 +391,7 @@ Use flycheck checker for golangci-lint
         flycheck-golangci-lint-deadline "5s"))
 #+end_src
 
-** Ruby
+*** Ruby
 
 #+BEGIN_SRC emacs-lisp
 (use-package ruby-mode
@@ -351,7 +409,7 @@ Use flycheck checker for golangci-lint
   (add-hook 'ruby-mode-hook (lambda () (fci-mode 1))))
 #+END_SRC
 
-*** Ruby environment managqer
+**** Ruby environment managqer
 
 Uses [[https://rvm.io/][RVM]] to manage gems.
 
@@ -362,7 +420,7 @@ Uses [[https://rvm.io/][RVM]] to manage gems.
   (rvm-use-default))
 #+END_SRC
 
-*** Rubocop
+**** Rubocop
 
 Rubocop for all things Ruby
 
@@ -371,7 +429,7 @@ Rubocop for all things Ruby
   :hook (ruby-mode . rubocop-mode))
 #+end_src
 
-** Cucumber
+*** Cucumber
 
 Use [[https://cucumber.io/][Cucumber]] for BDD
 
@@ -383,7 +441,7 @@ Use [[https://cucumber.io/][Cucumber]] for BDD
   (setq feature-default-language "en"))
 #+END_SRC
 
-** Erlang
+*** Erlang
 
 Using standard erlang.el
 
@@ -403,7 +461,7 @@ Using standard erlang.el
   (add-hook 'erlang-mode-hook (lambda () (fci-mode 1))))
 #+end_src
 
-** Clojure
+*** Clojure
 
 Minimal setup to begin with, clojure-mode.
 
@@ -441,7 +499,7 @@ config block).
 
 Note: for LSP integration to work, installing [[https://github.com/snoe/clojure-lsp][clojure-lsp]] is a requirement.
 
-** Terraform
+*** Terraform
 
 Some basics to get Terraform files to be understood by Emacs.
 
@@ -455,7 +513,9 @@ Some basics to get Terraform files to be understood by Emacs.
   (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
 #+end_src
 
-And completions based on company-mode
+**** Completions
+
+Completions are based on `company-mode`
 
 #+begin_src emacs-lisp
 (use-package company-terraform
@@ -464,7 +524,7 @@ And completions based on company-mode
   :init (company-terraform-init))
 #+end_src
 
-** Kubernetes
+*** Kubernetes
 
 Just a basic mode for K8s artifacts (a wrapper for YAML with calls to
 docs, if you will).
@@ -476,7 +536,7 @@ docs, if you will).
   :bind ("M-ä" . k8s-mode))
 #+end_src
 
-** Javascript
+*** Javascript
 
 The below needs of some Javascript packages in the project at hand:
 
@@ -507,10 +567,16 @@ npm i -g prettier
   :hook (((js2-mode rjsx-mode) . prettier-js-mode)))
 #+end_src
 
+**** Add Node to $PATH
 
-* Features
+#+begin_src emacs-lisp
+(setq exec-path (append exec-path '(shell-command-to-string "/usr/local/bin/node")))
+#+end_src
 
-** Which-key
+
+** Features
+
+*** Which-key
 
 #+BEGIN_SRC emacs-lisp
  (use-package which-key
@@ -523,14 +589,14 @@ npm i -g prettier
   (setq which-key-idle-secondary-delay nil))
 #+END_SRC
 
-** Try
+*** Try
 
 For trying packages
 #+begin_src emacs-lisp
 (use-package try)
 #+end_src
 
-** Ace
+*** Ace
 
 Use ace-window to cycle through windows
 
@@ -540,7 +606,7 @@ Use ace-window to cycle through windows
     :bind ("M-o" . ace-window))
 #+END_SRC
 
-** Ibuffer
+*** Ibuffer
 
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -569,7 +635,7 @@ Use ace-window to cycle through windows
     (ibuffer-switch-to-saved-filter-groups "default")))
 #+END_SRC
 
-** Encryption
+*** Encryption
 
 EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/EasyPG]])
 
@@ -593,62 +659,9 @@ more [[https://github.com/DamienCassou/auth-source-pass][here]].
 (auth-source-pass-enable)
 #+end_src
 
-** Misc
+*** Tramp mode
 
-Greek letters should look greek; reload files when change, please;
-highlight matching parenthesis; global Cmd-c, Cmd-x to copy & paste;
-native line numbers
-
-#+BEGIN_SRC emacs-lisp
-(dolist (mode
-  '(global-prettify-symbols-mode
-    global-auto-revert-mode
-    show-paren-mode
-    cua-mode
-    global-display-line-numbers-mode
-    ))
-  (funcall mode 1))
-#+END_SRC
-
-Filters marked packages from Packages buffer.
-
-#+begin_src emacs-lisp
-(defun package-menu-find-marks ()
-  "Find packages marked for action in *Packages*."
-  (interactive)
-  (occur "^[A-Z]"))
-(define-key package-menu-mode-map "a" #'package-menu-find-marks)
-#+end_src
-
-Reloads Emacs config without having to restart the service.
-
-#+begin_src emacs-lisp
-(defun emacs-reload ()
-  "Reload emacs config"
-  (interactive)
-  (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
-#+end_src
-
-#+begin_src emacs-lisp
-(defun move-line-up ()
-  "Move up the current line."
-  (interactive)
-  (transpose-lines 1)
-  (forward-line -2)
-  (indent-according-to-mode))
-
-(defun move-line-down ()
-  "Move down the current line."
-  (interactive)
-  (forward-line 1)
-  (transpose-lines 1)
-  (forward-line -1)
-  (indent-according-to-mode))
-#+end_src
-
-** Tramp mode
-
-Use tramp to shell into other machines.
+Use `tramp` to shell into other machines.
 
 #+BEGIN_SRC emacs-lisp
 (use-package tramp
@@ -656,7 +669,7 @@ Use tramp to shell into other machines.
   (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "/etc/ssh_config") (tramp-parse-sconfig "~/.ssh/config"))))
 #+END_SRC
 
-** Smart parens
+*** Smart parens
 
 Use smart parens when writing parenthesis to not let any parethesis unmatched.
 
@@ -667,9 +680,9 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
     ((ruby-mode go-mode) . smartparens-strict-mode))
 #+END_SRC
 
-** Projectile
+*** Projectile
 
-Use Projectile for jumping around code, etc.
+Use Projectile to manage projects as an entity.
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
@@ -694,13 +707,16 @@ Use Projectile for jumping around code, etc.
    (add-hook 'org-mode-hook (lambda () (projectile-mode -1))))
 #+END_SRC
 
-** Highlight
+*** Highlight
 
 #+BEGIN_SRC emacs-lisp
 (use-package highlight)
 #+END_SRC
 
-** Treemacs
+*** Treemacs
+
+Use `treemacs` to open a side window displaying the folder structure of a
+project or a directory, á la Eclipse or other common IDEs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package treemacs
@@ -736,8 +752,9 @@ Use Projectile for jumping around code, etc.
   (lsp-treemacs-sync-mode 1))
 #+END_SRC
 
-** Yafolding
+*** Yafolding
 
+Fold code. I found `yafolding` simplier to use than e.g.: `origami`
 #+BEGIN_SRC emacs-lisp
 (use-package yafolding
   :init
@@ -747,7 +764,7 @@ Use Projectile for jumping around code, etc.
   ("M-m" . yafolding-toggle-all)))
 #+END_SRC
 
-** Restclient
+*** Restclient
 
 Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explore APIs
 
@@ -756,7 +773,7 @@ Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explo
   :mode ("\\.http\\'" . restclient-mode))
 #+end_src
 
-** Magit
+*** Magit
 
 Magit is love for Emacs.
 
@@ -773,7 +790,7 @@ Magit is love for Emacs.
    magit-log-section-commit-count 15))
 #+END_SRC
 
-** LSP
+*** LSP
 
 The Language Server Protocol is becoming a standard, and it rocks.
 
@@ -825,7 +842,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
   (setq lsp-modeline-diagnostics-scope :workspace))
 #+end_src
 
-** Company completion
+*** Company completion
 
 #+begin_src emacs-lisp
 (use-package company
@@ -840,7 +857,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
     (company-show-numbers t))
 #+end_src
 
-** Flycheck
+*** Flycheck
 
 On-the-fly syntax checking
 
@@ -854,7 +871,7 @@ On-the-fly syntax checking
         flycheck-javascript-standard-executable "/home/manuel/.nvm/versions/node/v15.0.1/bin/standardx"))
 #+end_src
 
-** Selectrum + Marginalia + Consult
+*** Selectrum + Marginalia + Consult
 
 [[https://github.com/raxod502/selectrum][Selectrum]] is an interesting alternative to Ivy + Swiper.
 
@@ -970,7 +987,7 @@ combination with `prescient-mode`.
 )
 #+end_src
 
-** YASnippet
+*** YASnippet
 
 A template system for filling in the knowledge blanks ;) Set hook per language
 
@@ -1005,7 +1022,7 @@ Various snippets
   (yas-reload-all))
 #+end_src
 
-** Flyspell
+*** Flyspell
 
 Use flyspell for highlighting and correcting spelling mistakes.
 
@@ -1019,7 +1036,7 @@ Use flyspell for highlighting and correcting spelling mistakes.
   :custom (setq flyspell-correct-interface #'flyspell-correct-dummy))
 #+end_src
 
-** Dictionaries and stuff
+*** Dictionaries and stuff
 
 #+begin_src emacs-lisp
 (use-package dictionary
@@ -1036,7 +1053,7 @@ A thesaurus for synonyms
 (global-set-key (kbd "C-c t") 'powerthesaurus-lookup-word-at-point)
 #+end_src
 
-** RSS
+*** RSS
 
 Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 
@@ -1074,7 +1091,7 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
   (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
 #+end_src
 
-** Ripgrep
+*** Ripgrep
 
 `ripgrep` is a fast grep tool built in Rust. [[https://github.com/dajva/rg.el][rg]] is a `ripgrep`
 frontend for Emacs.
@@ -1085,7 +1102,7 @@ frontend for Emacs.
   :init (rg-enable-default-bindings))
 #+end_src
 
-** Diminish
+*** Diminish
 
 Manages modeline for minor modes
 
@@ -1097,7 +1114,7 @@ Manages modeline for minor modes
 (diminish 'org-indent-mode)
 #+end_src
 
-** Delight
+*** Delight
 
 Manages modeline for minor and major modes
 
@@ -1106,7 +1123,7 @@ Manages modeline for minor and major modes
   :ensure t)
 #+end_src
 
-** Edit-server
+*** Edit-server
 [[https://github.com/stsquad/emacs_chrome][edit-server]] is a feature that works in conjunction with browsers' plugins
 (depending on browser) to prompt an Emacs frame when editing text on the
 browser.
@@ -1130,8 +1147,10 @@ browser.
                   (window-system . x))))
 #+end_src
 
-* Org
 
+** Org
+
+*** Agenda files
 Adding org files for agenda
 
 #+BEGIN_SRC emacs-lisp
@@ -1144,6 +1163,8 @@ Adding org files for agenda
 (setq org-agenda-files
   (find-lisp-find-files org-directory "\.org.gpg$"))
 #+END_SRC
+
+*** Main org configs
 
 The thick of it
 
@@ -1217,6 +1238,8 @@ The thick of it
                                                       (org-return) (org-return-indent)))))
 #+END_SRC
 
+*** Journaling
+
 Org journaling
 
 #+BEGIN_SRC emacs-lisp
@@ -1229,7 +1252,9 @@ Org journaling
     (setq org-journal-dir "/keybase/private/spavi/org/diary/")))
 #+END_SRC
 
-Org template custom configurations
+*** Org-template
+
+Org-template custom configurations
 
 #+BEGIN_SRC emacs-lisp
 (defvar org-capture-templates
@@ -1248,7 +1273,9 @@ Org template custom configurations
      "*** %? \n Captured on %U")))
 #+END_SRC
 
-Meeting note taking (source: [[https://github.com/howardabrams/dot-files/][Howard Abrams' Github]])
+*** Meeting note taking 
+
+(source: [[https://github.com/howardabrams/dot-files/][Howard Abrams' Github]])
 
 #+BEGIN_SRC emacs-lisp
 (defun meeting-notes ()
@@ -1272,7 +1299,7 @@ should be. After calling this function, call 'meeting-done' to reset the environ
   (winner-undo))
 #+END_SRC
 
-Bullets!
+*** Bullets!
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
@@ -1280,6 +1307,8 @@ Bullets!
   :hook
   (org-mode . (lambda () (org-bullets-mode 1))))
 #+END_SRC
+
+*** Calendar
 
 Calendar modifications (Finnish calendar, etc)
 
@@ -1295,6 +1324,8 @@ Calendar modifications (Finnish calendar, etc)
         calendar-holidays suomalainen-kalenteri))
 #+END_SRC
 
+*** Org-agenda configs
+
 Some org-agenda specific configs.
 
 #+BEGIN_SRC emacs-lisp
@@ -1304,6 +1335,8 @@ Some org-agenda specific configs.
       org-agenda-tags-column -55
       org-log-into-drawer t)
 #+END_SRC
+
+*** Org-habits
 
 Using org habits to track repeating tasks.
 
@@ -1317,13 +1350,27 @@ Using org habits to track repeating tasks.
       org-habit-show-habits t)
 #+end_src
 
+*** Code blocks in org-mode
+
 Make code blocks the old way with `<s TAB`
 
 #+begin_src emacs-lisp
 (require 'org-tempo)
 #+end_src
 
-Setup Google Calendar integration
+*** Ditaa and org-babel
+
+Ditaa is a nice (Java) tool to generate images from ASCII. More info:
+https://github.com/stathissideris/ditaa
+
+#+begin_src emacs-lisp
+(org-babel-do-load-languages 'org-babel-load-languages '(
+                                                         (python . t) 
+                                                         (ditaa . t)))
+(setq org-ditaa-jar-path "/usr/bin/ditaa")
+#+end_src
+
+*** Google Calendar integration
 
 #+begin_src emacs-lisp
 (setq package-check-signature nil)
@@ -1351,22 +1398,14 @@ Setup Google Calendar integration
 Org-babel languages to interpret in Org code blocks (by default, only
 Lisp is understood).
 
-Ditaa is a nice (Java) tool to generate images from ASCII. More info:
-https://github.com/stathissideris/ditaa
 
-#+begin_src emacs-lisp
-(org-babel-do-load-languages 'org-babel-load-languages '(
-                                                         (python . t) 
-                                                         (ditaa . t)))
-(setq org-ditaa-jar-path "/usr/bin/ditaa")
-#+end_src
-
-
-* Mail
+** Mail
 
 Configuration emailing with `mu4e` client and `mbsync` as backend. The
 package is not available in MELPA/ELPA/GNU, but rather a system
 package (hence the requires).
+
+*** Mu4e config
 
 #+begin_src emacs-lisp
 (when (eq system-type 'gnu/linux)
@@ -1462,6 +1501,7 @@ package (hence the requires).
 )
 #+end_src
 
+*** Inline images
 Viewing inline images, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Viewing-images-inline.html][here]].
 
 #+begin_src emacs-lisp
@@ -1470,6 +1510,7 @@ Viewing inline images, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Viewing-i
     (imagemagick-register-types)))
 #+end_src
 
+*** Attachments
 Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-files-with-dired.html][here]].
 
 #+begin_src emacs-lisp
@@ -1493,7 +1534,13 @@ Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-f
 #+end_src
 
 
-* Keybindings
+** Keybindings
+
+Open this file
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "ESC ESC c")(lambda() (interactive)(find-file "~/.emacs.d/config.org")))
+#+end_src
 
 Use `C-x C-0` to restore font size.
 
