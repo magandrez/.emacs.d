@@ -637,12 +637,19 @@ Use ace-window to cycle through windows
 
 *** Encryption
 
-EasyPG is used for encryption. More info ([[https://www.emacswiki.org/emacs/EasyPG]])
+EasyPG is used for encryption. More info
+([[https://www.emacswiki.org/emacs/EasyPG]]).
+
+GPG_AGENT_INFO environment variable is assumed to be loaded (in Mac OS X,
+implement S. Purcell's [[exec-path-from-shell][exec-path-from-shell]]. In GNU/Linux, the variable is fed
+to the daemon started from a systemd service definition.
 
 #+BEGIN_SRC emacs-lisp
-(setq epg-gpg-program "gpg2")
-(setf epa-pinentry-mode 'loopback)
-(setq epa-file-inhibit-auto-save t)
+(setq epg-gpg-program "gpg2"
+      epa-file-inhibit-auto-save t
+      epa-file-encrypt-to '("manuel@manuel.is")      ;; Hack to make org-roam capture
+      epa-file-select-keys 1                         ;; pick up automatically the key with which to encrypt the note. See https://superuser.com/questions/1204820/emacs-easypg-asks-what-key-to-use-although-epa-file-encrypt-to-already-specified
+      epa-pinentry-mode 'loopback)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
