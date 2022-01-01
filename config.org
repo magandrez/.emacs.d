@@ -683,8 +683,7 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
   :ensure t
-  :hook
-    ((ruby-mode go-mode) . smartparens-strict-mode))
+  :init (smartparens-global-mode t))
 #+END_SRC
 
 *** Projectile
