@@ -369,17 +369,9 @@ block).
 (use-package go-mode
   :ensure t
   :hook ((go-mode . lsp-deferred)
-         (go-mode . (lambda () (company-mode)))
          (before-save . lsp-format-buffer)
          (before-save . lsp-organize-imports)))
 #+END_SRC
-
-Install company-go
-#+begin_src emacs-lisp
-(use-package company-go
-  :ensure t
-  :config (push 'company-go company-backends))
-#+end_src
 
 Use flycheck checker for golangci-lint
 #+begin_src emacs-lisp
@@ -511,17 +503,6 @@ Some basics to get Terraform files to be understood by Emacs.
   :mode "\\.tfvars$"
   :init
   (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
-#+end_src
-
-**** Completions
-
-Completions are based on `company-mode`
-
-#+begin_src emacs-lisp
-(use-package company-terraform
-  :ensure t
-  :after company
-  :init (company-terraform-init))
 #+end_src
 
 *** Kubernetes
@@ -848,19 +829,23 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
   (setq lsp-modeline-diagnostics-scope :workspace))
 #+end_src
 
-*** Company completion
+*** Completion
 
 #+begin_src emacs-lisp
 (use-package company
-  :diminish
-  :ensure t
-  :defer t
-  :custom
-    (company-begin-commands '(self-insert-command))
-    (company-tooltip-align-annotations t)
-    (company-idle-delay 0)
-    (company-minimum-prefix-length 1)
-    (company-show-numbers t))
+   :ensure t
+   :hook
+   (prog-mode . company-mode)
+   (org-mode . company-mode)
+   :config
+     (setq company-minimum-prefix-length 2
+           company-idle-delay 0.2
+           completion-ignore-case t)
+     (setq-default tab-always-indent 'complete)
+   :init
+     (with-eval-after-load 'company
+       (define-key company-active-map (kbd "C-n") #'company-select-next)
+       (define-key company-active-map (kbd "C-p") #'company-select-previous)))
 #+end_src
 
 *** Flycheck
