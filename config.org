@@ -1224,13 +1224,21 @@ Org journaling
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-journal
+  :init
+  (setq org-journal-prefix-key "C-c j")
   :config
-  (setq org-journal-date-format "%A, %d.%m.%Y"
-        org-journal-file-format "%Y%m%d")
-  (if (eq system-type 'darwin)
-      (setq org-journal-dir "/Volumes/Keybase/private/spavi/org/diary/")
-    (setq org-journal-dir "/keybase/private/spavi/org/diary/")))
+  (setq org-journal-date-format "%A, %d %B %Y"
+        org-journal-file-format "%Y%m%d.org.gpg"
+        org-journal-file-header "# -*- mode:org; epa-file-encrypt-to: (\"manuel@manuel.is\") -*-")
+  :bind* ("C-c C-j" . org-journal-new-entry))
 #+END_SRC
+
+
+#+begin_src emacs-lisp
+(if (eq system-type 'darwin)
+    (setq org-journal-dir "/Volumes/Keybase/private/spavi/org/diary/")
+  (setq org-journal-dir "/keybase/private/spavi/org/diary/"))
+#+end_src
 
 *** Org-template
 
