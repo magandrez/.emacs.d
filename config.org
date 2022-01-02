@@ -199,9 +199,11 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
       vc-follow-symlinks t)
 #+END_SRC
 
+*** Copy/Paste the Windows way
 
-
-
+#+begin_src emacs-lisp
+(cua-mode t)
+#+end_src
 
 *** Greek letters
 
@@ -214,7 +216,6 @@ native line numbers
   '(global-prettify-symbols-mode
     global-auto-revert-mode
     show-paren-mode
-    cua-mode
     global-display-line-numbers-mode
     ))
   (funcall mode 1))
