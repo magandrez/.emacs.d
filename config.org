@@ -87,6 +87,19 @@ coding/encoding (Chinese/Japanese/Korean characters).
   (setq default-buffer-file-coding-system 'utf-8))
 #+END_SRC
 
+Various basic modes enabled by default
+
+#+BEGIN_SRC emacs-lisp
+(dolist (mode
+  '(global-prettify-symbols-mode
+    global-auto-revert-mode
+    show-paren-mode
+    cua-mode
+    global-display-line-numbers-mode
+    ))
+  (funcall mode 1))
+#+END_SRC
+
 *** Theme
 
 Use `monokai` theme for Emacs.
@@ -199,27 +212,6 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
       vc-follow-symlinks t)
 #+END_SRC
 
-*** Copy/Paste the Windows way
-
-#+begin_src emacs-lisp
-(cua-mode t)
-#+end_src
-
-*** Greek letters
-
-Greek letters should look greek; reload files when change, please;
-highlight matching parenthesis; global Cmd-c, Cmd-x to copy & paste;
-native line numbers
-
-#+BEGIN_SRC emacs-lisp
-(dolist (mode
-  '(global-prettify-symbols-mode
-    global-auto-revert-mode
-    show-paren-mode
-    global-display-line-numbers-mode
-    ))
-  (funcall mode 1))
-#+END_SRC
 
 *** Filter marked packages from Packages buffer.
 
@@ -1530,6 +1522,16 @@ Open this file
 #+begin_src emacs-lisp
 (global-set-key (kbd "ESC ESC c")(lambda() (interactive)(find-file "~/.emacs.d/config.org")))
 #+end_src
+
+Cua bindings
+
+
+(define-key global-map (kbd "C-c") 'cua-copy-region)
+(define-key global-map (kbd "C-v") 'cua-paste)
+(define-key global-map (kbd "C-x") 'cua-cut-region)
+(define-key global-map (kbd "C-z") 'undo-tree-undo)
+(define-key global-map (kbd "C-y") 'undo-tree-redo)
+
 
 Use `C-x C-0` to restore font size.
 
