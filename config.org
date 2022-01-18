@@ -1460,11 +1460,11 @@ package (hence the requires).
                                  :key ?w)
                          ( :name "Deleted"
                                  :query "flag:trashed"
-                                 :key ?d)))))
+                                 :key ?d)))))))
 
   (add-hook 'message-send-hook 'sign-or-encrypt-message)
 
-  (set-face-foreground 'mu4e-unread-face "yellow")))
+  (set-face-foreground 'mu4e-unread-face "yellow")
 
 
   (defun sign-or-encrypt-message ()
