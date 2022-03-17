@@ -1280,8 +1280,7 @@ should be. After calling this function, call 'meeting-done' to reset the environ
   (interactive)
   (widen)
   (text-scale-set 0)
-  (fringe-mode 1)
-  (winner-undo))
+  (fringe-mode 1))
 #+END_SRC
 
 *** Bullets!
