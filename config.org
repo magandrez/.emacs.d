@@ -167,11 +167,12 @@ The values can be `'control`, `'alt`, `'meta`, `'super`, `'hyper` or `nil` (sett
 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Mac-_002f-GNUstep-Events.html#Mac-_002f-GNUstep-Events][gnu.org]].
 
 #+begin_src emacs-lisp
-(cond ((eq system-type 'darwin)
-       (setq-default mac-command-modifier 'meta                        ; Map Meta to Cmd
-                     mac-option-modifier nil                           ; Don't use Option key
-                     mac-right-option-modifier nil                     ; Disable the right Alt key        
-                     dired-use-ls-dired nil)))                         ; macOS command ls doesn't support --dired option
+(if (eq system-type 'darwin)
+    (progn
+    (setq-default mac-command-modifier 'meta                        ; Map Meta to Cmd
+                  mac-option-modifier nil                           ; Don't use Option key
+                  mac-right-option-modifier nil                     ; Disable the right Alt key        
+                  dired-use-ls-dired nil)))                         ; macOS command ls doesn't support --dired option
 #+end_src
 
 *** Shells
@@ -179,12 +180,14 @@ Set, among other details, different shells for OSs. For GNU/Linux,
 use [[https://fishshell.com/][fish shell.]] See stuff loaded from ~/.config/fish/ and [[https://github.com/oh-my-fish/oh-my-fish][omf]].
 
 #+BEGIN_SRC emacs-lisp
-(cond ((eq system-type 'darwin)
-       (setq-default exec-path (append exec-path '("/usr/local/bin"))  ; Add Homebrew path
-                     explicit-shell-file-name "/usr/bin/zsh")
+(if (eq system-type 'darwin)
+    (progn
+    (setq-default exec-path (append exec-path '("/usr/local/bin"))  ; Add Homebrew path
+                  explicit-shell-file-name "/usr/bin/zsh")))
 
-      ((eq system-type 'gnu/linux)
-       (setq-default explicit-shell-file-name "/bin/fish"))))
+(if (eq system-type 'gnu/linux)
+    (progn
+    (setq-default explicit-shell-file-name "/bin/fish")))
 #+END_SRC
 
 *** Backups
