@@ -1092,7 +1092,7 @@ frontend for Emacs.
   :ensure t
   :init (rg-enable-default-bindings))
 #+end_src
-
+-
 *** Diminish
 
 Manages modeline for minor modes
@@ -1526,7 +1526,7 @@ Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-f
 Open this file
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "ESC ESC c")(lambda() (interactive)(find-file "~/.emacs.d/config.org")))
+(define-key global-map (kbd "ESC ESC c")(lambda() (interactive)(find-file "~/.emacs.d/config.org")))
 #+end_src
 
 Cua bindings
@@ -1546,19 +1546,10 @@ Use `C-x C-0` to restore font size.
 (global-set-key (kbd "C--") 'text-scale-decrease)        ; Smaller
 #+END_SRC
 
-Set C-x C-m as a sequence for M-x. And the "backup" C-c C-m for misstyping.
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
-(global-set-key (kbd "C-c C-m") 'execute-extended-command)
-#+end_src
-
 Bind backward-kill-word to C-w
 
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-w") 'backward-kill-word)
-(global-set-key (kbd "C-x C-k") 'kill-region)
-(global-set-key (kbd "C-c C-k") 'kill-region)
 #+end_src
 
 Moving things up and down (related defuns under a different heading)
@@ -1608,7 +1599,7 @@ Miscellaneous keybindings
 (define-key global-map (kbd "s-f") 'projectile-find-file)      ;; Find file in project
 (define-key global-map (kbd "s-p") 'projectile-switch-project) ;; Switch project
 (define-key global-map (kbd "s-m") 'magit-status)              ;; Magit status
-(define-key global-map (kbd "C-c e") 'elfeed) ;; Elfeed
+(define-key global-map (kbd "s-e") 'elfeed) ;; Elfeed
 #+end_src
 
 Resize window
