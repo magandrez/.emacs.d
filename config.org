@@ -1624,9 +1624,9 @@ Resize window
 Consult remapping
 
 #+begin_src emacs-lisp
-(define-key global-map [?\s-r] 'consult-ripgrep)    ;; Search with ripgrep
-(define-key global-map [?\s-g] 'consult-grep)       ;; Search with grep
-(define-key global-map [?\s-s] 'consult-line-multi) ;; Match in open buffers
-(define-key global-map [?\s-a] 'consult-find)       ;; Search for regexp in DIR
-(global-set-key (kbd "C-s") 'consult-line)
+(define-key global-map (kbd "s-r") 'consult-ripgrep)    ;; Search with ripgrep
+(define-key global-map (kbd "s-g") 'consult-grep)       ;; Search with grep
+(define-key global-map (kbd "s-s") 'consult-line-multi) ;; Match in all open buffers
+(define-key global-map (kbd "s-a") 'consult-find)       ;; Search for regexp in DIR
+(define-key global-map (kbd "C-s") 'consult-line)       ;; Match in current buffer
 #+end_src
