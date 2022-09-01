@@ -1615,10 +1615,10 @@ Miscellaneous keybindings
 Resize window
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
-(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "S-C-<down>") 'shrink-window)
-(global-set-key (kbd "S-C-<up>") 'enlarge-window)
+(define-key global-map (kbd "s-<left>") 'shrink-window-horizontally)
+(define-key global-map (kbd "s-<right>") 'enlarge-window-horizontally)
+(define-key global-map (kbd "s-<down>") 'shrink-window)
+(define-key global-map (kbd "s-<up>") 'enlarge-window)
 #+end_src
 
 Consult remapping
