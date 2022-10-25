@@ -1398,7 +1398,7 @@ package (hence the requires).
 (when (eq system-type 'gnu/linux)
   (require 'mu4e)
   (require 'mu4e-contrib)
-  (require 'org-mu4e)
+(require 'mu4e-org)
   (require 'smtpmail)
   (setq mu4e-mu-binary "/bin/mu"
         mail-user-agent "mu4e"
