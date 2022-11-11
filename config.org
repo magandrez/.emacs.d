@@ -296,6 +296,14 @@ need to start tide or run prettier on them).
   :mode "\\.dot$")
 #+end_src
 
+*** gnuplot
+
+#+begin_src emacs-lisp
+(use-package gnuplot
+ :mode (("\\.g\\'" . gnuplot-mode)
+         ("\\.p\\'" . gnuplot-mode)))
+#+end_src
+
 *** Docker
 
 #+BEGIN_SRC emacs-lisp
