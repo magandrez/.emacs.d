@@ -827,6 +827,8 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
         lsp-auto-guess-root t)
   (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
   :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (c-mode . lsp)
+         (c++-mode . lsp)
         ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)
         ((js2-mode rjsx-mode) . lsp)))
 
