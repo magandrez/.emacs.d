@@ -869,6 +869,11 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
      (with-eval-after-load 'company
        (define-key company-active-map (kbd "C-n") #'company-select-next)
        (define-key company-active-map (kbd "C-p") #'company-select-previous)))
+
+(use-package company-box
+  :ensure t
+  :after company
+  :hook (company-mode . company-box-mode))
 #+end_src
 
 *** Flycheck
@@ -883,6 +888,12 @@ On-the-fly syntax checking
   :config
   (setq flycheck-check-syntax-automatically '(save mode-enabled)
         flycheck-javascript-standard-executable "/home/manuel/.nvm/versions/node/v15.0.1/bin/standardx"))
+
+(use-package flycheck-pos-tip
+  :ensure t
+  :after flycheck
+  :config
+  (flycheck-pos-tip-mode))
 #+end_src
 
 *** Selectrum + Marginalia + Consult
