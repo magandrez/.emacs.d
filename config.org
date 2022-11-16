@@ -813,7 +813,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
 #+begin_src emacs-lisp
 (use-package lsp-mode
   :ensure t
-  :commands (lsp lsp-deferred)
+  :commands (lsp lsp-deferred lsp-format-buffer lsp-organize-imports)
   :config
   (setq lsp-keymap-prefix "C-l"
         lsp-eldoc-render-all nil
