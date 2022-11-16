@@ -215,6 +215,13 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
       vc-follow-symlinks t)
 #+END_SRC
 
+Save history typed in minibuffer
+
+#+begin_src emacs-lisp
+(use-package savehist
+  :init
+  (savehist-mode))
+#+end_src
 
 *** Filter marked packages from Packages buffer.
 
