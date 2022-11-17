@@ -127,22 +127,13 @@ search results for a given ISearch.
  '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
 #+end_src
 
-
 **** Column enforce mode
 Because 80 columns is THE
 rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 
-fci-mode is not a global mode, so it needs to be enabled per buffer,
-to aid on this, one can use a hook for each programming mode like:
-
-(add-hook 'prog-mode-hook (lambda () (fci-mode 1)))
-
 #+begin_src emacs-lisp
-(use-package fill-column-indicator
- :ensure t
- :config (setq fci-rule-column 80))
+(global-display-fill-column-indicator-mode t)
 #+end_src
-
 
 *** OS customizations
 **** Load $PATH.
