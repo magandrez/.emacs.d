@@ -929,15 +929,17 @@ On-the-fly syntax checking
         completion-ignore-case t))
 #+end_src
 
-[[https://github.com/oantolin/orderless][Orderless]] for giving order to Vertico's results in combination with `prescient-mode`.
+[[https://github.com/oantolin/orderless][Orderless]] for giving order to Vertico's
 
 #+begin_src emacs-lisp
 (use-package orderless
-  :diminish
-  :ensure t
-  :after selectrum
-  :custom (selectrum-prescient-mode +1)
-  (prescient-persist-mode +1))
+  :init
+  ;; Configure a custom style dispatcher (see the Consult wiki)
+  ; (setq orderless-style-dispatchers '(+orderless-dispatch)
+  ;       orderless-component-separator #'orderless-escapable-split-on-space)
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
 
 [[https://github.com/minad/marginalia/][Marginalia]] is an awesome package to give context to the mini-buffer list
