@@ -1164,6 +1164,15 @@ Manages modeline for minor and major modes
   :ensure t)
 #+end_src
 
+*** UUID
+
+Provide UUID generation support (for all standards) inside Emacs
+
+#+begin_src emacs-lisp
+(use-package uuidgen
+  :ensure t)
+#+end_src
+
 *** Edit-server
 [[https://github.com/stsquad/emacs_chrome][edit-server]] is a feature that works in conjunction with browsers' plugins
 (depending on browser) to prompt an Emacs frame when editing text on the
