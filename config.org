@@ -794,15 +794,6 @@ Configuring forge
   :after magit)
 #+end_src
 
-#+RESULTS:
-
-Giving forge access to Github
-#+begin_src emacs-lisp
-;; Set the files that are searched for writing tokens
-;; by default ~/.authinfo will be used
-(setq auth-sources '("~/.authinfo.gpg"))
-#+end_src
-
 *** LSP
 
 The Language Server Protocol is becoming a standard, and it rocks.
