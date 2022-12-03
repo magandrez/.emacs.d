@@ -652,11 +652,14 @@ to the daemon started from a systemd service definition.
 #+END_SRC
 
 For credentials, use `auth-source-pass`, included in Emacs 26. See
-more [[https://github.com/DamienCassou/auth-source-pass][here]].
+more [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][here]].
 
 #+begin_src emacs-lisp
-(auth-source-pass-enable)
+(setq auth-sources '(password-store)
+      auth-source-debug t
+      auth-source-do-cache nil)
 #+end_src
+
 
 *** Tramp mode
 
@@ -1470,9 +1473,6 @@ package (hence the requires).
         mu4e-headers-include-related t
         mu4e-view-show-addresses t
         mu4e-view-show-images t
-        auth-source-debug t
-        auth-source-do-cache nil
-        auth-sources '(password-store)
         message-kill-buffer-on-exit t
         message-send-mail-function 'smtpmail-send-it
         smtpmail-debug-info t
