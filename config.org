@@ -656,8 +656,8 @@ For credentials, use `auth-source-pass`, included in Emacs 26. See
 more [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][here]].
 
 #+begin_src emacs-lisp
-(setq auth-sources '(password-store)
-      auth-source-debug t
+(auth-source-pass-enable)
+(setq auth-source-debug t
       auth-source-do-cache nil)
 #+end_src
 
