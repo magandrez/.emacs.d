@@ -577,13 +577,8 @@ npm i -g prettier
 (use-package prettier-js
   :defer t
   :diminish prettier-js-mode
-  :hook (((js2-mode rjsx-mode) . prettier-js-mode)))
-#+end_src
-
-**** Add Node to $PATH
-
-#+begin_src emacs-lisp
-(setq exec-path (append exec-path '(shell-command-to-string "/usr/local/bin/node")))
+  :hook((js2-mode rjsx-mode) . prettier-js-mode)
+)
 #+end_src
 
 
