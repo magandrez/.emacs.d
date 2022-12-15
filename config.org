@@ -842,7 +842,8 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
         lsp-enable-snippet t
         lsp-enable-completion-at-point t
         lsp-auto-configure t
-        lsp-auto-guess-root t)
+        lsp-auto-guess-root t
+        lsp-disabled-clients '(eslint angular-ls deno))
   ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
   :hook ((lsp-mode . lsp-enable-which-key-integration)
          ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)
