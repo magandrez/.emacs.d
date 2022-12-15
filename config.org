@@ -157,11 +157,13 @@ console in OS X. In Linux, as I am using Fish shell, the below seems to work
 just fine.
 
 #+BEGIN_SRC emacs-lisp
-  (let*
-      ((fish-path (shell-command-to-string "/usr/bin/fish -i -c \"echo -n \\$PATH[1]; for val in \\$PATH[2..-1];echo -n \\\":\\$val\\\";end\""))
-       (full-path (append exec-path (split-string fish-path ":"))))
-    (setenv "PATH" fish-path)
-    (setq exec-path full-path))
+(if (eq system-type 'gnu/linux)
+     (let*
+       ((fish-path (shell-command-to-string "/bin/fish -c \"echo -n \\$PATH[1]; for val in \\$PATH[2..-1];echo -n \\\":\\$val\\\";end\""))
+         (full-path (append exec-path (split-string fish-path ":"))))
+     (setenv "PATH" fish-path)
+     (setq exec-path full-path))
+)
 #+END_SRC
 
 **** Mac keys
