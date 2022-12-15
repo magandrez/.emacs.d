@@ -378,9 +378,15 @@ block).
 #+BEGIN_SRC emacs-lisp
 (use-package go-mode
   :ensure t
-  :hook ((go-mode . lsp-deferred)
-         (before-save . lsp-format-buffer)
-         (before-save . lsp-organize-imports)))
+)
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+(add-hook 'before-save-hook #'lsp-format-buffer t t)
+(add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
 #+END_SRC
 
 Use flycheck checker for golangci-lint
@@ -826,12 +832,10 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
         lsp-enable-completion-at-point t
         lsp-auto-configure t
         lsp-auto-guess-root t)
-  (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
+  ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
   :hook ((lsp-mode . lsp-enable-which-key-integration)
-         (c-mode . lsp)
-         (c++-mode . lsp)
-        ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)
-        ((js2-mode rjsx-mode) . lsp)))
+         ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)
+         ((c-mode c++-mode js2-mode rjsx-mode) . lsp)))
 
 (use-package lsp-ui
   :ensure t
