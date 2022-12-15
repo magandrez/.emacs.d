@@ -136,6 +136,20 @@ rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 #+end_src
 
 *** OS customizations
+
+**** Use fish in GNU/Linux
+
+#+begin_src emacs-lisp
+(if (eq system-type 'gnu/linux)
+    (use-package fish-mode
+      :ensure t
+      :mode "\\.fish$"
+      :hook ((before-save . fish_indent-before-save))
+    )
+)
+#+end_src
+
+
 **** Load $PATH.
 
 TODO: Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] when loading Emacs outside the
