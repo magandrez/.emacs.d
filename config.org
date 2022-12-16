@@ -36,12 +36,6 @@ Custom faces
   '(italic ((t (:underline nil)))))
 #+end_src
 
-Yes or no: y-or-n
-
-#+BEGIN_SRC emacs-lisp
-(defalias 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
-
 Some miscelaneous defaults.
 
 #+BEGIN_SRC emacs-lisp
@@ -59,7 +53,9 @@ Some miscelaneous defaults.
               line-number-mode t                             ; Line number
               column-number-mode t                           ; Column number
               fill-column 80                                 ; 80 columns is the standard
-              ns-pop-up-frames nil)                          ; Visit files in same frame
+              ns-pop-up-frames nil                           ; Visit files in same frame
+              completions-detailed t                         ; Show more info when describing things
+              use-short-answers t)                           ; Use instead of y-or-n-p
 #+END_SRC
 
 Scrolling defaults.
