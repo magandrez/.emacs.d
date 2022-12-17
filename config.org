@@ -97,7 +97,6 @@ Various basic modes enabled by default
 (dolist (mode
   '(global-prettify-symbols-mode
     global-auto-revert-mode
-    show-paren-mode
     cua-mode
     global-display-line-numbers-mode
     ))
