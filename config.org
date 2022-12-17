@@ -28,6 +28,7 @@ Remove all the stuff I don't use.
  '(tool-bar-mode nil)
  '(menu-bar-mode nil)
  '(package-native-compile t)
+ '(xref-search-program 'ripgrep)
 )
 #+END_SRC
 
