@@ -22,6 +22,7 @@ Remove all the stuff I don't use.
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
  '(scroll-bar-mode nil)
+ '(dired-kill-when-opening-new-dired-buffer t)
  '(horizontal-scroll-bar-mode nil)
  '(blink-cursor-mode nil)
  '(tool-bar-mode nil)
