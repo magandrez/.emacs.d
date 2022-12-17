@@ -26,7 +26,9 @@ Remove all the stuff I don't use.
  '(horizontal-scroll-bar-mode nil)
  '(blink-cursor-mode nil)
  '(tool-bar-mode nil)
- '(menu-bar-mode nil))
+ '(menu-bar-mode nil)
+ '(package-native-compile t)
+)
 #+END_SRC
 
 Custom faces
