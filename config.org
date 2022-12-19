@@ -615,7 +615,6 @@ Use ace-window to cycle through windows
 *** Ibuffer
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x C-b") 'ibuffer)
 (defun my-org-agenda-filter ()
   (let ((fname (buffer-file-name)))
     (and fname
@@ -1591,6 +1590,12 @@ Open this file
 
 #+begin_src emacs-lisp
 (define-key global-map (kbd "ESC ESC c")(lambda() (interactive)(find-file "~/.emacs.d/config.org")))
+#+end_src
+
+Ibuffer
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
 Cua bindings
