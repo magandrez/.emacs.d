@@ -21,6 +21,7 @@ Remove all the stuff I don't use.
 
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
+ '(cua-mode t)  ;; Set CUA-mode on
  '(scroll-bar-mode nil)
  '(dired-kill-when-opening-new-dired-buffer t)
  '(horizontal-scroll-bar-mode nil)
@@ -101,7 +102,6 @@ Various basic modes enabled by default
 (dolist (mode
   '(global-prettify-symbols-mode
     global-auto-revert-mode
-    cua-mode
     global-display-line-numbers-mode
     ))
   (funcall mode 1))
