@@ -866,6 +866,19 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
   (setq lsp-modeline-diagnostics-scope :workspace))
 #+end_src
 
+
+*** DAP
+
+Similar to LSP, but for debugging purposes, [[https://emacs-lsp.github.io/dap-mode/][dap-mode]] implements the Debug
+Adapter Protocol
+
+#+begin_src emacs-lisp
+(use-package dap-mode
+  :init (require 'dap-dlv-go)
+  :ensure t
+  :config (setq dap-auto-configure-features '(sessions locals controls tooltip)))
+#+end_src
+
 *** Completion
 
 #+begin_src emacs-lisp
