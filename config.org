@@ -523,16 +523,13 @@ Note: for LSP integration to work, installing [[https://github.com/snoe/clojure-
 
 *** Terraform
 
-Some basics to get Terraform files to be understood by Emacs.
+Terraform relies on LSP
 
 #+begin_src emacs-lisp
-(use-package terraform-mode
-  :ensure t
-  :mode "\\.tf$"
-  :mode "\\.tfstate$"
-  :mode "\\.tfvars$"
-  :init
-  (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
+(setq lsp-disabled-clients '(tfls)) ;; Choose Hashicorp's official implementation
+(setq lsp-terraform-ls-enable-show-reference t) ;; Code lens is experimental in Terraform mode
+(setq lsp-semantic-tokens-enable t)
+(setq lsp-semantic-tokens-honor-refresh-requests t)
 #+end_src
 
 *** Kubernetes
@@ -843,7 +840,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
         lsp-disabled-clients '(eslint angular-ls deno))
   ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
   :hook ((lsp-mode . lsp-enable-which-key-integration)
-         ((go-mode clojure-mode clojurescript-mode) . lsp-deferred)
+         ((go-mode clojure-mode clojurescript-mode terraform-mode) . lsp-deferred)
          ((c-mode c++-mode js2-mode rjsx-mode) . lsp)))
 
 (use-package lsp-ui
@@ -1061,7 +1058,6 @@ A template system for filling in the knowledge blanks ;) Set hook per language
   :init
    (add-hook 'k8s-mode-hook #'yas-minor-mode)
    (add-hook 'go-mode-hook #'yas-minor-mode)
-   (add-hook 'terraform-mode-hook #'yas-minor-mode)
    (add-hook 'ruby-mode-hook #'yas-minor-mode)
    (add-hook 'clojure-mode-hook #'yas-minor-mode)
    (add-hook 'dockerfile-mode-hook #'yas-minor-mode)
