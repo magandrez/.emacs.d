@@ -667,8 +667,7 @@ more [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][here]].
 
 #+begin_src emacs-lisp
 (auth-source-pass-enable)
-(setq auth-source-debug t
-      auth-source-do-cache nil)
+(setq auth-source-debug t)
 #+end_src
 
 
