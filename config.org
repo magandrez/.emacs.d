@@ -540,8 +540,7 @@ docs, if you will).
 #+begin_src emacs-lisp
 (use-package k8s-mode
   :ensure t
-  :config (setq k8s-site-docs-version "v1.19")
-  :bind ("M-ä" . k8s-mode))
+  :config (setq k8s-site-docs-version "v1.25"))
 #+end_src
 
 *** Javascript
