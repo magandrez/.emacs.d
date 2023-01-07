@@ -138,30 +138,25 @@ rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 
 *** OS customizations
 
-**** Use fish in GNU/Linux
-
-#+begin_src emacs-lisp
-(if (eq system-type 'gnu/linux)
-    (use-package fish-mode
-      :ensure t
-      :mode "\\.fish$")
-)
-#+end_src
-
 **** Load $PATH.
 
-TODO: Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] when loading Emacs outside the
-console in OS X. In Linux, as I am using Fish shell, the below seems to work
-just fine.
+Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
 
 #+BEGIN_SRC emacs-lisp
-(if (eq system-type 'gnu/linux)
-     (let*
-       ((fish-path (shell-command-to-string "/bin/fish -c \"echo -n \\$PATH[1]; for val in \\$PATH[2..-1];echo -n \\\":\\$val\\\";end\""))
-         (full-path (append exec-path (split-string fish-path ":"))))
-     (setenv "PATH" fish-path)
-     (setq exec-path full-path))
-)
+(use-package exec-path-from-shell
+  :init
+  (if (eq system-type 'darwin)
+      (progn
+        (setq shell-file-name "/usr/bin/zsh")
+        (exec-path-from-shell-initialize))
+    (if (eq system-type 'gnu/linux)
+        (progn
+          (setq shell-file-name "/bin/fish")
+          (exec-path-from-shell-initialize)
+          (exec-path-from-shell-copy-env "PATH")
+          (exec-path-from-shell-copy-env "NVM_DIR"))))
+  :config
+  (add-to-list 'exec-path-from-shell-variables "MANPATH"))
 #+END_SRC
 
 **** Mac keys
@@ -187,21 +182,6 @@ The values can be `'control`, `'alt`, `'meta`, `'super`, `'hyper` or `nil` (sett
                   mac-right-option-modifier nil                     ; Disable the right Alt key        
                   dired-use-ls-dired nil)))                         ; macOS command ls doesn't support --dired option
 #+end_src
-
-*** Shells
-Set, among other details, different shells for OSs. For GNU/Linux,
-use [[https://fishshell.com/][fish shell.]] See stuff loaded from ~/.config/fish/ and [[https://github.com/oh-my-fish/oh-my-fish][omf]].
-
-#+BEGIN_SRC emacs-lisp
-(if (eq system-type 'darwin)
-    (progn
-    (setq-default exec-path (append exec-path '("/usr/local/bin"))  ; Add Homebrew path
-                  explicit-shell-file-name "/usr/bin/zsh")))
-
-(if (eq system-type 'gnu/linux)
-    (progn
-    (setq-default explicit-shell-file-name "/bin/fish")))
-#+END_SRC
 
 *** Backups
 
