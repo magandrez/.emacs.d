@@ -670,7 +670,6 @@ more [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][here]].
 (setq auth-source-debug t)
 #+end_src
 
-
 *** Tramp mode
 
 Use `tramp` to shell into other machines.
@@ -865,7 +864,6 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
   ;; :global/:workspace/:file
   (setq lsp-modeline-diagnostics-scope :workspace))
 #+end_src
-
 
 *** DAP
 
@@ -1100,20 +1098,6 @@ Use flyspell for highlighting and correcting spelling mistakes.
   :custom (setq flyspell-correct-interface #'flyspell-correct-dummy))
 #+end_src
 
-*** Dictionaries and stuff
-
-#+begin_src emacs-lisp
-(use-package dictionary
-  :ensure t)
-#+end_src
-
-A thesaurus for synonyms
-
-#+begin_src emacs-lisp
-(use-package powerthesaurus
-  :ensure t)
-#+end_src
-
 *** RSS
 
 Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
@@ -1162,7 +1146,7 @@ frontend for Emacs.
   :ensure t
   :init (rg-enable-default-bindings))
 #+end_src
--
+
 *** Diminish
 
 Manages modeline for minor modes
@@ -1217,6 +1201,33 @@ browser.
                   (window-system . x))))
 #+end_src
 
+*** Dictionaries
+
+Setup dictionaries (in Linux only). It needs of `dictionaries-common` and
+`dictd` in Debian Bookworm.
+
+Some dictionaries installed:
+
+- dict-devil
+- dict-jargon
+- dict-vera
+- dict-wn
+
+#+begin_src emacs-lisp
+(use-package dictionary
+  :if (and (equal system-type 'gnu/linux)
+           (executable-find "dictd"))
+  :ensure t
+  :config
+  (setq dictionary-server "localhost"))
+#+end_src
+
+A thesaurus for synonyms
+
+#+begin_src emacs-lisp
+(use-package powerthesaurus
+  :ensure t)
+#+end_src
 
 ** Org
 
