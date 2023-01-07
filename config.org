@@ -137,7 +137,6 @@ rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 #+end_src
 
 *** OS customizations
-
 **** Load $PATH.
 
 Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
@@ -235,25 +234,6 @@ Reloads Emacs config without having to restart the service.
   "Reload emacs config"
   (interactive)
   (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
-#+end_src
-
-*** Move lines
-
-#+begin_src emacs-lisp
-(defun move-line-up ()
-  "Move up the current line."
-  (interactive)
-  (transpose-lines 1)
-  (forward-line -2)
-  (indent-according-to-mode))
-
-(defun move-line-down ()
-  "Move down the current line."
-  (interactive)
-  (forward-line 1)
-  (transpose-lines 1)
-  (forward-line -1)
-  (indent-according-to-mode))
 #+end_src
 
 
