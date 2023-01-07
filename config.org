@@ -41,7 +41,7 @@ Custom faces
   '(italic ((t (:underline nil)))))
 #+end_src
 
-Some miscelaneous defaults.
+Some miscellaneous defaults.
 
 #+BEGIN_SRC emacs-lisp
 (setq-default inhibit-startup-screen t
