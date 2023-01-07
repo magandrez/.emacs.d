@@ -388,7 +388,7 @@ Use flycheck checker for golangci-lint
   :ensure t
   :hook (go-mode . flycheck-golangci-lint-setup)
   :config
-  (setq flycheck-golangci-lint-enable-linters '("deadcode" "errcheck" "gofmt" "golint" "gosimple" "govet" "ineffassign" "staticcheck" "structcheck" "typecheck" "unused" "varcheck" "bodyclose" "goimports")
+  (setq flycheck-golangci-lint-enable-linters '("bodyclose" "errcheck" "gci" "govet" "revive")
         flycheck-golangci-lint-deadline "5s"))
 #+end_src
 
