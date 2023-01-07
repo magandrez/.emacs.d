@@ -331,7 +331,12 @@ Docker compose as well
 *** YAML
 
 #+BEGIN_SRC emacs-lisp
-(use-package yaml-mode)
+(use-package yaml-mode
+  :mode "\\.yaml$"
+  :mode "\\.yml$"
+  :hook
+  (yaml-mode . (lambda ()
+                 (define-key yaml-mode-map (kbd "C-m") 'newline-and-indent))))
 #+END_SRC
 
 *** CSV
@@ -1184,6 +1189,7 @@ A thesaurus for synonyms
 (use-package powerthesaurus
   :ensure t)
 #+end_src
+
 
 ** Org
 
