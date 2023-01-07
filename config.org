@@ -1074,7 +1074,6 @@ A template system for filling in the knowledge blanks ;) Set hook per language
     (setq yas-snippet-dirs '("~/.emacs.d/snippets"
                            "/usr/share/yasnippet-snippets"))
    (yas-reload-all))
-(global-set-key (kbd "C-c y") 'yas-insert-snippet)
 #+end_src
 
 Various snippets
@@ -1106,8 +1105,6 @@ Use flyspell for highlighting and correcting spelling mistakes.
 #+begin_src emacs-lisp
 (use-package dictionary
   :ensure t)
-(global-set-key (kbd "C-c C-c s") 'dictionary-search)
-(global-set-key (kbd "C-c C-c m") 'dictionary-match-words)
 #+end_src
 
 A thesaurus for synonyms
@@ -1115,7 +1112,6 @@ A thesaurus for synonyms
 #+begin_src emacs-lisp
 (use-package powerthesaurus
   :ensure t)
-(global-set-key (kbd "C-c t") 'powerthesaurus-lookup-word-at-point)
 #+end_src
 
 *** RSS
@@ -1705,4 +1701,23 @@ Consult remapping
 (define-key global-map (kbd "s-s") 'consult-line-multi) ;; Match in all open buffers
 (define-key global-map (kbd "s-a") 'consult-find)       ;; Search for regexp in DIR
 (define-key global-map (kbd "C-s") 'consult-line)       ;; Match in current buffer
+#+end_src
+
+Yasnippet insert
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c y") 'yas-insert-snippet)
+#+end_src
+
+Dictionary search
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c d") 'dictionary-search)
+(global-set-key (kbd "C-c w") 'dictionary-match-words)
+#+end_src
+
+Thesaurus lookup
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c t") 'powerthesaurus-lookup-dwim)
 #+end_src
