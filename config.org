@@ -1065,6 +1065,11 @@ A template system for filling in the knowledge blanks ;) Set hook per language
    (add-hook 'makefile-mode-hook #'yas-minor-mode)
    (add-hook 'sh-mode-hook #'yas-minor-mode)
    (add-hook 'erlang-mode-hook #'yas-minor-mode)
+   (add-hook 'emacs-lisp-mode #'yas-minor-mode)
+   (add-hook 'fish-mode #'yas-minor-mode)
+   (add-hook 'markdown-mode #'yas-minor-mode)
+   (add-hook 'rjsx-mode #'yas-minor-mode)
+   (add-hook 'terraform-mode #'yas-minor-mode)
   :config
     (setq yas-snippet-dirs '("~/.emacs.d/snippets"
                            "/usr/share/yasnippet-snippets"))
