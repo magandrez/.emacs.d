@@ -746,7 +746,10 @@ project or a directory, á la Eclipse or other common IDEs.
         treemacs-indentation-string (propertize " ǀ " 'face 'font-lock-comment-face)
         treemacs-follow-mode t
         treemacs-filewatch-mode t
-        treemacs-fringe-indicator-mode t)
+        treemacs-fringe-indicator-mode t
+        treemacs-icon-fallback-background "#2d2d31"
+        treemacs-hl-line-fallback-background "#2d2d31")
+
   :bind
   (([f8] . treemacs)
    ("C-c f" . treemacs-select-window)))
