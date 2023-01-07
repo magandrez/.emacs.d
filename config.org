@@ -61,7 +61,6 @@ Some miscellaneous defaults.
               ns-pop-up-frames nil                    ; Visit files in same frame
               completions-detailed t                  ; Show more info when describing things
               use-short-answers t                     ; Use instead of y-or-n-p
-              xref-search-program 'ripgrep            ; Ripgrep as default search program
               package-native-compile t
 )
 #+END_SRC
