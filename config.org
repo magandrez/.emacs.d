@@ -151,11 +151,7 @@ Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path
     (if (eq system-type 'gnu/linux)
         (progn
           (setq shell-file-name "/bin/fish")
-          (exec-path-from-shell-initialize)
-          (exec-path-from-shell-copy-env "PATH")
-          (exec-path-from-shell-copy-env "NVM_DIR"))))
-  :config
-  (add-to-list 'exec-path-from-shell-variables "MANPATH"))
+          (exec-path-from-shell-initialize)))))
 #+END_SRC
 
 **** Mac keys
@@ -297,16 +293,16 @@ Docker compose as well
 #+begin_src emacs-lisp
 (use-package docker-compose-mode
   :ensure t
-  :mode "\\compose.yml"
-  :mode "\\compose.yaml")
+  :mode (("\\compose.yml" . docker-compose-mode)
+         ("\\compose.yaml" . docker-compose-mode)))
 #+end_src
 
 *** HTML
 
 #+BEGIN_SRC emacs-lisp
 (use-package sgml-mode
-  :mode "\\.html$"
-  :mode "\\.htm$"
+  :mode (("\\.html$" . sgml-mode)
+         ("\\.htm$" . sgml-mode))
   :config (setq-default sgml-basic-offset 2))
 #+END_SRC
 
@@ -314,26 +310,25 @@ Docker compose as well
 
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
-  :mode "INSTALL$"
-  :mode "CONTRIBUTORS$"
-  :mode "LICENSE$"
-  :mode "README$"
-  :mode "\\.markdown$"
-  :mode "\\.md$"
-  :hook ((markdown-mode . auto-fill-mode))
+  :mode (("INSTALL\\'" . markdown-mode)
+         ("CONTRIBUTORS\\'" . markdown-mode)
+         ("LICENSE\\'" . markdown-mode)
+         ("README\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode)
+         ("\\.md\\'" . markdown-mode))
+  :hook (markdown-mode . auto-fill-mode)
   :config
-  (setq-default
-   markdown-asymmetric-header t
-   markdown-split-window-direction 'right
-   markdown-command "/usr/bin/pandoc"))
+  (setq-default markdown-asymmetric-header t
+                markdown-split-window-direction 'right
+                markdown-command "/usr/bin/pandoc"))
 #+END_SRC
 
 *** YAML
 
 #+BEGIN_SRC emacs-lisp
 (use-package yaml-mode
-  :mode "\\.yaml$"
-  :mode "\\.yml$"
+  :mode (("\\.yaml$" . yaml-mode)
+         ("\\.yml$" . yaml-mode))
   :hook
   (yaml-mode . (lambda ()
                  (define-key yaml-mode-map (kbd "C-m") 'newline-and-indent))))
@@ -356,15 +351,10 @@ block).
 #+BEGIN_SRC emacs-lisp
 (use-package go-mode
   :ensure t
-)
-;; Set up before-save hooks to format buffer and add/delete imports.
-;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
-(add-hook 'before-save-hook #'lsp-format-buffer t t)
-(add-hook 'before-save-hook #'lsp-organize-imports t t))
-
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-
+  :hook
+  (go-mode . (lambda ()
+               (add-hook 'before-save-hook #'lsp-format-buffer t t)
+               (add-hook 'before-save-hook #'lsp-organize-imports t t))))
 #+END_SRC
 
 Use flycheck checker for golangci-lint
@@ -381,23 +371,20 @@ Use flycheck checker for golangci-lint
 
 #+BEGIN_SRC emacs-lisp
 (use-package ruby-mode
-  :mode "\\.rb$"
-  :mode "\\.rake$'"
-  :mode "\\.ru$"
-  :mode "Gemfile$"
-  :mode "Rakefile$"
-  :mode "Capfile$"
-  :mode "\\.gemspec$"
+  :mode (("\\.rb$" . ruby-mode)
+         ("\\.rake$" . ruby-mode)
+         ("\\.ru$" . ruby-mode)
+         ("Gemfile$" . ruby-mode)
+         ("Rakefile$" . ruby-mode)
+         ("Capfile$" . ruby-mode)
+         ("\\.gemspec$" . ruby-mode))
   :init
   (setq ruby-insert-encoding-magic-comment nil
         ruby-indent-tabs-mode nil
-        ruby-mode-hook 2)
-  (add-hook 'ruby-mode-hook (lambda () (fci-mode 1))))
+        ruby-mode-hook 2))
 #+END_SRC
 
-**** Ruby environment managqer
-
-Uses [[https://rvm.io/][RVM]] to manage gems.
+Use [[https://rvm.io/][RVM]] to manage gems.
 
 #+BEGIN_SRC emacs-lisp
 (use-package rvm
@@ -406,22 +393,13 @@ Uses [[https://rvm.io/][RVM]] to manage gems.
   (rvm-use-default))
 #+END_SRC
 
-**** Rubocop
-
-Rubocop for all things Ruby
-
-#+begin_src emacs-lisp
-(use-package rubocop
-  :hook (ruby-mode . rubocop-mode))
-#+end_src
-
 *** Cucumber
 
 Use [[https://cucumber.io/][Cucumber]] for BDD
 
 #+BEGIN_SRC emacs-lisp
 (use-package feature-mode
-  :mode "\\.feature$"
+  :mode (("\\.feature$" . feature-mode))
   :commands feature-mode
   :config
   (setq feature-default-language "en"))
@@ -434,17 +412,11 @@ Using standard erlang.el
 #+begin_src emacs-lisp
 (use-package erlang
   :ensure t
-  :mode "\\.P$"
-  :mode "\\.E$"
-  :mode "\\.S$"
-  :mode "\\.erl?$"
-  :config
-  (add-hook 'erlang-mode-hook
-            (lambda ()
-              (setq mode-name "erlang"
-                    erlang-compile-extra-opts '((i . "../include"))
-                    erlang-root-dir "/usr/local/lib/erlang")))
-  (add-hook 'erlang-mode-hook (lambda () (fci-mode 1))))
+  :mode "\\.P$\\|\\.E$\\|\\.S$\\|\\.erl?$"
+  :hook (erlang-mode . (lambda ()
+                         (setq mode-name "erlang"
+                               erlang-compile-extra-opts '((i . "../include"))
+                               erlang-root-dir "/usr/local/lib/erlang"))))
 #+end_src
 
 *** Clojure
@@ -454,13 +426,11 @@ Minimal setup to begin with, clojure-mode.
 #+begin_src emacs-lisp
 (use-package clojure-mode
   :ensure t
-  :mode (("\\.clj$" . clojure-mode)
-         ("\\.edn$" . clojure-mode))
-  :init
-  (add-hook 'clojure-mode-hook #'subword-mode)
-  (add-hook 'clojure-mode-hook #'smartparens-mode)
-  (add-hook 'clojure-mode-hook #'eldoc-mode)
-  (add-hook 'clojure-mode-hook (lambda () (fci-mode 1))))
+  :mode "\\.clj$\\|\\.edn$"
+  :hook
+  (clojure-mode . (lambda ()
+                    (subword-mode)
+                    (eldoc-mode))))
 #+end_src
 
 Now [[https://github.com/clojure-emacs/cider][CIDER]]. Another creation from bbatsov :+1:
@@ -522,39 +492,36 @@ npm i -g prettier
          "\\.ts\\'"
          "\\.vue\\'"
          "\\.tsx\\'")
+  :hook (rjsx-mode . (lambda ()
+                       (setq js2-mode-show-parse-errors nil
+                             js2-mode-show-strict-warnings nil
+                             js2-basic-offset 2
+                             js-indent-level 2
+                             flycheck-disabled-checkers (cl-union flycheck-disabled-checkers
+                                                                '(javascript-jshint)))))
   :config
-  (setq js2-mode-show-parse-errors nil
-        js2-mode-show-strict-warnings nil
-        js2-basic-offset 2
-        js-indent-level 2)
-  (setq-local flycheck-disabled-checkers (cl-union flycheck-disabled-checkers
-                                                   '(javascript-jshint))))
-
-(use-package add-node-modules-path
-  :defer t
-  :hook (((js2-mode rjsx-mode) . add-node-modules-path)))
-
-(use-package prettier-js
-  :defer t
-  :diminish prettier-js-mode
-  :hook((js2-mode rjsx-mode) . prettier-js-mode)
-)
+  (use-package add-node-modules-path
+    :defer t
+    :hook (rjsx-mode . add-node-modules-path))
+  (use-package prettier-js
+    :defer t
+    :diminish prettier-js-mode
+    :hook (rjsx-mode . prettier-js-mode)))
 #+end_src
 
 
 ** Features
 
+
 *** Which-key
 
 #+BEGIN_SRC emacs-lisp
- (use-package which-key
+(use-package which-key
   :diminish
-  :init
-  (add-hook 'after-init-hook 'which-key-mode)
+  :hook (after-init . which-key-mode)
   :config
-  (which-key-mode)
-  (setq which-key-idle-delay 0.5)
-  (setq which-key-idle-secondary-delay nil))
+  (setq which-key-idle-delay 0.5
+        which-key-idle-secondary-delay nil))
 #+END_SRC
 
 *** Try
@@ -731,11 +698,13 @@ project or a directory, á la Eclipse or other common IDEs.
 Fold code. I found `yafolding` simplier to use than e.g.: `origami`
 #+BEGIN_SRC emacs-lisp
 (use-package yafolding
-  :init
-  (add-hook 'ruby-mode-hook 'yafolding-mode)
-  :bind
-  (("M-n" . yafolding-toggle-element)
-  ("M-m" . yafolding-toggle-all)))
+  :hook ((ruby-mode . yafolding-mode)
+         (go-mode . yafolding-mode)
+         (terraform-mode . yafolding-mode)
+         (json-mode . yafolding-mode)
+         (rjsx-mode . yafolding-mode))
+  :bind (("M-n" . yafolding-toggle-element)
+         ("M-m" . yafolding-toggle-all)))
 #+END_SRC
 
 *** Restclient
@@ -842,23 +811,19 @@ Adapter Protocol
 
 #+begin_src emacs-lisp
 (use-package company
-   :ensure t
-   :hook
-   (prog-mode . company-mode)
-   (org-mode . company-mode)
-   :config
-     (setq company-minimum-prefix-length 2
-           company-idle-delay 0.2
-           completion-ignore-case t)
-     (setq-default tab-always-indent 'complete)
-   :init
-     (with-eval-after-load 'company
-       (define-key company-active-map (kbd "C-n") #'company-select-next)
-       (define-key company-active-map (kbd "C-p") #'company-select-previous)))
+  :ensure t
+  :hook
+  ((prog-mode org-mode) . company-mode)
+  :config
+  (setq company-minimum-prefix-length 2
+        company-idle-delay 0.2
+        completion-ignore-case t)
+  :bind (:map company-active-map
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous)))
 
 (use-package company-box
   :ensure t
-  :after company
   :hook (company-mode . company-box-mode))
 #+end_src
 
@@ -880,7 +845,7 @@ On-the-fly syntax checking
   :ensure t
   :after flycheck
   :config
-  (flycheck-pos-tip-mode))
+  (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 #+end_src
 
 *** Vertico + Orderless + Marginalia + Consult
@@ -1016,22 +981,13 @@ A template system for filling in the knowledge blanks ;) Set hook per language
   :delight
   :ensure t
   :init
-   (add-hook 'k8s-mode-hook #'yas-minor-mode)
-   (add-hook 'go-mode-hook #'yas-minor-mode)
-   (add-hook 'ruby-mode-hook #'yas-minor-mode)
-   (add-hook 'clojure-mode-hook #'yas-minor-mode)
-   (add-hook 'dockerfile-mode-hook #'yas-minor-mode)
-   (add-hook 'makefile-mode-hook #'yas-minor-mode)
-   (add-hook 'sh-mode-hook #'yas-minor-mode)
-   (add-hook 'erlang-mode-hook #'yas-minor-mode)
-   (add-hook 'emacs-lisp-mode #'yas-minor-mode)
-   (add-hook 'fish-mode #'yas-minor-mode)
+   (add-hook 'prog-mode-hook #'yas-minor-mode)
    (add-hook 'markdown-mode #'yas-minor-mode)
    (add-hook 'rjsx-mode #'yas-minor-mode)
    (add-hook 'terraform-mode #'yas-minor-mode)
   :config
-    (setq yas-snippet-dirs '("~/.emacs.d/snippets"
-                           "/usr/share/yasnippet-snippets"))
+   (yas-global-mode 1)
+   (setq yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets"))
    (yas-reload-all))
 #+end_src
 
@@ -1212,42 +1168,42 @@ Adding org files for agenda
 The thick of it
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :init
-    (setq org-support-shift-select t
-          org-return-follows-link t
-          org-hide-emphasis-markers t
-          org-outline-path-complete-in-steps nil
-          org-src-fontify-natively t
-          org-src-tab-acts-natively t
-          org-confirm-babel-evaluate nil
-          org-log-done t
-          org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
-          org-refile-use-outline-path t
-          org-outline-path-complete-in-steps nil
-          org-indirect-buffer-display 'current-window
-          org-fast-tag-selection-include-todo t
-          org-use-fast-todo-selection t
-          org-startup-indented t
-          org-treat-S-cursor-todo-selection-as-state-change nil
-          org-startup-with-inline-images t)
-    (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
-    (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))
-    (add-hook 'org-mode-hook 'auto-fill-mode)
-    (add-hook 'org-journal-mode-hook 'auto-fill-mode)
-    :bind (("C-c l" . org-store-link)
-           ("C-c n" . org-capture)
-           ("C-c a" . org-agenda))
-    :config
-    (font-lock-add-keywords
-     'org-mode `(("^\\*+ \\(TODO\\) "
-                  (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑") nil)))
-                 ("^\\*+ \\(PROGRESSING\\) "
-                  (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐") nil)))
-                 ("^\\*+ \\(CANCELLED\\) "
-                  (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
-                 ("^\\*+ \\(DONE\\) "
-                  (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
+(use-package org
+  :init
+  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
+  (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))
+  :hook (org-mode . auto-fill-mode)
+  :hook (org-journal-mode . auto-fill-mode)
+  :bind (("C-c l" . org-store-link)
+         ("C-c n" . org-capture)
+         ("C-c a" . org-agenda))
+  :config
+  (setq org-support-shift-select t
+        org-return-follows-link t
+        org-hide-emphasis-markers t
+        org-outline-path-complete-in-steps nil
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t
+        org-confirm-babel-evaluate nil
+        org-log-done t
+        org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
+        org-refile-use-outline-path t
+        org-outline-path-complete-in-steps nil
+        org-indirect-buffer-display 'current-window
+        org-fast-tag-selection-include-todo t
+        org-use-fast-todo-selection t
+        org-startup-indented t
+        org-treat-S-cursor-todo-selection-as-state-change nil
+        org-startup-with-inline-images t)
+  (font-lock-add-keywords
+   'org-mode `(("^\\*+ \\(TODO\\) "
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑") nil)))
+               ("^\\*+ \\(PROGRESSING\\) "
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐") nil)))
+               ("^\\*+ \\(CANCELLED\\) "
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
+               ("^\\*+ \\(DONE\\) "
+                (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
     (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
                               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))
           org-todo-keyword-faces
@@ -1414,7 +1370,6 @@ https://github.com/stathissideris/ditaa
 #+begin_src emacs-lisp
 (setq package-check-signature nil)
 
-(require 'json)
 (defun get-gcal-config-value (key)
   "Return the value of the json file gcal_secret for key"
   (cdr (assoc key (json-read-file "~/.emacs.d/org-gcal/gcal.json"))))
@@ -1422,12 +1377,12 @@ https://github.com/stathissideris/ditaa
 (use-package org-gcal
   :ensure t
   :config
+  (setq org-gcal-client-id (get-gcal-config-value 'org-gcal-client-id)
+        org-gcal-client-secret (get-gcal-config-value 'org-gcal-client-secret))
   (if (eq system-type 'darwin)
       (setq org-gcal-file-alist '(("manuel@compensate.com" . "/Volumes/Keybase/private/spavi/org/schedule.org.gpg")))
     (setq org-gcal-file-alist '(("manuel@compensate.com" . "/keybase/private/spavi/org/schedule.org.gpg"))))
-  (setq org-gcal-client-id (get-gcal-config-value 'org-gcal-client-id)
-        org-gcal-client-secret (get-gcal-config-value 'org-gcal-client-secret)))
-(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+  :hook (org-capture-after-finalize . org-gcal-sync))
 
 (custom-set-variables
  '(org-gcal-down-days 10)
@@ -1583,16 +1538,6 @@ Ibuffer
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
-
-Cua bindings
-
-
-(define-key global-map (kbd "C-c") 'cua-copy-region)
-(define-key global-map (kbd "C-v") 'cua-paste)
-(define-key global-map (kbd "C-x") 'cua-cut-region)
-(define-key global-map (kbd "C-z") 'undo-tree-undo)
-(define-key global-map (kbd "C-y") 'undo-tree-redo)
-
 
 Use `C-x C-0` to restore font size.
 
