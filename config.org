@@ -33,14 +33,6 @@ Remove all the stuff I don't use.
 )
 #+END_SRC
 
-Custom faces
-
-#+begin_src emacs-lisp
-(custom-set-faces
-  '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1"))))
-  '(italic ((t (:underline nil)))))
-#+end_src
-
 Some miscellaneous defaults.
 
 #+BEGIN_SRC emacs-lisp
@@ -119,12 +111,19 @@ Use `monokai` theme for Emacs.
   (load-theme 'monokai t))
 #+END_SRC
 
-Stronger highlight for search results. Selected
-by listing the faces (M-x list-faces-display, and then
+Set my preferred font, as well as stronger highlight for search results.
+Selected by listing the faces (M-x list-faces-display, and then
 searching for 'lazy-highlight', which corresponds to the
 search results for a given ISearch.
+
 #+begin_src emacs-lisp
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "PfEd" :family "DejaVu Sans Mono"))))
+ '(italic ((t (:underline nil))))
  '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
 #+end_src
 
