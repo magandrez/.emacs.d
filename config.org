@@ -1401,94 +1401,95 @@ package (hence the requires).
 *** Mu4e config
 
 #+begin_src emacs-lisp
-(when (eq system-type 'gnu/linux)
-  (require 'mu4e)
-  (require 'mu4e-contrib)
-(require 'mu4e-org)
-  (require 'smtpmail)
-  (setq mu4e-mu-binary "/bin/mu"
-        mail-user-agent "mu4e"
-        user-full-name  "Manuel González"
-        mu4e-attachment-dir "~/Downloads"
-        mu4e-change-filenames-when-moving t
-        mu4e-completing-read-function 'completing-read
-        mu4e-compose-complete-addresses t
-        mu4e-compose-context-policy nil
-        mu4e-compose-dont-reply-to-self t
-        mu4e-compose-keep-self-cc nil
-        mu4e-context-policy 'pick-first
-        mu4e-get-mail-command "mbsync -a"
-        mu4e-headers-date-format "%d-%m-%Y %H:%M"
-        mu4e-headers-fields '((:date . 22)
-                              (:flags . 6)
-                              (:from . 22)
-                              (:subject))
-        mu4e-headers-include-related t
-        mu4e-view-show-addresses t
-        mu4e-view-show-images t
-        message-kill-buffer-on-exit t
-        message-send-mail-function 'smtpmail-send-it
-        smtpmail-debug-info t
-        smtpmail-stream-type 'starttls
-        mm-sign-option 'guided
-        mu4e-contexts
-        `( ,(make-mu4e-context
-             :name "manuel.is"
-             :enter-func (lambda ()
-                           (mu4e-message "Entering gmail context")
-                           (when (string-match-p (buffer-name (current-buffer)) "mu4e-main")
-                             (revert-buffer)))
-             :leave-func (lambda ()
-                           (mu4e-message "Leaving gmail context")
-                           (when (string-match-p (buffer-name (current-buffer)) "mu4e-main")
-                             (revert-buffer)))
-             :match-func (lambda (msg)
-                           (when msg
-                             (or (mu4e-message-contact-field-matches msg :to "manuel@manuel.is")
-                                 (mu4e-message-contact-field-matches msg :from "manuel@manuel.is")
-                                 (mu4e-message-contact-field-matches msg :cc "manuel@manuel.is")
-                                 (mu4e-message-contact-field-matches msg :bcc "manuel@manuel.is")
-                                 (string-match-p "^/manuel.is/Inbox" (mu4e-message-field msg :maildir)))))
-             :vars '( ( user-mail-address            . "manuel@manuel.is" )
-                      ( user-full-name               . "Manuel González"  )
-                      ( smtpmail-smtp-user           . "manuel@manuel.is" )
-                      ( smtpmail-smtp-server         . "mail.manuel.is" )
-                      ( smtpmail-smtp-service        . 587 )
-                      ( mu4e-maildir-shortcuts       . ((:maildir "/manuel.is/Inbox" :key ?i)))
-                      ( mu4e-bookmarks
-                        .
-                        (( :name  "Unread messages"
-                                  :query "maildir:/manuel.is/Inbox AND flag:unread AND NOT flag:trashed AND NOT outdoorexperten"
-                                  :key ?u)
-                         ( :name "Today's messages"
-                                 :query "maildir:/manuel.is/Inbox AND date:today..now"
-                                 :key ?t)
-                         ( :name "Last 7 days"
-                                 :query "maildir:/manuel.is/Inbox AND date:7d..now"
-                                 :hide-unread t
-                                 :key ?w)
-                         ( :name "Deleted"
-                                 :query "flag:trashed"
-                                 :key ?d)))))))
+  (when (eq system-type 'gnu/linux)
+    (require 'mu4e)
+    (require 'mu4e-contrib)
+    (require 'mu4e-org)
+    (require 'smtpmail)
+    (setq mu4e-mu-binary "/bin/mu"
+          mail-user-agent "mu4e"
+          user-full-name  "Manuel González"
+          mu4e-attachment-dir "~/Downloads"
+          mu4e-change-filenames-when-moving t ;; See this link for more info: https://stackoverflow.com/a/43461973
+          mu4e-completing-read-function 'completing-read
+          mu4e-compose-complete-addresses t
+          mu4e-compose-context-policy nil
+          mu4e-compose-dont-reply-to-self t
+          mu4e-compose-keep-self-cc nil
+          mu4e-context-policy 'pick-first
+          mu4e-get-mail-command "mbsync -a"
+          mu4e-update-interval (* 10 60) ;; Refresh mail using isync every 10 minutes
+          mu4e-headers-date-format "%d-%m-%Y %H:%M"
+          mu4e-headers-fields '((:date . 22)
+                                (:flags . 6)
+                                (:from . 22)
+                                (:subject))
+          mu4e-headers-include-related t
+          mu4e-view-show-addresses t
+          mu4e-view-show-images t
+          message-kill-buffer-on-exit t
+          message-send-mail-function 'smtpmail-send-it
+          smtpmail-debug-info t
+          smtpmail-stream-type 'starttls
+          mm-sign-option 'guided
+          mu4e-contexts
+          `( ,(make-mu4e-context
+               :name "manuel.is"
+               :enter-func (lambda ()
+                             (mu4e-message "Entering gmail context")
+                             (when (string-match-p (buffer-name (current-buffer)) "mu4e-main")
+                               (revert-buffer)))
+               :leave-func (lambda ()
+                             (mu4e-message "Leaving gmail context")
+                             (when (string-match-p (buffer-name (current-buffer)) "mu4e-main")
+                               (revert-buffer)))
+               :match-func (lambda (msg)
+                             (when msg
+                               (or (mu4e-message-contact-field-matches msg :to "manuel@manuel.is")
+                                   (mu4e-message-contact-field-matches msg :from "manuel@manuel.is")
+                                   (mu4e-message-contact-field-matches msg :cc "manuel@manuel.is")
+                                   (mu4e-message-contact-field-matches msg :bcc "manuel@manuel.is")
+                                   (string-match-p "^/manuel.is/Inbox" (mu4e-message-field msg :maildir)))))
+               :vars '( ( user-mail-address            . "manuel@manuel.is" )
+                        ( user-full-name               . "Manuel González"  )
+                        ( smtpmail-smtp-user           . "manuel@manuel.is" )
+                        ( smtpmail-smtp-server         . "mail.manuel.is" )
+                        ( smtpmail-smtp-service        . 587 )
+                        ( mu4e-maildir-shortcuts       . ((:maildir "/manuel.is/Inbox" :key ?i)))
+                        ( mu4e-bookmarks
+                          .
+                          (( :name  "Unread messages"
+                             :query "maildir:/manuel.is/Inbox AND flag:unread AND NOT flag:trashed AND NOT outdoorexperten"
+                             :key ?u)
+                           ( :name "Today's messages"
+                             :query "maildir:/manuel.is/Inbox AND date:today..now"
+                             :key ?t)
+                           ( :name "Last 7 days"
+                             :query "maildir:/manuel.is/Inbox AND date:7d..now"
+                             :hide-unread t
+                             :key ?w)
+                           ( :name "Deleted"
+                             :query "flag:trashed"
+                             :key ?d)))))))
 
-  (add-hook 'message-send-hook 'sign-or-encrypt-message)
+    (add-hook 'message-send-hook 'sign-or-encrypt-message)
 
-  (set-face-foreground 'mu4e-unread-face "yellow")
+    (set-face-foreground 'mu4e-unread-face "yellow")
 
 
-  (defun sign-or-encrypt-message ()
-    (let ((answer (read-from-minibuffer "Sign or encrypt?\nEmpty to do nothing.\n[s/e]: ")))
-      (cond
-       ((string-equal answer "s") (progn
-                                    (message "Signing message.")
-                                    (mml-secure-message-sign-pgpmime)))
-       ((string-equal answer "e") (progn
-                                    (message "Encrypt and signing message.")
-                                    (mml-secure-message-encrypt-pgpmime)))
-       (t (progn
-            (message "Dont signing or encrypting message.")
-            nil)))))
-)
+    (defun sign-or-encrypt-message ()
+      (let ((answer (read-from-minibuffer "Sign or encrypt?\nEmpty to do nothing.\n[s/e]: ")))
+        (cond
+         ((string-equal answer "s") (progn
+                                      (message "Signing message.")
+                                      (mml-secure-message-sign-pgpmime)))
+         ((string-equal answer "e") (progn
+                                      (message "Encrypt and signing message.")
+                                      (mml-secure-message-encrypt-pgpmime)))
+         (t (progn
+              (message "Dont signing or encrypting message.")
+              nil)))))
+    )
 #+end_src
 
 *** Inline images
