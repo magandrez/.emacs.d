@@ -732,7 +732,9 @@ Magit is love for Emacs.
 Configuring forge
 #+begin_src emacs-lisp
 (use-package forge
-  :after magit)
+  :after magit
+  :init
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 #+end_src
 
 *** LSP
