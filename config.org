@@ -456,13 +456,10 @@ Note: for LSP integration to work, installing [[https://github.com/snoe/clojure-
 
 *** Terraform
 
-Terraform relies on LSP
+Terraform relies on LSP, but we need the major mode
 
 #+begin_src emacs-lisp
-(setq lsp-disabled-clients '(tfls)) ;; Choose Hashicorp's official implementation
-(setq lsp-terraform-ls-enable-show-reference t) ;; Code lens is experimental in Terraform mode
-(setq lsp-semantic-tokens-enable t)
-(setq lsp-semantic-tokens-honor-refresh-requests t)
+(use-package terraform-mode)
 #+end_src
 
 *** Kubernetes
@@ -766,7 +763,11 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
         lsp-enable-completion-at-point t
         lsp-auto-configure t
         lsp-auto-guess-root t
-        lsp-disabled-clients '(eslint angular-ls deno))
+        lsp-disabled-clients '(eslint angular-ls deno tfls) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
+        lsp-terraform-ls-enable-show-reference t ;; Code lens is experimental in Terraform mode
+        lsp-semantic-tokens-enable t
+        lsp-semantic-tokens-honor-refresh-requests t)
+
   ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
   :hook ((lsp-mode . lsp-enable-which-key-integration)
          ((go-mode clojure-mode clojurescript-mode terraform-mode) . lsp-deferred)
