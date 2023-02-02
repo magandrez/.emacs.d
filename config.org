@@ -811,11 +811,6 @@ Adapter Protocol
   (setq dap-auto-configure-features '(sessions locals controls tooltip)
         dap-print-io t))
 
-(use-package dap-ui
-  :ensure t
-  :config
-  (dap-ui-mode 1))
-
 (define-minor-mode +dap-running-session-mode
   "A mode for adding keybindings to running sessions"
   nil
