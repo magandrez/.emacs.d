@@ -1178,7 +1178,7 @@ A thesaurus for synonyms
 Let's visualize changes neatly
 #+begin_src emacs-lisp
 (use-package undo-tree
-  :init (global-undo-tree-mode)
+  :hook (go-mode . undo-tree-mode)
   :config
   (setq undo-tree-visualizer-timestamps t
         undo-tree-visualizer-diff t
