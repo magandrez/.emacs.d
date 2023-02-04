@@ -658,6 +658,7 @@ project or a directory, á la Eclipse or other common IDEs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package treemacs
+  :init (defvar treemacs-no-load-time-warnings t)
   :defer t
   :config
   (setq treemacs-follow-after-init t
