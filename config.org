@@ -603,6 +603,7 @@ Use `tramp` to shell into other machines.
 
 #+BEGIN_SRC emacs-lisp
 (use-package tramp
+  :defer t
   :config
   (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "/etc/ssh_config") (tramp-parse-sconfig "~/.ssh/config"))))
 #+END_SRC
@@ -657,6 +658,7 @@ project or a directory, á la Eclipse or other common IDEs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package treemacs
+  :defer t
   :config
   (setq treemacs-follow-after-init t
         treemacs-width 35
@@ -678,6 +680,7 @@ project or a directory, á la Eclipse or other common IDEs.
    ("C-c f" . treemacs-select-window)))
 
 (use-package treemacs-projectile
+  :defer t
   :after treemacs projectile
   :bind
   (("C-c o p" . treemacs-projectile)))
@@ -709,6 +712,7 @@ Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explo
 
 #+begin_src emacs-lisp
 (use-package restclient
+  :defer t
   :mode ("\\.http\\'" . restclient-mode))
 #+end_src
 
@@ -718,6 +722,7 @@ Magit is love for Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
+  :defer t
   :config
     (setq magit-log-arguments '("-n256" "--graph" "--decorate" "--color"))
   :bind (("C-x g" . magit-status))
@@ -732,6 +737,7 @@ Magit is love for Emacs.
 Configuring forge
 #+begin_src emacs-lisp
 (use-package forge
+  :defer t
   :after magit
   :init
   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
@@ -804,6 +810,7 @@ Adapter Protocol
 
 #+begin_src emacs-lisp
 (use-package dap-mode
+  :defer t
   :ensure t
   :init (require 'dap-dlv-go)
   :config
@@ -838,6 +845,7 @@ Adapter Protocol
 
 #+begin_src emacs-lisp
 (use-package company
+  :defer t
   :ensure t
   :hook
   ((prog-mode org-mode) . company-mode)
@@ -850,6 +858,7 @@ Adapter Protocol
          ("C-p" . company-select-previous)))
 
 (use-package company-box
+  :defer t
   :ensure t
   :hook (company-mode . company-box-mode))
 #+end_src
@@ -860,6 +869,7 @@ On-the-fly syntax checking
 
 #+begin_src emacs-lisp
 (use-package flycheck
+  :defer t
   :diminish
   :ensure t
   :init (global-flycheck-mode)
@@ -869,6 +879,7 @@ On-the-fly syntax checking
 )
 
 (use-package flycheck-pos-tip
+  :defer t
   :ensure t
   :after flycheck
   :config
@@ -1005,6 +1016,7 @@ A template system for filling in the knowledge blanks ;) Set hook per language
 
 #+begin_src emacs-lisp
 (use-package yasnippet
+  :defer t
   :delight
   :ensure t
   :init
@@ -1022,6 +1034,7 @@ Various snippets
 
 #+begin_src emacs-lisp
 (use-package yasnippet-snippets
+  :defer t
   :ensure t
   :after yasnippet
   :config
@@ -1048,6 +1061,7 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 
 #+begin_src emacs-lisp
 (use-package elfeed
+  :defer t
   :ensure t
   :bind (:map elfeed-search-mode-map
    ("m" . elfeed-toggle-star))
@@ -1055,6 +1069,7 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
   (setq elfeed-search-title-max-width 150))
 
 (use-package elfeed-goodies
+  :defer t
   :ensure t
   :after elfeed
   :config
@@ -1065,6 +1080,7 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
         elfeed-goodies/tag-column-width 27))
 
 (use-package elfeed-org
+  :defer t
   :ensure t
   :after elfeed
   :config
@@ -1118,6 +1134,7 @@ Provide UUID generation support (for all standards) inside Emacs
 
 #+begin_src emacs-lisp
 (use-package uuidgen
+  :defer t
   :ensure t)
 #+end_src
 
@@ -1159,6 +1176,7 @@ Some dictionaries installed:
 
 #+begin_src emacs-lisp
 (use-package dictionary
+  :defer t
   :if (and (equal system-type 'gnu/linux)
            (executable-find "dictd"))
   :ensure t
@@ -1170,6 +1188,7 @@ A thesaurus for synonyms
 
 #+begin_src emacs-lisp
 (use-package powerthesaurus
+  :defer t
   :ensure t)
 #+end_src
 
@@ -1178,6 +1197,7 @@ A thesaurus for synonyms
 Let's visualize changes neatly
 #+begin_src emacs-lisp
 (use-package undo-tree
+  :defer t
   :hook (go-mode . undo-tree-mode)
   :config
   (setq undo-tree-visualizer-timestamps t
@@ -1270,6 +1290,7 @@ Org journaling
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-journal
+  :defer t
   :init
   (setq org-journal-prefix-key "C-c j")
   :config
@@ -1347,6 +1368,7 @@ Calendar modifications (Finnish calendar, etc)
 
 #+BEGIN_SRC emacs-lisp
 (use-package suomalainen-kalenteri
+  :defer t
   :after org
   :config
   (setq calendar-date-style 'european
