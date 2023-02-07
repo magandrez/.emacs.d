@@ -1206,6 +1206,7 @@ Let's visualize changes neatly
         undo-tree-history-directory-alist '(("." . "~/.emacs.d/auto-save-list/"))))
 #+end_src
 
+
 ** Org
 
 *** Agenda files
@@ -1272,6 +1273,10 @@ The thick of it
             ("WAITING" :foreground "orange" :weight bold)
             ("HOLD" :foreground "magenta" :weight bold)
             ("CANCELLED" :foreground "forest green" :weight bold)))
+     (setq org-agenda-custom-commands
+      '(("w" "Work agenda"
+         ((agenda "")
+          (tags-todo "work")))))
     (setq org-todo-state-tags-triggers
           (quote (("CANCELLED" ("CANCELLED" . t))
                   ("WAITING" ("WAITING" . t))
