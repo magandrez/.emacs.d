@@ -1228,66 +1228,70 @@ Adding org files for agenda
 The thick of it
 
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :init
-  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
-  (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))
-  :hook (org-mode . auto-fill-mode)
-  :hook (org-journal-mode . auto-fill-mode)
-  :bind (("C-c l" . org-store-link)
-         ("C-c n" . org-capture)
-         ("C-c a" . org-agenda))
-  :config
-  (setq org-support-shift-select t
-        org-return-follows-link t
-        org-hide-emphasis-markers t
-        org-outline-path-complete-in-steps nil
-        org-src-fontify-natively t
-        org-src-tab-acts-natively t
-        org-confirm-babel-evaluate nil
-        org-log-done t
-        org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
-        org-refile-use-outline-path t
-        org-outline-path-complete-in-steps nil
-        org-indirect-buffer-display 'current-window
-        org-fast-tag-selection-include-todo t
-        org-use-fast-todo-selection t
-        org-startup-indented t
-        org-treat-S-cursor-todo-selection-as-state-change nil
-        org-startup-with-inline-images t)
-  (font-lock-add-keywords
-   'org-mode `(("^\\*+ \\(TODO\\) "
-                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑") nil)))
-               ("^\\*+ \\(PROGRESSING\\) "
-                (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐") nil)))
-               ("^\\*+ \\(CANCELLED\\) "
-                (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
-               ("^\\*+ \\(DONE\\) "
-                (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
-    (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
-                              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))
-          org-todo-keyword-faces
-          '(("TODO" :foreground "red" :weight bold)
-            ("PROGRESSING" :foreground "deep sky blue" :weight bold)
-            ("DONE" :foreground "forest green" :weight bold)
-            ("WAITING" :foreground "orange" :weight bold)
-            ("HOLD" :foreground "magenta" :weight bold)
-            ("CANCELLED" :foreground "forest green" :weight bold)))
-     (setq org-agenda-custom-commands
-      '(("w" "Work agenda"
-         ((agenda "")
-          (tags-todo "work")))))
-    (setq org-todo-state-tags-triggers
-          (quote (("CANCELLED" ("CANCELLED" . t))
-                  ("WAITING" ("WAITING" . t))
-                  ("HOLD" ("WAITING") ("HOLD" . t))
-                  (done ("WAITING") ("HOLD"))
-                  ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-                  ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-                  ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
-    (define-key org-mode-map [remap org-return] (lambda () (interactive)
-                                                  (if (org-in-src-block-p)
-                                                      (org-return) (org-return-indent)))))
+  (use-package org
+    :init
+    (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
+    (add-to-list 'auto-mode-alist '(".*/[0-9]*$" . org-mode))
+    :hook (org-mode . auto-fill-mode)
+    :hook (org-journal-mode . auto-fill-mode)
+    :bind (("C-c l" . org-store-link)
+           ("C-c n" . org-capture)
+           ("C-c a" . org-agenda)
+           ("C-M-<return>" . org-insert-item)
+           ("C-c C-x i" . org-clock-in)
+           ("C-c C-x o" . org-clock-out))
+
+    :config
+    (setq org-support-shift-select t
+          org-return-follows-link t
+          org-hide-emphasis-markers t
+          org-outline-path-complete-in-steps nil
+          org-src-fontify-natively t
+          org-src-tab-acts-natively t
+          org-confirm-babel-evaluate nil
+          org-log-done t
+          org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
+          org-refile-use-outline-path t
+          org-outline-path-complete-in-steps nil
+          org-indirect-buffer-display 'current-window
+          org-fast-tag-selection-include-todo t
+          org-use-fast-todo-selection t
+          org-startup-indented t
+          org-treat-S-cursor-todo-selection-as-state-change nil
+          org-startup-with-inline-images t)
+    (font-lock-add-keywords
+     'org-mode `(("^\\*+ \\(TODO\\) "
+                  (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑") nil)))
+                 ("^\\*+ \\(PROGRESSING\\) "
+                  (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐") nil)))
+                 ("^\\*+ \\(CANCELLED\\) "
+                  (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
+                 ("^\\*+ \\(DONE\\) "
+                  (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
+      (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
+                                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))
+            org-todo-keyword-faces
+            '(("TODO" :foreground "red" :weight bold)
+              ("PROGRESSING" :foreground "deep sky blue" :weight bold)
+              ("DONE" :foreground "forest green" :weight bold)
+              ("WAITING" :foreground "orange" :weight bold)
+              ("HOLD" :foreground "magenta" :weight bold)
+              ("CANCELLED" :foreground "forest green" :weight bold)))
+       (setq org-agenda-custom-commands
+        '(("w" "Work agenda"
+           ((agenda "")
+            (tags-todo "work")))))
+      (setq org-todo-state-tags-triggers
+            (quote (("CANCELLED" ("CANCELLED" . t))
+                    ("WAITING" ("WAITING" . t))
+                    ("HOLD" ("WAITING") ("HOLD" . t))
+                    (done ("WAITING") ("HOLD"))
+                    ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                    ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                    ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+      (define-key org-mode-map [remap org-return] (lambda () (interactive)
+                                                    (if (org-in-src-block-p)
+                                                        (org-return) (org-return-indent)))))
 #+END_SRC
 
 *** Journaling
