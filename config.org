@@ -54,6 +54,7 @@ Some miscellaneous defaults.
               completions-detailed t                  ; Show more info when describing things
               use-short-answers t                     ; Use instead of y-or-n-p
               package-native-compile t
+              native-comp-async-report-warnings-errors nil ;; Don't show native compile warnings
 )
 #+END_SRC
 
