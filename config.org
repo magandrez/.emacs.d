@@ -338,9 +338,8 @@ Docker compose as well
 
 #+BEGIN_SRC emacs-lisp
 (use-package csv-mode
-    :mode "\\.[Cc][Ss][Vv]$"
-    :init (setq csv-separators '("," ";" "|" " "))
-    :config (use-package csv-nav))
+  :mode "\\.[Cc][Ss][Vv]$"
+  :init (setq csv-separators '("," ";" "|" " ")))
 #+END_SRC
 
 *** Go
