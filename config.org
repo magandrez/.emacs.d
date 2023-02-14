@@ -582,13 +582,6 @@ to the daemon started from a systemd service definition.
       epa-pinentry-mode 'loopback)
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-(when (eq system-type 'darwin)
-  (use-package pinentry
-  :config
-  (pinentry-start)))
-#+END_SRC
-
 For credentials, use `auth-source-pass`, included in Emacs 26. See
 more [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][here]].
 
