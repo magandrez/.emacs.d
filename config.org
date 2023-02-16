@@ -475,11 +475,22 @@ docs, if you will).
 
 *** Javascript
 
-The below needs of some Javascript packages in the project at hand:
+These configs rely on rjsx-mode as the major mode to edit Javascript files
+(whichever the flavor). Additionally, it relies on prettier
+In order to work with Javascript, you would likely need to run (at least) the
+following setup:
 
-npm i -g typescript-language-server
-npm i -g typescript
-npm i -g prettier
+- Install NVM
+- Before opening a project/subfolder containing a Javascript codebase do:
+- $ cd <folder>/
+- $ nvm use
+- $ npm i -g typescript-language-server && npm i -g typescript && npm i -g prettier
+- $ yarn install
+- $ [[https://github.com/magandrez/dotfiles/blob/main/bin/.local/bin/emacs_export][emacs_export]] PATH && emacs_export NVM_BIN
+
+The above will ensure Emacs has the path is set and NVM_BIN points to the
+correct location. After that, the following major and minor mode configs should
+take care of the rest.
 
 #+begin_src emacs-lisp
 (use-package rjsx-mode
@@ -499,10 +510,9 @@ npm i -g prettier
   (use-package add-node-modules-path
     :defer t
     :hook (rjsx-mode . add-node-modules-path))
-  (use-package prettier-js
+  (use-package prettier-rc
     :defer t
-    :diminish prettier-js-mode
-    :hook (rjsx-mode . prettier-js-mode)))
+    :hook (rjsx-mode . prettier-rc-mode)))
 #+end_src
 
 
