@@ -1481,7 +1481,6 @@ package (hence the requires).
           mu4e-compose-keep-self-cc nil
           mu4e-context-policy 'pick-first
           mu4e-get-mail-command "mbsync -a"
-          mu4e-update-interval (* 10 60) ;; Refresh mail using isync every 10 minutes
           mu4e-headers-date-format "%d-%m-%Y %H:%M"
           mu4e-headers-fields '((:date . 22)
                                 (:flags . 6)
