@@ -1491,7 +1491,6 @@ package (hence the requires).
             mu4e-attachment-dir "~/Downloads"
             mu4e-change-filenames-when-moving t ;; See this link for more info: https://stackoverflow.com/a/43461973
             mu4e-completing-read-function 'completing-read
-            mu4e-update-interval 120 ;; 2 minutes updates
             mu4e-compose-complete-addresses t
             mu4e-compose-context-policy nil
             mu4e-compose-dont-reply-to-self t
