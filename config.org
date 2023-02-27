@@ -1490,7 +1490,7 @@ package (hence the requires).
     (require 'smtpmail)
     (with-eval-after-load 'mu4e
       (setq mu4e-mu-binary "/bin/mu"
-            mail-user-agent "mu4e"
+            mail-user-agent 'mu4e-user-agent ;; This is not something to change lightly. Check docs
             mu4e-maildir "~/Maildir/manuel.is"
             mu4e-sent-folder   "/manuel.is/Sent"
             mu4e-drafts-folder "/manuel.is/Drafts"
