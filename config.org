@@ -1449,7 +1449,8 @@ https://github.com/stathissideris/ditaa
 (use-package org-gcal
   :ensure t
   :config
-  (setq org-gcal-client-id (get-gcal-config-value 'org-gcal-client-id)
+  (setq plstore-cache-passphrase-for-symmetric-encryption t
+        org-gcal-client-id (get-gcal-config-value 'org-gcal-client-id)
         org-gcal-client-secret (get-gcal-config-value 'org-gcal-client-secret))
   (if (eq system-type 'darwin)
       (setq org-gcal-file-alist '(("manuel@compensate.com" . "/Volumes/Keybase/private/spavi/org/schedule.org.gpg")))
