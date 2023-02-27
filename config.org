@@ -1508,7 +1508,10 @@ package (hence the requires).
             message-kill-buffer-on-exit t
             message-send-mail-function 'smtpmail-send-it
             smtpmail-debug-info t
+            smtpmail-smtp-user "manuel@manuel.is"
+            smtpmail-smtp-server "127.0.0.1"
             smtpmail-stream-type 'starttls
+            smtpmail-smtp-service 1025
             mm-sign-option 'guided
             mu4e-contexts
           `( ,(make-mu4e-context
@@ -1524,11 +1527,6 @@ package (hence the requires).
                                    (string-match-p "^/manuel.is/Inbox" (mu4e-message-field msg :maildir)))))
                 :vars '( ( user-mail-address            . "manuel@manuel.is" )
                          ( user-full-name               . "Manuel González"  )
-                         ( smtpmail-smtp-user           . "manuel@manuel.is" )
-                         ( smtpmail-smtp-server         . "127.0.0.1" )
-                         ( smtpmail-auth-credentials    . "~/.password-store/personal/Mail_smtpmail.gpg" )
-                         ( smtpmail-stream-type         . 'starttls )
-                         ( smtpmail-smtp-service        . 1025 )
                          ( mu4e-maildir-shortcuts       . ((:maildir "/manuel.is/Inbox" :name "Inbox" :key ?i)
                                                            (:maildir "/manuel.is/Archive" :name "Archive" :key ?a)
                                                            (:maildir "/manuel.is/Drafts" :name "Drafts" :key ?d)
