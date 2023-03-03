@@ -454,18 +454,6 @@ config block).
 
 Note: for LSP integration to work, installing [[https://github.com/snoe/clojure-lsp][clojure-lsp]] is a requirement.
 
-*** Terraform
-
-Terraform relies on LSP, but we need the major mode
-
-#+begin_src emacs-lisp
-(use-package terraform-mode
-  :mode ("\\.tf\\'"
-         "\\.tfvars\\'"
-         "\\.tfstate\\'")
-  :hook (terraform-mode . lsp-deferred))
-#+end_src
-
 *** Kubernetes
 
 Just a basic mode for K8s artifacts (a wrapper for YAML with calls to
@@ -779,7 +767,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
           lsp-enable-completion-at-point t
           lsp-auto-configure t
           lsp-auto-guess-root t
-          lsp-disabled-clients '(eslint angular-ls deno tfmls) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
+          lsp-disabled-clients '(eslint angular-ls deno tfls) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
           lsp-terraform-ls-enable-show-reference t ;; Code lens is experimental in Terraform mode
           lsp-semantic-tokens-enable t
           lsp-semantic-tokens-honor-refresh-requests t
@@ -788,7 +776,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
           lsp-terraform-ls-prefill-required-fields t
           lsp-terraform-ls-validate-on-save t)
     ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
-    :hook (((go-mode clojure-mode clojurescript-mode) . lsp-deferred)
+    :hook (((go-mode clojure-mode clojurescript-mode terraform-mode) . lsp-deferred)
            ((c-mode c++-mode js2-mode rjsx-mode) . lsp)))
 
   (use-package lsp-ui
