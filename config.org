@@ -954,6 +954,10 @@ On-the-fly syntax checking
          ("M-g m" . consult-mark)
          ("M-g k" . consult-global-mark)
          ("M-g i" . consult-imenu)
+         ("s-r" . consult-ripgrep)
+         ("s-g" . consult-grep)
+         ("s-s" . consult-line-multi)
+         ("s-a" . consult-find)
          ("M-g I" . consult-imenu-multi))
 
   ;; The :init configuration is always executed (Not lazy)
@@ -1678,15 +1682,6 @@ Resize window
 (define-key global-map (kbd "s-<up>") 'enlarge-window)
 #+end_src
 
-Consult remapping
-
-#+begin_src emacs-lisp
-(define-key global-map (kbd "s-r") 'consult-ripgrep)    ;; Search with ripgrep
-(define-key global-map (kbd "s-g") 'consult-grep)       ;; Search with grep
-(define-key global-map (kbd "s-s") 'consult-line-multi) ;; Match in all open buffers
-(define-key global-map (kbd "s-a") 'consult-find)       ;; Search for regexp in DIR
-(define-key global-map (kbd "C-s") 'consult-line)       ;; Match in current buffer
-#+end_src
 
 Yasnippet insert
 
