@@ -958,6 +958,7 @@ On-the-fly syntax checking
          ("s-r" . consult-ripgrep)
          ("s-g" . consult-grep)
          ("s-s" . consult-line-multi)
+         ("C-s" . consult-line)
          ("s-a" . consult-find)
          ("M-g I" . consult-imenu-multi))
 
