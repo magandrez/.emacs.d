@@ -507,6 +507,11 @@ take care of the rest.
     :hook (rjsx-mode . prettier-rc-mode)))
 #+end_src
 
+*** Terraform
+
+#+begin_src emacs-lisp
+(use-package terraform-mode)
+#+end_src
 
 ** Features
 
