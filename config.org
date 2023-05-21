@@ -513,6 +513,7 @@ take care of the rest.
 (use-package terraform-mode)
 #+end_src
 
+
 ** Features
 
 
@@ -1216,6 +1217,17 @@ Let's visualize changes neatly
         undo-tree-history-directory-alist '(("." . "~/.emacs.d/auto-save-list/"))))
 #+end_src
 
+*** Emoji
+
+#+begin_src emacs-lisp
+(use-package emojify
+  :config
+  (when (member "Noto Color Emoji" (font-family-list))
+    (set-fontset-font
+     t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend))
+  (setq emojify-display-style 'unicode)
+  (setq emojify-emoji-styles '(unicode))
+#+end_src
 
 ** Org
 
@@ -1709,4 +1721,10 @@ Thesaurus lookup
 
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c t") 'powerthesaurus-lookup-dwim)
+#+end_src
+
+Insert emoji globally
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-ö") 'emojify-insert-emoji)
 #+end_src
