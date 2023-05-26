@@ -232,6 +232,13 @@ Reloads Emacs config without having to restart the service.
   (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
 #+end_src
 
+*** Bug hunting on Emacs init file
+
+Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp-bug-hunter
+
+#+begin_src emacs-lisp
+(use-package bug-hunter)
+#+end_src
 
 ** Languages / frameworks
 
