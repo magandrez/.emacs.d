@@ -1045,7 +1045,7 @@ A template system for filling in the knowledge blanks ;) Set hook per language
    (add-hook 'terraform-mode #'yas-minor-mode)
   :config
    (yas-global-mode 1)
-   (setq yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets"))
+   (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
    (yas-reload-all))
 #+end_src
 
