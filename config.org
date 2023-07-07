@@ -1244,8 +1244,8 @@ Adding org files for agenda
 
 #+BEGIN_SRC emacs-lisp
 (if (eq system-type 'darwin)
-    (setq org-directory "/Volumes/Keybase/private/spavi/org"
-          org-default-notes-file "/Volumes/Keybase/private/spavi/org/refile.org.gpg")
+    (setq org-directory "/Users/spav/Dropbox/org/documents"
+          org-default-notes-file "/Users/spav/Dropbox/org/documents/refile.org.gpg")
   (setq org-directory "/keybase/private/spavi/org"
         org-default-notes-file "/keybase/private/spavi/org/refile.org.gpg"))
 (require 'find-lisp)
@@ -1342,7 +1342,7 @@ Org journaling
 
 #+begin_src emacs-lisp
 (if (eq system-type 'darwin)
-    (setq org-journal-dir "/Volumes/Keybase/private/spavi/org/diary/")
+    (setq org-journal-dir "/Users/spav/Dropbox/org/documents/diary/")
   (setq org-journal-dir "/keybase/private/spavi/org/diary/"))
 #+end_src
 
@@ -1480,8 +1480,8 @@ https://github.com/stathissideris/ditaa
         org-gcal-client-id (get-gcal-config-value 'org-gcal-client-id)
         org-gcal-client-secret (get-gcal-config-value 'org-gcal-client-secret))
   (if (eq system-type 'darwin)
-      (setq org-gcal-file-alist '(("manuel@compensate.com" . "/Volumes/Keybase/private/spavi/org/schedule.org.gpg")))
-    (setq org-gcal-file-alist '(("manuel@compensate.com" . "/keybase/private/spavi/org/schedule.org.gpg"))))
+      (setq org-gcal-file-alist '(("magandrez@gmail.com" . "/Users/spav/Dropbox/org/documents/schedule.org.gpg")))
+    (setq org-gcal-file-alist '(("magandrez@gmail.com" . "/keybase/private/spavi/org/schedule.org.gpg"))))
   :hook (org-capture-after-finalize . org-gcal-sync))
 
 (custom-set-variables
