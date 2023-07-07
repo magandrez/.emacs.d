@@ -146,7 +146,7 @@ Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path
   :init
   (if (eq system-type 'darwin)
       (progn
-        (setq shell-file-name "/usr/bin/zsh")
+        (setq shell-file-name "/usr/local/bin/zsh")
         (exec-path-from-shell-initialize))
     (if (eq system-type 'gnu/linux)
         (progn
@@ -1573,10 +1573,10 @@ package (hence the requires).
                                                            ( :name "Deleted"
                                                              :query "flag:trashed OR maildir:/manuel.is/Trash"
                                                              :key ?D)))
-  ))))))
+  )))))
 
   (add-hook 'message-send-hook 'sign-or-encrypt-message)
-  (set-face-foreground 'mu4e-unread-face "yellow")
+  (set-face-foreground 'mu4e-unread-face "yellow"))
 
   (defun sign-or-encrypt-message ()
     (let ((answer (read-from-minibuffer "Sign or encrypt?\nEmpty to do nothing.\n[s/e]: ")))
