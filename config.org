@@ -1220,6 +1220,16 @@ A thesaurus for synonyms
   :ensure t)
 #+end_src
 
+Detect the operating system and set ispell-program-name accordingly
+#+begin_src emacs-lisp
+(cond
+ ((eq system-type 'darwin) ; macOS
+  (setq ispell-program-name "/usr/local/bin/ispell"))
+ ((eq system-type 'gnu/linux) ; Linux
+  (setq ispell-program-name "/usr/bin/ispell"))
+)
+#+end_src
+
 *** Undo-tree
 
 Let's visualize changes neatly
