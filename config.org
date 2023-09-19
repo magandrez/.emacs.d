@@ -1259,7 +1259,7 @@ Adding org files for agenda
         org-default-notes-file "/keybase/private/spavi/org/refile.org.gpg"))
 (require 'find-lisp)
 (setq org-agenda-files
-  (find-lisp-find-files org-directory "\.org.gpg$"))
+  (find-lisp-find-files org-directory "\.org.gpg"))
 #+END_SRC
 
 *** Main org configs
