@@ -1725,10 +1725,12 @@ Miscellaneous keybindings
 Resize window
 
 #+begin_src emacs-lisp
-(define-key global-map (kbd "s-<left>") 'shrink-window-horizontally)
-(define-key global-map (kbd "s-<right>") 'enlarge-window-horizontally)
-(define-key global-map (kbd "s-<down>") 'shrink-window)
-(define-key global-map (kbd "s-<up>") 'enlarge-window)
+(define-key global-map (kbd "M-s-<left>") 'shrink-window-horizontally)
+(define-key global-map (kbd "M-s-<right>") 'enlarge-window-horizontally)
+(define-key global-map (kbd "M-s-<down>") 'shrink-window)
+(define-key global-map (kbd "M-s-<up>") 'enlarge-window)
+#+end_src
+
 #+end_src
 
 
