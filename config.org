@@ -1512,6 +1512,16 @@ https://github.com/stathissideris/ditaa
 Org-babel languages to interpret in Org code blocks (by default, only
 Lisp is understood).
 
+*** Bindings
+
+#+begin_src emacs-lisp
+(define-key org-mode-map (kbd "s-<return>") 'org-meta-return)
+(define-key org-mode-map (kbd "C-s-<return>") 'org-insert-heading-respect-content)
+(define-key org-mode-map (kbd "C-s-i") 'org-promote-subtree)
+(define-key org-mode-map (kbd "C-s-k") 'org-demote-subtree)
+(define-key org-mode-map (kbd "C-s-j") 'org-do-promote)
+(define-key org-mode-map (kbd "C-s-l") 'org-do-demote)
+#+end_src
 
 ** Mail
 
