@@ -1291,8 +1291,7 @@ The thick of it
            ("C-c C-x i" . org-clock-in)
            ("C-c C-x o" . org-clock-out))
     :config
-    (setq org-replace-disputed-keys t
-          org-support-shift-select t
+    (setq org-support-shift-select t
           org-return-follows-link t
           org-hide-emphasis-markers t
           org-outline-path-complete-in-steps nil
