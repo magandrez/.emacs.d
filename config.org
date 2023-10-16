@@ -1768,3 +1768,24 @@ Insert emoji globally
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-ö") 'emojify-insert-emoji)
 #+end_src
+
+** Custom
+
+Add week numbers to calendar
+
+Taken from https://www.emacswiki.org/emacs/CalendarWeekNumbers
+
+NOTE: Only in Finland such a thing is needed as week numbers...
+
+#+begin_src emacs-lisp
+(copy-face font-lock-constant-face 'calendar-iso-week-face)
+(set-face-attribute 'calendar-iso-week-face nil
+                    :height 0.7 :foreground "salmon")
+(setq calendar-intermonth-text
+      '(propertize
+        (format "%2d"
+                (car
+                 (calendar-iso-from-absolute
+                  (calendar-absolute-from-gregorian (list month day year)))))
+        'font-lock-face 'calendar-iso-week-face))
+#+end_src
