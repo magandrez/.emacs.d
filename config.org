@@ -1046,17 +1046,16 @@ A template system for filling in the knowledge blanks ;) Set hook per language
 #+begin_src emacs-lisp
 (use-package yasnippet
   :defer t
-  :delight
   :ensure t
+  :hook ((prog-mode . yas-minor-mode)
+         (go-mode . yas-minor-mode)
+         (terraform-mode . yas-minor-mode)
+         (markdown-mode . yas-minor-mode)
+         (rjsx-mode . yas-minor-mode))
   :init
-   (add-hook 'prog-mode-hook #'yas-minor-mode)
-   (add-hook 'markdown-mode #'yas-minor-mode)
-   (add-hook 'rjsx-mode #'yas-minor-mode)
-   (add-hook 'terraform-mode #'yas-minor-mode)
+   (yas-reload-all)
   :config
-   (yas-global-mode 1)
-   (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-   (yas-reload-all))
+   (setq yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets")))
 #+end_src
 
 Various snippets
@@ -1066,7 +1065,7 @@ Various snippets
   :defer t
   :ensure t
   :after yasnippet
-  :config
+  :init
   (yas-reload-all))
 #+end_src
 
