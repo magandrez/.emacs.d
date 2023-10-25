@@ -136,6 +136,7 @@ Increase text size on Mac OS X (Macbook Air )
   (set-face-attribute 'default nil :height 140))
 #+end_src
 
+
 *** Column enforce mode
 Because 80 columns is THE
 rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
@@ -187,6 +188,7 @@ The values can be `'control`, `'alt`, `'meta`, `'super`, `'hyper` or `nil` (sett
                   dired-use-ls-dired nil)))                         ; macOS command ls doesn't support --dired option
 #+end_src
 
+
 *** Backups
 
 As default write backup files on ~/.emacs.d/backup and disables lock files, it gets messy on mounted network file systems like Keybase FS (https://keybase.io/).
@@ -220,6 +222,7 @@ Save history typed in minibuffer
   (savehist-mode))
 #+end_src
 
+
 *** Filter marked packages from Packages buffer.
 
 #+begin_src emacs-lisp
@@ -229,6 +232,7 @@ Save history typed in minibuffer
   (occur "^[A-Z]"))
 (define-key package-menu-mode-map "a" #'package-menu-find-marks)
 #+end_src
+
 
 *** Reload config
 
@@ -240,6 +244,7 @@ Reloads Emacs config without having to restart the service.
   (interactive)
   (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
 #+end_src
+
 
 *** Bug hunting on Emacs init file
 
@@ -1069,6 +1074,7 @@ Various snippets
   (yas-reload-all))
 #+end_src
 
+
 *** Flyspell
 
 Use flyspell for highlighting and correcting spelling mistakes.
@@ -1522,6 +1528,7 @@ Lisp is understood).
 (define-key org-mode-map (kbd "C-s-l") 'org-do-demote)
 #+end_src
 
+
 ** Mail
 
 Configuration emailing with `mu4e` client and `mbsync` as backend. The
@@ -1767,6 +1774,7 @@ Insert emoji globally
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-ö") 'emojify-insert-emoji)
 #+end_src
+
 
 ** Custom
 
