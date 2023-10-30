@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: assert
+# key: assert
+# --
+s, ok := $1.($2)
+if !ok {
+   fmt.Errorf("wrong type", $3)
+}
+$4

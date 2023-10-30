@@ -1048,6 +1048,8 @@ On-the-fly syntax checking
 
 A template system for filling in the knowledge blanks ;) Set hook per language
 
+For it to work, the host must have installed elpa-yasnippet and
+elpa-yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :defer t
