@@ -662,7 +662,7 @@ Use Projectile to manage projects as an entity.
    projectile-globally-ignored-modes '("org-mode" "org-agenda-mode")
    projectile-globally-ignored-file-suffixes '(".gpg")
    projectile-completion-system 'default ;; Uses selectrum (based on Emacs API `completing-read`
-   projectile-enable-caching t
+   projectile-enable-caching 'nil ;; https://emacs.stackexchange.com/a/2169
    projectile-mode-line '(:eval (projectile-project-name)))
    (add-hook 'org-agenda-mode-hook (lambda () (projectile-mode -1)))
    (add-hook 'org-mode-hook (lambda () (projectile-mode -1))))
