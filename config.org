@@ -878,7 +878,8 @@ Adapter Protocol
   :config
   (setq company-minimum-prefix-length 2
         company-idle-delay 0.2
-        completion-ignore-case t)
+        completion-ignore-case t
+        company-tooltip-align-annotations t)
   :bind (:map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)))
