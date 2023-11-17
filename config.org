@@ -191,7 +191,8 @@ The values can be `'control`, `'alt`, `'meta`, `'super`, `'hyper` or `nil` (sett
 
 *** Backups
 
-As default write backup files on ~/.emacs.d/backup and disables lock files, it gets messy on mounted network file systems like Keybase FS (https://keybase.io/).
+As default write backup files on ~/.emacs.d/backup, auto-save files on
+~/.emacs.d/auto-save-list, and disables lock files.
 
 #+BEGIN_SRC emacs-lisp
 (let ((backup-dir "~/.emacs.d/backup/")
@@ -201,7 +202,6 @@ As default write backup files on ~/.emacs.d/backup and disables lock files, it g
       (make-directory dir t)))
   (setq backup-directory-alist `(("." . ,backup-dir))
         auto-save-file-name-transforms `((".*" ,auto-saves-dir t))
-        auto-save-list-file-prefix (concat auto-saves-dir ".saves-")
         tramp-backup-directory-alist `((".*" . ,backup-dir))
         tramp-auto-save-directory auto-saves-dir))
 
