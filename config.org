@@ -1239,19 +1239,6 @@ Detect the operating system and set ispell-program-name accordingly
 )
 #+end_src
 
-*** Undo-tree
-
-Let's visualize changes neatly
-#+begin_src emacs-lisp
-(use-package undo-tree
-  :defer t
-  :hook (go-mode . undo-tree-mode)
-  :config
-  (setq undo-tree-visualizer-timestamps t
-        undo-tree-visualizer-diff t
-        undo-tree-history-directory-alist '(("." . "~/.emacs.d/auto-save-list/"))))
-#+end_src
-
 *** Emoji
 
 #+begin_src emacs-lisp
