@@ -1763,6 +1763,12 @@ Insert emoji globally
 (global-set-key (kbd "C-ö") 'emojify-insert-emoji)
 #+end_src
 
+Comment DWIM
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-;") 'comment-dwim)
+#+end_src
+
 
 ** Custom
 
