@@ -1737,8 +1737,6 @@ Resize window
 (define-key global-map (kbd "M-s-<up>") 'enlarge-window)
 #+end_src
 
-#+end_src
-
 
 Yasnippet insert
 
