@@ -1482,7 +1482,7 @@ https://github.com/stathissideris/ditaa
 
 *** Google Calendar integration
 
-#+begin_src emacs-lisp
+
 (setq package-check-signature nil)
 
 (defun get-gcal-config-value (key)
@@ -1503,7 +1503,7 @@ https://github.com/stathissideris/ditaa
 (custom-set-variables
  '(org-gcal-down-days 10)
  '(org-gcal-up-days 10))
-#+end_src
+
 
 Org-babel languages to interpret in Org code blocks (by default, only
 Lisp is understood).
