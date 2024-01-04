@@ -84,7 +84,8 @@ coding/encoding (Chinese/Japanese/Korean characters).
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment 'utf-8)
-(setenv "LC_CTYPE" "UTF-8")
+(setenv "LC_CTYPE" "en_US.UTF-8")
+(setenv "LC_ALL" "en_US.UTF-8")
 
 (if (boundp buffer-file-coding-system)
     (setq buffer-file-coding-system 'utf-8)
