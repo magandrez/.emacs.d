@@ -1771,6 +1771,15 @@ Comment DWIM
 (global-set-key (kbd "C-;") 'comment-dwim)
 #+end_src
 
+V-Term
+#+begin_src emacs-lisp
+(global-set-key [f2] 'vterm-toggle)
+(global-set-key [C-f2] 'vterm-toggle-cd)
+
+;; you can cd to the directory where your previous buffer file exists
+;; after you have toggle to the vterm buffer with `vterm-toggle'.
+(define-key vterm-mode-map [(control return)]   #'vterm-toggle-insert-cd)
+#+end_src
 
 ** Custom
 
