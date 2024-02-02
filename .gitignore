@@ -1,4 +1,4 @@
-forge-database.sqlite
+forge-database*
 config.el
 .DS_Store
 auto-save-list/*
