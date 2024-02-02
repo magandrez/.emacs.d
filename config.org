@@ -767,6 +767,15 @@ Configuring forge
   :after magit)
 #+end_src
 
+Use github-review along with forge. See more [[https://github.com/charignon/github-review][here]].
+#+begin_src emacs-lisp
+(use-package github-review
+  :defer t
+  :config
+  (setq
+   github-review-reply-inline-comments t
+   github-review-view-comments-in-code-lines t
+   github-review-view-comments-in-code-lines-outdated t))
 #+end_src
 
 *** LSP
