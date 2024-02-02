@@ -618,7 +618,8 @@ more [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][here]].
 
 #+begin_src emacs-lisp
 (auth-source-pass-enable)
-(setq auth-source-debug t)
+(setq auth-source-debug t
+      auth-source-pass-extra-query-keywords t)
 #+end_src
 
 *** Tramp mode
@@ -763,9 +764,9 @@ Configuring forge
 #+begin_src emacs-lisp
 (use-package forge
   :defer t
-  :after magit
-  :init
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+  :after magit)
+#+end_src
+
 #+end_src
 
 *** LSP
