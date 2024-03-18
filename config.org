@@ -1114,7 +1114,22 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
   :bind (:map elfeed-search-mode-map
    ("m" . elfeed-toggle-star))
   :config
-  (setq elfeed-search-title-max-width 150))
+  (setq elfeed-search-title-max-width 150)
+
+(defalias 'elfeed-toggle-star
+  (elfeed-expose #'elfeed-search-toggle-all 'star))
+
+(eval-after-load 'elfeed-search
+  '(define-key elfeed-search-mode-map (kbd "m") 'elfeed-toggle-star))
+
+;; face for starred articles
+(defface elfeed-search-star-title-face
+  '((t :foreground "#f77"))
+  "Marks a starred Elfeed entry.")
+
+(push '(star elfeed-search-star-title-face) elfeed-search-face-alist)
+
+)
 
 (use-package elfeed-goodies
   :defer t
@@ -1807,21 +1822,4 @@ NOTE: Only in Finland such a thing is needed as week numbers...
                  (calendar-iso-from-absolute
                   (calendar-absolute-from-gregorian (list month day year)))))
         'font-lock-face 'calendar-iso-week-face))
-#+end_src
-
-Star posts in elfeed
-
-#+begin_src emacs-lisp
-(defalias 'elfeed-toggle-star
-  (elfeed-expose #'elfeed-search-toggle-all 'star))
-
-(eval-after-load 'elfeed-search
-  '(define-key elfeed-search-mode-map (kbd "m") 'elfeed-toggle-star))
-
-;; face for starred articles
-(defface elfeed-search-star-title-face
-  '((t :foreground "#f77"))
-  "Marks a starred Elfeed entry.")
-
-(push '(star elfeed-search-star-title-face) elfeed-search-face-alist)
 #+end_src
