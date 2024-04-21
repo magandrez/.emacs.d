@@ -98,8 +98,7 @@ Various basic modes enabled by default
 (dolist (mode
   '(global-prettify-symbols-mode
     global-auto-revert-mode
-    global-display-line-numbers-mode
-    ))
+    global-display-line-numbers-mode))
   (funcall mode 1))
 #+END_SRC
 
@@ -185,7 +184,7 @@ The values can be `'control`, `'alt`, `'meta`, `'super`, `'hyper` or `nil` (sett
     (progn
     (setq-default mac-command-modifier 'meta                        ; Map Meta to Cmd
                   mac-option-modifier nil                           ; Don't use Option key
-                  mac-right-option-modifier nil                     ; Disable the right Alt key        
+                  mac-right-option-modifier nil                     ; Disable the right Alt key
                   dired-use-ls-dired nil)))                         ; macOS command ls doesn't support --dired option
 #+end_src
 
@@ -241,7 +240,7 @@ Reloads Emacs config without having to restart the service.
 
 #+begin_src emacs-lisp
 (defun emacs-reload ()
-  "Reload emacs config"
+  "Reload Emacs config."
   (interactive)
   (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
 #+end_src
@@ -572,6 +571,7 @@ Use ace-window to cycle through windows
 
 #+BEGIN_SRC emacs-lisp
 (defun my-org-agenda-filter ()
+  "My very own Org Agenda filter."
   (let ((fname (buffer-file-name)))
     (and fname
          (member (file-truename fname)
@@ -658,7 +658,7 @@ Use Projectile to manage projects as an entity.
    projectile-known-projects-file (expand-file-name
                                    ".projectile-bookmarks" user-emacs-directory))
   :config
-  (projectile-global-mode 1)
+  (projectile-mode 1)
   (setq-default
    projectile-indexing-method 'alien
    projectile-globally-ignored-modes '("org-mode" "org-agenda-mode")
@@ -1060,8 +1060,8 @@ On-the-fly syntax checking
 
 A template system for filling in the knowledge blanks ;) Set hook per language
 
-For it to work, the host must have installed elpa-yasnippet and
-elpa-yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
+For it to work, the host must have installed yasnippet and
+yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :defer t
@@ -1071,23 +1071,20 @@ elpa-yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
          (terraform-mode . yas-minor-mode)
          (markdown-mode . yas-minor-mode)
          (rjsx-mode . yas-minor-mode))
-  :init
-   (yas-reload-all)
   :config
-   (setq yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets")))
-#+end_src
+  (setq yas-verbosity 1
+        yas-wrap-around-region t)
 
-Various snippets
+  (with-eval-after-load 'yasnippet
+    (setq yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets")))
 
-#+begin_src emacs-lisp
+  (yas-reload-all))
+
 (use-package yasnippet-snippets
   :defer t
-  :ensure t
   :after yasnippet
-  :init
-  (yas-reload-all))
+  :ensure t)
 #+end_src
-
 
 *** Flyspell
 
@@ -1261,8 +1258,7 @@ Detect the operating system and set ispell-program-name accordingly
  ((eq system-type 'darwin) ; macOS
   (setq ispell-program-name "/usr/local/bin/ispell"))
  ((eq system-type 'gnu/linux) ; Linux
-  (setq ispell-program-name "/usr/bin/ispell"))
-)
+  (setq ispell-program-name "/usr/bin/ispell")))
 #+end_src
 
 *** Emoji
@@ -1339,7 +1335,7 @@ The thick of it
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
                  ("^\\*+ \\(DONE\\) "
                   (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
-      (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
+    (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESSING(p)" "|" "DONE(d)")
                                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))
             org-todo-keyword-faces
             '(("TODO" :foreground "red" :weight bold)
@@ -1352,7 +1348,7 @@ The thick of it
         '(("w" "Work agenda"
            ((agenda "")
             (tags-todo "work")))))
-      (setq org-todo-state-tags-triggers
+    (setq org-todo-state-tags-triggers
             (quote (("CANCELLED" ("CANCELLED" . t))
                     ("WAITING" ("WAITING" . t))
                     ("HOLD" ("WAITING") ("HOLD" . t))
@@ -1415,8 +1411,8 @@ Org-template custom configurations
 
 #+BEGIN_SRC emacs-lisp
 (defun meeting-notes ()
-  "Call this after creating an org-mode heading for where the notes for the meeting
-should be. After calling this function, call 'meeting-done' to reset the environment."
+  "Call this after creating an ´org-mode´ heading.
+After calling this function, call meeting-done to reset the environment."
   (interactive)
   (outline-mark-subtree)
   (narrow-to-region (region-beginning) (region-end))
@@ -1427,7 +1423,7 @@ should be. After calling this function, call 'meeting-done' to reset the environ
   (message "When finished taking your notes, run meeting-done."))
 
 (defun meeting-done ()
-  "Attempt to 'undo' the effects of taking meeting notes."
+  "Attempt to undo the effects of taking meeting notes."
   (interactive)
   (widen)
   (text-scale-set 0)
@@ -1561,88 +1557,88 @@ package (hence the requires).
     (require 'mu4e-org)
     (require 'smtpmail)
     (with-eval-after-load 'mu4e
-      (setq mu4e-mu-binary "/bin/mu"
-            mail-user-agent 'mu4e-user-agent ;; This is not something to change lightly. Check docs
-            mu4e-maildir "~/Maildir/manuel.is"
-            mu4e-sent-folder   "/manuel.is/Sent"
-            mu4e-drafts-folder "/manuel.is/Drafts"
-            mu4e-trash-folder  "/manuel.is/Trash"
-            mu4e-refile-folder "/manuel.is/Archive"
-            user-full-name  "Manuel González"
-            mu4e-attachment-dir "~/Downloads"
-            mu4e-change-filenames-when-moving t ;; See this link for more info: https://stackoverflow.com/a/43461973
-            mu4e-completing-read-function 'completing-read
-            mu4e-compose-complete-addresses t
-            mu4e-compose-context-policy nil
-            mu4e-compose-dont-reply-to-self t
-            mu4e-compose-keep-self-cc nil
-            mu4e-context-policy 'pick-first
-            mu4e-get-mail-command "mbsync -a"
-            mu4e-headers-date-format "%d-%m-%Y %H:%M"
-            mu4e-headers-fields '((:date . 22)
-                                  (:flags . 6)
-                                  (:from . 22)
-                                  (:subject))
-            mu4e-headers-include-related t
-            mu4e-view-show-addresses t
-            mu4e-view-show-images t
-            message-kill-buffer-on-exit t
-            message-send-mail-function 'smtpmail-send-it
-            smtpmail-debug-info t
-            smtpmail-smtp-user "manuel@manuel.is"
-            smtpmail-smtp-server "127.0.0.1"
-            smtpmail-stream-type 'starttls
-            smtpmail-smtp-service 1025
-            mm-sign-option 'guided
-            mu4e-contexts
-          `( ,(make-mu4e-context
-                :name "manuel.is"
-                :enter-func (lambda () (mu4e-message "Entering manuel.is context"))
-                :leave-func (lambda () (mu4e-message "Leaving manuel.is context"))
-                :match-func (lambda (msg)
-                             (when msg
-                               (or (mu4e-message-contact-field-matches msg :to "manuel@manuel.is")
-                                   (mu4e-message-contact-field-matches msg :from "manuel@manuel.is")
-                                   (mu4e-message-contact-field-matches msg :cc "manuel@manuel.is")
-                                   (mu4e-message-contact-field-matches msg :bcc "manuel@manuel.is")
-                                   (string-match-p "^/manuel.is/Inbox" (mu4e-message-field msg :maildir)))))
-                :vars '( ( user-mail-address            . "manuel@manuel.is" )
-                         ( user-full-name               . "Manuel González"  )
-                         ( mu4e-maildir-shortcuts       . ((:maildir "/manuel.is/Inbox" :name "Inbox" :key ?i)
-                                                           (:maildir "/manuel.is/Archive" :name "Archive" :key ?a)
-                                                           (:maildir "/manuel.is/Drafts" :name "Drafts" :key ?d)
-                                                           (:maildir "/manuel.is/All Mail" :name "All Mail" :key ?A)
-                                                           (:maildir "/manuel.is/Trash" :name "Trash" :key ?t)
-                                                           (:maildir "/manuel.is/Sent" :name "Sent" :key ?s)))
-                         ( mu4e-bookmarks               . (( :name  "Unread messages"
-                                                             :query "maildir:/manuel.is/Inbox AND flag:unread AND NOT flag:trashed"
-                                                             :key ?u)
-                                                           ( :name "Today's messages"
-                                                             :query "maildir:/manuel.is/Inbox AND date:today..now"
-                                                             :key ?n)
-                                                           ( :name "Last 7 days"
-                                                             :query "maildir:/manuel.is/Inbox AND date:7d..now"
-                                                             :key ?w)
-                                                           ( :name "Deleted"
-                                                             :query "flag:trashed OR maildir:/manuel.is/Trash"
-                                                             :key ?D)))
-  )))))
+      (setq-default mu4e-mu-binary "/bin/mu"
+                    mail-user-agent 'mu4e-user-agent ;; This is not something to change lightly. Check docs
+                    mu4e-maildir "~/Maildir/manuel.is"
+                    mu4e-sent-folder   "/manuel.is/Sent"
+                    mu4e-drafts-folder "/manuel.is/Drafts"
+                    mu4e-trash-folder  "/manuel.is/Trash"
+                    mu4e-refile-folder "/manuel.is/Archive"
+                    user-full-name  "Manuel González"
+                    mu4e-attachment-dir "~/Downloads"
+                    mu4e-change-filenames-when-moving t ;; See this link for more info: https://stackoverflow.com/a/43461973
+                    mu4e-completing-read-function 'completing-read
+                    mu4e-compose-complete-addresses t
+                    mu4e-compose-context-policy nil
+                    mu4e-compose-dont-reply-to-self t
+                    mu4e-compose-keep-self-cc nil
+                    mu4e-context-policy 'pick-first
+                    mu4e-get-mail-command "mbsync -a"
+                    mu4e-headers-date-format "%d-%m-%Y %H:%M"
+                    mu4e-headers-fields '((:date . 22)
+                                          (:flags . 6)
+                                          (:from . 22)
+                                          (:subject))
+                    mu4e-headers-include-related t
+                    mu4e-view-show-addresses t
+                    mu4e-view-show-images t
+                    message-kill-buffer-on-exit t
+                    message-send-mail-function 'smtpmail-send-it
+                    smtpmail-debug-info t
+                    smtpmail-smtp-user "manuel@manuel.is"
+                    smtpmail-smtp-server "127.0.0.1"
+                    smtpmail-stream-type 'starttls
+                    smtpmail-smtp-service 1025
+                    mm-sign-option 'guided
+                    mu4e-contexts
+                    `( ,(make-mu4e-context
+                         :name "manuel.is"
+                         :enter-func (lambda () (mu4e-message "Entering manuel.is context"))
+                         :leave-func (lambda () (mu4e-message "Leaving manuel.is context"))
+                         :match-func (lambda (msg)
+                                       (when msg
+                                         (or (mu4e-message-contact-field-matches msg :to "manuel@manuel.is")
+                                             (mu4e-message-contact-field-matches msg :from "manuel@manuel.is")
+                                             (mu4e-message-contact-field-matches msg :cc "manuel@manuel.is")
+                                             (mu4e-message-contact-field-matches msg :bcc "manuel@manuel.is")
+                                             (string-match-p "^/manuel.is/Inbox" (mu4e-message-field msg :maildir)))))
+                         :vars '( ( user-mail-address            . "manuel@manuel.is" )
+                                  ( user-full-name               . "Manuel González"  )
+                                  ( mu4e-maildir-shortcuts       . ((:maildir "/manuel.is/Inbox" :name "Inbox" :key ?i)
+                                                                    (:maildir "/manuel.is/Archive" :name "Archive" :key ?a)
+                                                                    (:maildir "/manuel.is/Drafts" :name "Drafts" :key ?d)
+                                                                    (:maildir "/manuel.is/All Mail" :name "All Mail" :key ?A)
+                                                                    (:maildir "/manuel.is/Trash" :name "Trash" :key ?t)
+                                                                    (:maildir "/manuel.is/Sent" :name "Sent" :key ?s)))
+                                  ( mu4e-bookmarks               . (( :name  "Unread messages"
+                                                                      :query "maildir:/manuel.is/Inbox AND flag:unread AND NOT flag:trashed"
+                                                                      :key ?u)
+                                                                    ( :name "Today's messages"
+                                                                      :query "maildir:/manuel.is/Inbox AND date:today..now"
+                                                                      :key ?n)
+                                                                    ( :name "Last 7 days"
+                                                                      :query "maildir:/manuel.is/Inbox AND date:7d..now"
+                                                                      :key ?w)
+                                                                    ( :name "Deleted"
+                                                                      :query "flag:trashed OR maildir:/manuel.is/Trash"
+                                                                      :key ?D))))))))
 
-  (add-hook 'message-send-hook 'sign-or-encrypt-message)
-  (set-face-foreground 'mu4e-unread-face "yellow"))
+    (add-hook 'message-send-hook 'sign-or-encrypt-message)
+    (set-face-foreground 'mu4e-unread-face "yellow"))
 
   (defun sign-or-encrypt-message ()
+    "Request to sign or encrypt the email upon sending."
     (let ((answer (read-from-minibuffer "Sign or encrypt?\nEmpty to do nothing.\n[s/e]: ")))
-         (cond
-           ((string-equal answer "s") (progn
-                                        (message "Signing message.")
-                                        (mml-secure-message-sign-pgpmime)))
-           ((string-equal answer "e") (progn
-                                        (message "Encrypt and signing message.")
-                                        (mml-secure-message-encrypt-pgpmime)))
-           (t (progn
-                (message "Dont signing or encrypting message.")
-                nil)))))
+      (cond
+       ((string-equal answer "s") (progn
+                                    (message "Signing message.")
+                                    (mml-secure-message-sign-pgpmime)))
+       ((string-equal answer "e") (progn
+                                    (message "Encrypt and signing message.")
+                                    (mml-secure-message-encrypt-pgpmime)))
+       (t (progn
+            (message "Dont signing or encrypting message.")
+            nil)))))
 #+end_src
 
 *** Inline images
@@ -1722,27 +1718,23 @@ Global Copy & Paste in Unix
     (if (display-graphic-p)
         (progn
           (message "Yanked region to x-clipboard!")
-          (call-interactively 'clipboard-kill-ring-save)
-          )
+          (call-interactively 'clipboard-kill-ring-save))
       (if (region-active-p)
           (progn
             (shell-command-on-region (region-beginning) (region-end) "xsel -i -b")
             (message "Yanked region to clipboard!")
             (deactivate-mark))
-        (message "No region active; can't yank to clipboard!")))
-    )
+        (message "No region active; can't yank to clipboard!"))))
 
   ;; Paste from clipboard
   (defun paste-from-clipboard ()
+    "Paste from clipboard."
     (interactive)
     (if (display-graphic-p)
         (progn
           (clipboard-yank)
-          (message "graphics active")
-          )
-      (insert (shell-command-to-string "xsel -o -b"))
-      )
-    )
+          (message "graphics active"))
+      (insert (shell-command-to-string "xsel -o -b"))))
 #+end_src
 
 Miscellaneous keybindings
@@ -1768,20 +1760,20 @@ Resize window
 Yasnippet insert
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c y") 'yas-insert-snippet)
+(global-set-key (kbd "C-'") 'yas-insert-snippet)
 #+end_src
 
 Dictionary search
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c d") 'dictionary-search)
-(global-set-key (kbd "C-c w") 'dictionary-match-words)
+(global-set-key (kbd "C-+") 'dictionary-search)
+(global-set-key (kbd "C-´") 'dictionary-match-words)
 #+end_src
 
 Thesaurus lookup
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c t") 'powerthesaurus-lookup-dwim)
+(global-set-key (kbd "C-=") 'powerthesaurus-lookup-dwim)
 #+end_src
 
 Insert emoji globally
