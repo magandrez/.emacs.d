@@ -147,23 +147,6 @@ rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 
 
 *** OS customizations
-**** Load $PATH.
-
-Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
-
-#+BEGIN_SRC emacs-lisp
-(use-package exec-path-from-shell
-  :init
-  (if (eq system-type 'darwin)
-      (progn
-        (setq shell-file-name "/usr/local/bin/zsh")
-        (exec-path-from-shell-initialize))
-    (if (eq system-type 'gnu/linux)
-        (progn
-          (setq shell-file-name "/bin/fish")
-          (exec-path-from-shell-initialize)))))
-#+END_SRC
-
 **** Mac keys
 
 The variables available for binding the modifier keys on Mac keyboards are the following:
@@ -537,6 +520,23 @@ take care of the rest.
 
 
 ** Features
+
+**** Load $PATH.
+
+Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
+
+#+BEGIN_SRC emacs-lisp
+(use-package exec-path-from-shell
+  :init
+  (if (eq system-type 'darwin)
+      (progn
+        (setq shell-file-name "/usr/local/bin/zsh")
+        (exec-path-from-shell-initialize))
+    (if (eq system-type 'gnu/linux)
+        (progn
+          (setq shell-file-name "/bin/fish")
+          (exec-path-from-shell-initialize)))))
+#+END_SRC
 
 
 *** Which-key
