@@ -581,7 +581,15 @@ take care of the rest.
 *** Terraform
 
 #+begin_src emacs-lisp
-(use-package terraform-mode)
+(use-package terraform-mode
+  :mode ("\\.tf\\'"
+         "\\.hcl\\'"
+         "\\.tfvars\\'")
+  :config
+  (setq lsp-terraform-ls-enable-show-reference t ;; Code lens is experimental in Terraform mode
+        lsp-terraform-ls-prefill-required-fields t
+        lsp-terraform-ls-validate-on-save t))
+
 #+end_src
 
 
@@ -857,35 +865,33 @@ The Language Server Protocol is becoming a standard, and it rocks.
 Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
 
 #+begin_src emacs-lisp
-  (use-package lsp-mode
-    :ensure t
-    :commands (lsp lsp-deferred lsp-format-buffer lsp-organize-imports)
-    :config
-    (setq lsp-keymap-prefix "C-l"
-          lsp-eldoc-render-all nil
-          lsp-gopls-complete-unimported t
-          lsp-inhibit-message t
-          lsp-enable-file-watchers nil
-          lsp-enable-semantic-highlighting t
-          ;; Performance tweaks
-          ;; https://github.com/emacs-lsp/lsp-mode#performance
-          gc-cons-threshold 100000000
-          read-process-output-max (* 1024 1024)
-          lsp-idle-delay 0.25
-          lsp-keep-workspace-alive nil
-          lsp-prefer-flymake nil
-          lsp-enable-snippet t
-          lsp-enable-completion-at-point t
-          lsp-auto-configure t
-          lsp-auto-guess-root t
-          lsp-disabled-clients '(eslint angular-ls deno tfls) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
-          lsp-terraform-ls-enable-show-reference t ;; Code lens is experimental in Terraform mode
-          lsp-semantic-tokens-enable t
-          lsp-semantic-tokens-honor-refresh-requests t
-          lsp-enable-which-key-integration t
-          lsp-enable-links t
-          lsp-terraform-ls-prefill-required-fields t
-          lsp-terraform-ls-validate-on-save t)
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred lsp-format-buffer lsp-organize-imports)
+  :config
+  (setq lsp-keymap-prefix "C-l"
+        lsp-eldoc-render-all nil
+        lsp-gopls-complete-unimported t
+        lsp-inhibit-message t
+        lsp-enable-file-watchers nil
+        lsp-enable-semantic-highlighting t
+        ;; Performance tweaks
+        ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
+        gc-cons-threshold 100000000
+        read-process-output-max (* 1024 1024)
+        lsp-idle-delay 0.25
+        lsp-keep-workspace-alive nil
+        lsp-prefer-flymake nil
+        lsp-enable-snippet t
+        lsp-enable-completion-at-point t
+        lsp-auto-configure t
+        lsp-auto-guess-root t
+        lsp-disabled-clients '(eslint angular-ls deno tfls) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
+        lsp-semantic-tokens-enable t
+        lsp-semantic-tokens-honor-refresh-requests t
+        lsp-enable-which-key-integration t
+        lsp-enable-links t
+        lsp-modeline-diagnostics-scope 'workspace)
     ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
     :hook (((go-mode clojure-mode clojurescript-mode terraform-mode python-mode) . lsp-deferred)
            ((c-mode c++-mode js2-mode rjsx-mode) . lsp)))
