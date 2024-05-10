@@ -396,6 +396,69 @@ Use [[https://rvm.io/][RVM]] to manage gems.
   (rvm-use-default))
 #+END_SRC
 
+*** Python
+
+For Python, this setup uses LSP (see LSP section for more).
+
+For correct functioning, install `python3-pylsp` (from APT). More info here:
+https://github.com/python-lsp/python-lsp-server
+
+In order to setup a Python project:
+
+1. Create/checkout a project folder
+2. Include the following .envrc (and check it out in the code control system):
+
+```
+# -*- mode: sh; -*-
+# (rootdir)/.envrc : direnv configuration file
+# see https://direnv.net/
+# pyversion=$(head .python-version)
+# pvenv=$(head     .python-virtualenv)
+pyversion=PYTHON_VERSION
+pvenv=ENVIRONMENT_NAME
+
+use python ${pyversion}
+# Create the virtualenv if not yet done
+layout virtualenv ${pyversion} ${pvenv}
+# activate it
+export PYENV_VERSION=${pvenv}-${pyversion}
+layout activate $PYENV_VERSION
+```
+3. CD into the project folder (and `direnv allow`)
+4. $ pip install --upgrade pip
+5. $ pip install python-lsp-server flake8
+6. Profit
+
+NOTE: In case of needing other packages, update the corresponding
+lsp-pylsp-plugins settings. All settings along with their defaults can be found
+here: https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
+
+#+begin_src emacs-lisp
+;; The package is "python" but the mode is "python-mode":
+(use-package python
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python" . python-mode)
+  :config
+  (setq python-indent-guess-indent-offset t
+        python-indent-guess-indent-offset-verbose nil
+        lsp-pylsp-plugins-autopep8-enabled 'nil
+        lsp-pylsp-plugins-black-enabled 'nil
+        lsp-pylsp-plugins-jedi-completion-enabled t
+        lsp-pylsp-plugins-jedi-use-pyenv-environment t
+        lsp-pylsp-plugins-mccabe-enabled 'nil
+        lsp-pylsp-plugins-mypy-enabled 'nil
+        lsp-pylsp-plugins-pycodestyle-enabled 'nil
+        lsp-pylsp-plugins-pylint-enabled 'nil
+        lsp-pylsp-plugins-rope-autoimport-enabled t
+        lsp-pylsp-plugins-pyflakes-enabled 'nil
+        lsp-pylsp-plugins-flake8-enabled t
+        lsp-pylsp-plugins-isort-enabled t
+        lsp-pylsp-plugins-flake8-max-line-length 79))
+
+(use-package pyenv-mode
+  :hook (python-mode . pyenv-mode))
+#+end_src
+
 *** Cucumber
 
 Use [[https://cucumber.io/][Cucumber]] for BDD
@@ -520,6 +583,13 @@ take care of the rest.
 
 ** Features
 
+*** Environment
+
+#+begin_src emacs-lisp
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
+#+end_src
+
 **** Load $PATH.
 
 Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
@@ -536,7 +606,6 @@ Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path
           (setq shell-file-name "/bin/fish")
           (exec-path-from-shell-initialize)))))
 #+END_SRC
-
 
 *** Which-key
 
@@ -814,7 +883,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
           lsp-terraform-ls-prefill-required-fields t
           lsp-terraform-ls-validate-on-save t)
     ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
-    :hook (((go-mode clojure-mode clojurescript-mode terraform-mode) . lsp-deferred)
+    :hook (((go-mode clojure-mode clojurescript-mode terraform-mode python-mode) . lsp-deferred)
            ((c-mode c++-mode js2-mode rjsx-mode) . lsp)))
 
   (use-package lsp-ui
