@@ -29,8 +29,7 @@ Remove all the stuff I don't use.
  '(tool-bar-mode nil)
  '(menu-bar-mode nil)
  '(package-native-compile t)
- '(xref-search-program 'ripgrep)
-)
+ '(xref-search-program 'ripgrep))
 #+END_SRC
 
 Some miscellaneous defaults.
@@ -55,7 +54,7 @@ Some miscellaneous defaults.
               use-short-answers t                     ; Use instead of y-or-n-p
               package-native-compile t
               native-comp-async-report-warnings-errors nil ;; Don't show native compile warnings
-)
+              debug-on-error nil)
 #+END_SRC
 
 Scrolling defaults.
