@@ -312,6 +312,10 @@ Docker compose as well
 
 *** Markdown
 
+Install `pandoc` package:
+
+`$ apt install pandoc`
+
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
   :mode (("INSTALL\\'" . markdown-mode)
