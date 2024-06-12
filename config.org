@@ -249,7 +249,6 @@ Random modes without specific configuration blocks.
                 ("\\.java$"   . java-mode)
                 ("\\.groovy$" . groovy-mode)
                 ("\\.txt$"    . text-mode)
-                ("\\.http$"   . restclient-mode)
                 ("\\.sql$"    . sql-mode)
                 ("\\.conf$"   . conf-mode)
                 ("\\.erb$"    . web-mode)
@@ -812,14 +811,18 @@ Fold code. I found `yafolding` simplier to use than e.g.: `origami`
          ("M-m" . yafolding-toggle-all)))
 #+END_SRC
 
-*** Restclient
+*** Verb
 
-Use Pashky's [[https://github.com/pashky/restclient.el][restclient.el]] to explore APIs
+Use [[https://github.com/federicotdn/verb][verb]] to explore APIs as an alternative for the defunct [[https://github.com/pashky/restclient.el][restclient]].
 
 #+begin_src emacs-lisp
-(use-package restclient
-  :defer t
-  :mode ("\\.http\\'" . restclient-mode))
+(use-package verb)
+#+end_src
+
+As verb uses org mode as its default mode, map the verb-command-map when loading org.
+#+begin_src emacs-lisp
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 #+end_src
 
 *** Magit
