@@ -425,6 +425,9 @@ layout virtualenv ${pyversion} ${pvenv}
 # activate it
 export PYENV_VERSION=${pvenv}-${pyversion}
 layout activate $PYENV_VERSION
+
+# Set PYTHONPATH
+export PYTHONPATH=$(pyenv root)/versions/${PYENV_VERSION}/lib/python${pyversion}/site-packages
 #+end_src
 
 3. CD into the project folder (and `direnv allow`)
