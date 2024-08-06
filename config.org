@@ -898,7 +898,9 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
         lsp-enable-links t
         lsp-modeline-diagnostics-scope 'workspace)
   :hook (((clojure-mode clojurescript-mode terraform-mode) . lsp-deferred)
-         ((c-mode c++-mode js2-mode rjsx-mode) . lsp)))
+         ((c-mode c++-mode js2-mode rjsx-mode) . lsp))
+  :init
+  (setq company-backends '((company-capf company-files company-yasnippet))))
 
 (use-package lsp-ui
   :ensure t
@@ -919,13 +921,6 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
         lsp-ui-sideline-show-hover t
         lsp-ui-sideline-ignore-duplicate t
         lsp-ui-imenu-enable t))
-
-;; Ensure `company-mode` uses `company-lsp` as a backend.
-(use-package company-lsp
-  :ensure t
-  :commands company-lsp
-  :config
-  (push 'company-lsp company-backends))
 #+end_src
 
 *** DAP
@@ -978,7 +973,9 @@ Adapter Protocol
   (setq company-minimum-prefix-length 2
         company-idle-delay 0.2
         completion-ignore-case t
-        company-tooltip-align-annotations t)
+        company-tooltip-align-annotations t
+        ;; `company-backends` will be configured specifically for LSP
+        company-backends '((company-files company-capf company-yasnippet)))
   :bind (:map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)))
