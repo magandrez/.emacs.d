@@ -369,9 +369,7 @@ Use flycheck checker for golangci-lint
 (use-package flycheck-golangci-lint
   :ensure t
   :hook (go-mode . flycheck-golangci-lint-setup)
-  :config
-  (setq flycheck-golangci-lint-enable-linters '("bodyclose" "errcheck" "gci" "govet" "revive")
-        flycheck-golangci-lint-deadline "5s"))
+  :config (setq flycheck-golangci-lint-enable-linters '("bodyclose" "errcheck" "gci" "govet" "revive")))
 #+end_src
 
 *** Ruby
