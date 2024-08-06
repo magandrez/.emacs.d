@@ -442,19 +442,22 @@ here: https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
+  :hook ((python-mode . lsp-deferred)
+         (before-save . lsp-format-buffer)
+         (before-save . lsp-organize-imports))
   :config
   (setq python-indent-guess-indent-offset t
         python-indent-guess-indent-offset-verbose nil
-        lsp-pylsp-plugins-autopep8-enabled 'nil
-        lsp-pylsp-plugins-black-enabled 'nil
+        lsp-pylsp-plugins-autopep8-enabled nil
+        lsp-pylsp-plugins-black-enabled nil
         lsp-pylsp-plugins-jedi-completion-enabled t
         lsp-pylsp-plugins-jedi-use-pyenv-environment t
-        lsp-pylsp-plugins-mccabe-enabled 'nil
-        lsp-pylsp-plugins-mypy-enabled 'nil
-        lsp-pylsp-plugins-pycodestyle-enabled 'nil
-        lsp-pylsp-plugins-pylint-enabled 'nil
+        lsp-pylsp-plugins-mccabe-enabled nil
+        lsp-pylsp-plugins-mypy-enabled nil
+        lsp-pylsp-plugins-pycodestyle-enabled nil
+        lsp-pylsp-plugins-pylint-enabled nil
         lsp-pylsp-plugins-rope-autoimport-enabled t
-        lsp-pylsp-plugins-pyflakes-enabled 'nil
+        lsp-pylsp-plugins-pyflakes-enabled nil
         lsp-pylsp-plugins-flake8-enabled t
         lsp-pylsp-plugins-isort-enabled t
         lsp-pylsp-plugins-flake8-max-line-length 79))
@@ -896,7 +899,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
         lsp-enable-links t
         lsp-modeline-diagnostics-scope 'workspace)
     ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
-    :hook (((go-mode clojure-mode clojurescript-mode terraform-mode python-mode) . lsp-deferred)
+    :hook (((clojure-mode clojurescript-mode terraform-mode) . lsp-deferred)
            ((c-mode c++-mode js2-mode rjsx-mode) . lsp)))
 
   (use-package lsp-ui
