@@ -460,7 +460,9 @@ here: https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
         lsp-pylsp-plugins-pyflakes-enabled nil
         lsp-pylsp-plugins-flake8-enabled t
         lsp-pylsp-plugins-isort-enabled t
-        lsp-pylsp-plugins-flake8-max-line-length 79))
+        lsp-pylsp-plugins-flake8-max-line-length 79)
+  :hook (python-mode . lsp-deferred))
+
 
 (use-package pyenv-mode
   :ensure t
