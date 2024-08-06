@@ -445,7 +445,8 @@ here: https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
          (before-save . lsp-format-buffer)
          (before-save . lsp-organize-imports))
   :config
-  (setq python-indent-guess-indent-offset t
+  (setq lsp-pylsp-server-command "pylsp"
+        python-indent-guess-indent-offset t
         python-indent-guess-indent-offset-verbose nil
         lsp-pylsp-plugins-autopep8-enabled nil
         lsp-pylsp-plugins-black-enabled nil
