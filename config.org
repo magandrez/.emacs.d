@@ -1143,7 +1143,6 @@ For it to work, the host must have installed yasnippet and
 yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
-  :defer t
   :ensure t
   :hook ((prog-mode . yas-minor-mode)
          (go-mode . yas-minor-mode)
@@ -1152,17 +1151,13 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
          (rjsx-mode . yas-minor-mode))
   :config
   (setq yas-verbosity 1
-        yas-wrap-around-region t)
-
-  (with-eval-after-load 'yasnippet
-    (setq yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets")))
-
+        yas-wrap-around-region t
+        yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets"))
   (yas-reload-all))
 
 (use-package yasnippet-snippets
-  :defer t
-  :after yasnippet
-  :ensure t)
+  :ensure t
+  :after yasnippet)
 #+end_src
 
 *** Flyspell
