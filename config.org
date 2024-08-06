@@ -897,26 +897,35 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
         lsp-enable-which-key-integration t
         lsp-enable-links t
         lsp-modeline-diagnostics-scope 'workspace)
-    ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
-    :hook (((clojure-mode clojurescript-mode terraform-mode) . lsp-deferred)
-           ((c-mode c++-mode js2-mode rjsx-mode) . lsp)))
+  :hook (((clojure-mode clojurescript-mode terraform-mode) . lsp-deferred)
+         ((c-mode c++-mode js2-mode rjsx-mode) . lsp)))
 
-  (use-package lsp-ui
-    :ensure t
-    :commands lsp-ui-mode
-    :config
-    (setq lsp-ui-doc-enable t
-          lsp-ui-doc-header nil
-          lsp-ui-doc-include-signature t
-          lsp-ui-doc-position 'top
-          lsp-ui-doc-alignment 'window
-          lsp-ui-doc-use-childframe t
-          lsp-ui-doc-use-webkit nil
-          lsp-ui-doc-delay 0.3
-          lsp-ui-doc-show-with-cursor t
-          lsp-ui-sideline-diagnostic-max-lines 3
-          lsp-ui-sideline-diagnostic-max-line-length 200
-          lsp-ui-imenu-enable t))
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable t
+        lsp-ui-doc-header nil
+        lsp-ui-doc-include-signature t
+        lsp-ui-doc-position 'top
+        lsp-ui-doc-alignment 'window
+        lsp-ui-doc-use-childframe t
+        lsp-ui-doc-use-webkit nil
+        lsp-ui-doc-delay 0.3
+        lsp-ui-doc-show-with-cursor t
+        lsp-ui-sideline-enable t
+        lsp-ui-sideline-diagnostic-max-lines 3
+        lsp-ui-sideline-diagnostic-max-line-length 200
+        lsp-ui-sideline-show-hover t
+        lsp-ui-sideline-ignore-duplicate t
+        lsp-ui-imenu-enable t))
+
+;; Ensure `company-mode` uses `company-lsp` as a backend.
+(use-package company-lsp
+  :ensure t
+  :commands company-lsp
+  :config
+  (push 'company-lsp company-backends))
 #+end_src
 
 *** DAP
@@ -991,9 +1000,7 @@ On-the-fly syntax checking
   :ensure t
   :init (global-flycheck-mode)
   :config
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  ;; flycheck-javascript-standard-executable "/home/manuel/.nvm/versions/node/v15.0.1/bin/standardx")
-)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled)))
 
 (use-package flycheck-pos-tip
   :defer t
@@ -1144,8 +1151,7 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :ensure t
-  :hook ((prog-mode . yas-minor-mode)
-         (go-mode . yas-minor-mode)
+  :hook ((go-mode . yas-minor-mode)
          (terraform-mode . yas-minor-mode)
          (markdown-mode . yas-minor-mode)
          (rjsx-mode . yas-minor-mode))
@@ -1829,7 +1835,6 @@ Resize window
 (define-key global-map (kbd "M-s-<down>") 'shrink-window)
 (define-key global-map (kbd "M-s-<up>") 'enlarge-window)
 #+end_src
-
 
 Yasnippet insert
 
