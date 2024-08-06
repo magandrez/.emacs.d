@@ -410,7 +410,7 @@ In order to setup a Python project:
 1. Create/checkout a project folder
 2. Include the following .envrc (and check it out in the code control system):
 
-```
+#+begin_src
 # -*- mode: sh; -*-
 # (rootdir)/.envrc : direnv configuration file
 # see https://direnv.net/
@@ -425,7 +425,8 @@ layout virtualenv ${pyversion} ${pvenv}
 # activate it
 export PYENV_VERSION=${pvenv}-${pyversion}
 layout activate $PYENV_VERSION
-```
+#+end_src
+
 3. CD into the project folder (and `direnv allow`)
 4. $ pip install --upgrade pip
 5. $ pip install python-lsp-server flake8
