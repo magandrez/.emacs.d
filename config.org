@@ -925,7 +925,7 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
         lsp-ui-sideline-enable t
         lsp-ui-sideline-diagnostic-max-lines 3
         lsp-ui-sideline-diagnostic-max-line-length 200
-        lsp-ui-sideline-show-hover t
+        lsp-ui-sideline-show-hover nil
         lsp-ui-sideline-ignore-duplicate t
         lsp-ui-imenu-enable t))
 #+end_src
