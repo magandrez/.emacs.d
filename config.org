@@ -972,18 +972,21 @@ Adapter Protocol
 
 #+begin_src emacs-lisp
 (use-package company
-  :defer t
-  :ensure t
+ :defer t
+ :ensure t
  :hook
-  ((prog-mode org-mode python-mode) . company-mode)
+  ((prog-mode org-mode) . company-mode)
  :config
-  (setq company-minimum-prefix-length 2
-        company-idle-delay 0.2
-        completion-ignore-case t
-        company-tooltip-align-annotations t)
+ (global-company-mode t)
+ (setq-default
+    company-minimum-prefix-length 1
+    company-idle-delay 0.05
+    company-tooltip-align-annotations t
+    company-frontends '(company-pseudo-tooltip-unless-just-one-frontend company-preview-frontend)
+  )
  :bind (:map company-active-map
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous)))
+       ("C-n" . company-select-next)
+       ("C-p" . company-select-previous)))
 
 (use-package company-box
   :defer t
