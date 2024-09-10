@@ -1319,13 +1319,15 @@ Some dictionaries installed:
 - dict-vera
 - dict-wn
 
+Besides this, make sure to enable dictd system unit
+
+`$ sudo systemctl enable dictd`
+
 #+begin_src emacs-lisp
 (use-package dictionary
-  :defer t
-  :if (and (equal system-type 'gnu/linux)
-           (executable-find "dictd"))
-  :ensure t
+  :bind (([f5] . dictionary-search) ([f6] . dictionary-lookup-definition))
   :config
+  (setq dictionary-use-single-buffer t)
   (setq dictionary-server "localhost"))
 #+end_src
 
@@ -1334,7 +1336,9 @@ A thesaurus for synonyms
 #+begin_src emacs-lisp
 (use-package powerthesaurus
   :defer t
-  :ensure t)
+  :ensure t
+  :bind (([f7] . powerthesaurus-lookup-dwim))
+)
 #+end_src
 
 Detect the operating system and set ispell-program-name accordingly
@@ -1845,19 +1849,6 @@ Yasnippet insert
 
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-'") 'yas-insert-snippet)
-#+end_src
-
-Dictionary search
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-+") 'dictionary-search)
-(global-set-key (kbd "C-´") 'dictionary-match-words)
-#+end_src
-
-Thesaurus lookup
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-=") 'powerthesaurus-lookup-dwim)
 #+end_src
 
 Insert emoji globally
