@@ -1362,6 +1362,21 @@ Detect the operating system and set ispell-program-name accordingly
   (setq emojify-emoji-styles '(unicode)))
 #+end_src
 
+*** Terminal
+I use vterm as a terminal for Emacs
+
+#+begin_src emacs-lisp
+(use-package vterm
+  :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package vterm-toggle
+  :ensure t
+  :bind (([f2] . vterm-toggle)
+         ([C-f2] . vterm-toggle-cd)))
+#+end_src
+
 
 ** Org
 
@@ -1861,12 +1876,6 @@ Comment DWIM
 
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-;") 'comment-dwim)
-#+end_src
-
-V-Term
-#+begin_src emacs-lisp
-(global-set-key [f2] 'vterm-toggle)
-(global-set-key [C-f2] 'vterm-toggle-cd)
 #+end_src
 
 
