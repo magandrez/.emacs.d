@@ -776,7 +776,7 @@ project or a directory, á la Eclipse or other common IDEs.
   :defer t
   :config
   (setq treemacs-follow-after-init t
-        treemacs-width 35
+        treemacs-width 65
         treemacs-indentation 1
         treemacs-recenter-after-file-follow nil
         treemacs-silent-refresh t
@@ -806,6 +806,7 @@ project or a directory, á la Eclipse or other common IDEs.
 (with-eval-after-load 'lsp-mode
   (lsp-treemacs-sync-mode 1))
 #+END_SRC
+
 
 *** Yafolding
 
