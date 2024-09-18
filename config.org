@@ -17,22 +17,27 @@ subject).
 
 *** Basic defaults
 
-Remove all the stuff I don't use.
+Regarding setting defaults and/or customizations, read this first:
+
+https://macowners.club/posts/setq-vs-customize-set-variable/
+
+Miscellaneous defaults below
 
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
  '(cua-mode t)  ;; Set CUA-mode on
- '(scroll-bar-mode nil)
  '(dired-kill-when-opening-new-dired-buffer t)
- '(horizontal-scroll-bar-mode nil)
- '(blink-cursor-mode nil)
+ '(package-native-compile t)
  '(tool-bar-mode nil)
  '(menu-bar-mode nil)
- '(package-native-compile t)
+ '(blink-cursor-mode nil)
+ '(auth-source-save-behavior nil)
+ '(column-number-mode t)
+ '(fill-column 80)
  '(xref-search-program 'ripgrep))
 #+END_SRC
 
-Some miscellaneous defaults.
+Some miscellaneous defaults, but set in a different manner
 
 #+BEGIN_SRC emacs-lisp
 (setq-default inhibit-startup-screen t
@@ -47,26 +52,28 @@ Some miscellaneous defaults.
               window-combination-resize t             ; Create new windows proportionally
               use-package-always-ensure t             ; Install packages if not found on the system
               line-number-mode t                      ; Line number
-              column-number-mode t                    ; Column number
-              fill-column 80                          ; 80 columns is the standard
               ns-pop-up-frames nil                    ; Visit files in same frame
               completions-detailed t                  ; Show more info when describing things
               use-short-answers t                     ; Use instead of y-or-n-p
               package-native-compile t
               native-comp-async-report-warnings-errors nil ;; Don't show native compile warnings
-              debug-on-error nil)
+              debug-on-error nil
+              horizontal-scroll-bar-mode nil
+)
 #+END_SRC
 
 Scrolling defaults.
 
 #+BEGIN_SRC emacs-lisp
-(setq scroll-margin 1
-      scroll-conservatively 0
-      scroll-up-aggressively 0.01
-      scroll-down-aggressively 0.01)
-
-(setq-default scroll-up-aggressively 0.01
-              scroll-down-aggressively 0.01)
+(custom-set-variables
+ '(scroll-margin 1)
+ '(scroll-conservatively 0)
+ '(scroll-up-aggressively 0.01)
+ '(scroll-down-aggressively 0.01)
+ '(scroll-up-aggressively 0.01)
+ '(scroll-down-aggressively 0.01)
+ '(scroll-bar-mode nil)
+)
 #+END_SRC
 
 UTF-8 everywhere, because it is the standard and disable CJK
@@ -126,6 +133,12 @@ search results for a given ISearch.
  '(default ((t (:inherit nil :extend nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 140 :width normal :foundry "PfEd" :family "InconsolataGo Nerd Font Mono"))))
  '(italic ((t (:underline nil))))
  '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
+#+end_src
+
+#+begin_src emacs-lisp
+(custom-set-variables
+  '(custom-safe-themes '("37c8c2817010e59734fe1f9302a7e6a2b5e8cc648cf6a6cc8b85f3bf17fececf" default))
+)
 #+end_src
 
 Increase text size on Mac OS X (Macbook Air )
@@ -1621,7 +1634,10 @@ https://github.com/stathissideris/ditaa
   :config
   (setq plstore-cache-passphrase-for-symmetric-encryption t
         org-gcal-client-id (get-gcal-config-value 'org-gcal-client-id)
-        org-gcal-client-secret (get-gcal-config-value 'org-gcal-client-secret))
+        org-gcal-client-secret (get-gcal-config-value 'org-gcal-client-secret)
+        org-gcal-down-days 10
+        org-gcal-up-days 10
+        org-replace-disputed-keys t)
   (if (eq system-type 'darwin)
       (setq org-gcal-file-alist '(("magandrez@gmail.com" . "/Users/spav/Dropbox/org/documents/schedule.org.gpg")))
     (setq org-gcal-file-alist '(("magandrez@gmail.com" . "/home/manuel/Dropbox/org/documents/schedule.org.gpg"))))
