@@ -124,6 +124,9 @@ Selected by listing the faces (M-x list-faces-display, and then
 searching for 'lazy-highlight', which corresponds to the
 search results for a given ISearch.
 
+Make sure to install "Nerd Font" set from
+https://www.nerdfonts.com/font-downloads
+
 #+begin_src emacs-lisp
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
