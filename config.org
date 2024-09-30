@@ -34,7 +34,10 @@ Miscellaneous defaults below
  '(auth-source-save-behavior nil)
  '(column-number-mode t)
  '(fill-column 80)
- '(xref-search-program 'ripgrep))
+ '(xref-search-program 'ripgrep)
+ '(global-display-line-numbers-mode t)
+ '(global-prettify-symbols-mode t)
+ '(global-auto-revert-mode t))
 #+END_SRC
 
 Some miscellaneous defaults, but set in a different manner
@@ -97,17 +100,6 @@ coding/encoding (Chinese/Japanese/Korean characters).
     (setq buffer-file-coding-system 'utf-8)
   (setq default-buffer-file-coding-system 'utf-8))
 #+END_SRC
-
-Various basic modes enabled by default
-
-#+BEGIN_SRC emacs-lisp
-(dolist (mode
-  '(global-prettify-symbols-mode
-    global-auto-revert-mode
-    global-display-line-numbers-mode))
-  (funcall mode 1))
-#+END_SRC
-
 
 *** Theme
 
