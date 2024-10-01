@@ -710,7 +710,7 @@ implement S. Purcell's [[exec-path-from-shell][exec-path-from-shell]]. In GNU/Li
 to the daemon started from a systemd service definition.
 
 #+BEGIN_SRC emacs-lisp
-(setq epg-gpg-program "gpg2"
+(setq epg-gpg-program "gpg"
       epa-file-inhibit-auto-save t
       epa-file-encrypt-to '("manuel@manuel.is")      ;; Hack to make org-roam capture
       epa-file-select-keys 1                         ;; pick up automatically the key with which to encrypt the note. See https://superuser.com/questions/1204820/emacs-easypg-asks-what-key-to-use-although-epa-file-encrypt-to-already-specified
