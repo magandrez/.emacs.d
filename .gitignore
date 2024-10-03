@@ -30,3 +30,4 @@ history
 .log/
 .dap-breakpoints
 oauth2-auto.plist
+multisession
