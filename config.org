@@ -25,7 +25,20 @@ Miscellaneous defaults below
 
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
- '(cua-mode t)  ;; Set CUA-mode on
+ '(cua-mode t)                                   ;; Set CUA-mode on
+ '(initial-scratch-message nil)
+ '(inhibit-startup-screen t)
+ '(show-paren-delay 0)                           ;; No delay when showing matching parenthesis
+ '(confirm-nonexistent-file-or-buffer nil)       ;; Remove confirm dialog on new buffers
+ '(confirm-kill-emacs 'y-or-n-p)                 ;; Confirm exiting Emacs
+ '(display-time-default-load-average nil)        ;; Don't display load average
+ '(indent-tabs-mode nil)                         ;; No tabs for indentation
+ '(window-combination-resize t)                  ;; Create new windows proportionally
+ '(use-package-always-ensure t)                  ;; Install packages if not found on the system
+ '(completions-detailed t)                       ;; Show more info when describing things
+ '(use-short-answers t)                          ;; Use instead of y-or-n-p
+ '(native-comp-async-report-warnings-errors nil) ;; Don't show native compile warnings
+ '(savehist-mode 1)                              ;; Save history typed in minibuffer
  '(dired-kill-when-opening-new-dired-buffer t)
  '(package-native-compile t)
  '(tool-bar-mode nil)
@@ -33,33 +46,20 @@ Miscellaneous defaults below
  '(blink-cursor-mode nil)
  '(auth-source-save-behavior nil)
  '(column-number-mode t)
- '(fill-column 80)
  '(xref-search-program 'ripgrep)
  '(global-display-line-numbers-mode t)
  '(global-prettify-symbols-mode t)
- '(global-auto-revert-mode t))
+ '(global-auto-revert-mode t)
+)
 #+END_SRC
 
 Some miscellaneous defaults, but set in a different manner
 
 #+BEGIN_SRC emacs-lisp
-(setq-default inhibit-startup-screen t
-              initial-scratch-message ""
-              visible-bell nil                        ; No shaking
-              confirm-nonexistent-file-or-buffer nil  ; Remove confirm dialog on new buffers
-              show-paren-delay 0                      ; No delay when showing matching parenthesis
-              confirm-kill-emacs 'y-or-n-p            ; Confirm exiting Emacs
-              display-time-default-load-average nil   ; Don't display load average
-              indent-tabs-mode nil                    ; No tabs for indentation
-              select-enable-clipboard t               ; Unite Emacs & system clipboard
-              window-combination-resize t             ; Create new windows proportionally
-              use-package-always-ensure t             ; Install packages if not found on the system
-              line-number-mode t                      ; Line number
-              ns-pop-up-frames nil                    ; Visit files in same frame
-              completions-detailed t                  ; Show more info when describing things
-              use-short-answers t                     ; Use instead of y-or-n-p
+(setq-default visible-bell nil                        ;; No shaking
+              select-enable-clipboard t               ;; Unite Emacs & system clipboard
+              line-number-mode t                      ;; Line number
               package-native-compile t
-              native-comp-async-report-warnings-errors nil ;; Don't show native compile warnings
               debug-on-error nil
               horizontal-scroll-bar-mode nil
 )
@@ -149,13 +149,15 @@ Because 80 columns is THE
 rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 
 #+begin_src emacs-lisp
-(global-display-fill-column-indicator-mode nil)
-
 ;; Enable fill column indicator only in programming-related buffers
 (defun enable-fill-column-indicator-in-prog-mode ()
   "Enable fill column indicator in programming-related buffers."
   (display-fill-column-indicator-mode 1))
 
+(custom-set-variables
+ '(global-display-fill-column-indicator-mode nil)
+ '(fill-column 80)
+)
 ;; Add the hook to programming-related modes
 (add-hook 'prog-mode-hook 'enable-fill-column-indicator-in-prog-mode)
 #+end_src
@@ -202,34 +204,30 @@ As default write backup files on ~/.emacs.d/backup, auto-save files on
         tramp-backup-directory-alist `((".*" . ,backup-dir))
         tramp-auto-save-directory auto-saves-dir))
 
-(setq backup-by-copying t
-      delete-old-versions t
-      kept-new-versions 3
-      kept-old-versions 2
-      version-control t
-      create-lockfiles nil
-      vc-follow-symlinks t)
+(custom-set-variables
+  '(backup-by-copying t)
+  '(delete-old-versions t)
+  '(kept-new-versions 3)
+  '(kept-old-versions 2)
+  '(version-control t)
+  '(create-lockfiles nil)
+  '(vc-follow-symlinks t)
+)
 #+END_SRC
-
-Save history typed in minibuffer
-
-#+begin_src emacs-lisp
-(use-package savehist
-  :init
-  (savehist-mode))
-#+end_src
 
 
 *** Filter marked packages from Packages buffer.
 
 #+begin_src emacs-lisp
 (defun package-menu-find-marks ()
-  "Find packages marked for action in *Packages*."
+  "Search for packages marked for action in the *Packages* buffer.
+Marks are indicated by lines starting with an uppercase letter."
   (interactive)
   (occur "^[A-Z]"))
-(define-key package-menu-mode-map "a" #'package-menu-find-marks)
-#+end_src
 
+;; Bind the function to the "a" key in `package-menu-mode-map`
+(define-key package-menu-mode-map (kbd "a") #'package-menu-find-marks)
+#+end_src
 
 *** Reload config
 
