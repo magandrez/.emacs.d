@@ -662,30 +662,33 @@ Use ace-window to cycle through windows
 *** Ibuffer
 
 #+BEGIN_SRC emacs-lisp
-(defun my-org-agenda-filter ()
-  "My very own Org Agenda filter."
-  (let ((fname (buffer-file-name)))
-    (and fname
-         (member (file-truename fname)
-                 (mapcar 'file-truename (org-agenda-files))))))
+ (setq ibuffer-saved-filter-groups
+            (quote (("Default"
+                     ("Dired" (mode . dired-mode))
+                     ("Org" (mode . org-mode))
+                     ("Magit" (name . "^magit"))
+                     ("Agenda" (or
+                                  (name . "^\\*Calendar\\*$")
+                                  (name . "^\\*Org Agenda\\*")))
+                     ("LSP" (or
+                              (name . "^\\*lsp-log\\*$")
+                              (name . "^\\*lsp-documentation\\*$")
+                              (name . "^\\*gopls\\*$")
+                              (name . "^\\*gopls::stderr\\*$")))
+                      ("Emacs" (or
+                               (name . "^\\*scratch\\*$")
+                               (name . "^\\*Async-native-compile-log\\*$")
+                               (name . "^\\*Native-compile-Log\\*$")
+                               (name . "^\\*Messages\\*$")))))))
 
-(setq ibuffer-expert t
-      ibuffer-show-empty-filter-groups nil
-      ibuffer-saved-filter-groups
-      (list
-       (cons "default"
-             (append
-               '(("Org Agenda"  (name . "\*Org Agenda\*"))
-                ("Magit" (name . "\*magit"))
-                ("Emacs" (name . "^\\*"))
-                ("Org" (or (mode . org-agenda-mode)
-                           (mode . diary-mode)
-                           (predicate . (my-org-agenda-filter)))))))))
+  (add-hook 'ibuffer-mode-hook
+            (lambda ()
+              (ibuffer-switch-to-saved-filter-groups "Default")))
 
-(add-hook 'ibuffer-mode-hook
-  (lambda ()
-    (ibuffer-auto-mode 1)
-    (ibuffer-switch-to-saved-filter-groups "default")))
+  ;; Custom variables for `ibuffer`
+  (custom-set-variables
+   '(ibuffer-expert t)  ;; Don't ask for confirmation when performing actions.
+   '(ibuffer-show-empty-filter-groups nil))  ;; Hide empty groups
 #+END_SRC
 
 *** Encryption
