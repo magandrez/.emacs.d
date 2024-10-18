@@ -279,7 +279,6 @@ need to start tide or run prettier on them).
 
 #+begin_src emacs-lisp
 (use-package json-mode
-  :ensure t
   :mode "\\.json$")
 #+end_src
 
@@ -310,7 +309,6 @@ Docker compose as well
 
 #+begin_src emacs-lisp
 (use-package docker-compose-mode
-  :ensure t
   :mode (("\\compose.yml" . docker-compose-mode)
          ("\\compose.yaml" . docker-compose-mode)))
 #+end_src
@@ -371,7 +369,6 @@ block).
 
 #+BEGIN_SRC emacs-lisp
 (use-package go-mode
-  :ensure t
   :hook ((before-save . lsp-format-buffer)
          (before-save . lsp-organize-imports)
          (go-mode . lsp-deferred))
@@ -382,7 +379,6 @@ block).
 Use flycheck checker for golangci-lint
 #+begin_src emacs-lisp
 (use-package flycheck-golangci-lint
-  :ensure t
   :hook (go-mode . flycheck-golangci-lint-setup)
   :config (setq flycheck-golangci-lint-enable-linters '("bodyclose" "errcheck" "gci" "govet" "revive")))
 #+end_src
@@ -408,7 +404,6 @@ Use [[https://rvm.io/][RVM]] to manage gems.
 
 #+BEGIN_SRC emacs-lisp
 (use-package rvm
-  :ensure t
   :config
   (rvm-use-default))
 #+END_SRC
@@ -483,7 +478,6 @@ here: https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 
 
 (use-package pyenv-mode
-  :ensure t
   :hook (python-mode . pyenv-mode))
 #+end_src
 
@@ -505,7 +499,6 @@ Using standard erlang.el
 
 #+begin_src emacs-lisp
 (use-package erlang
-  :ensure t
   :mode "\\.P$\\|\\.E$\\|\\.S$\\|\\.erl?$"
   :hook (erlang-mode . (lambda ()
                          (setq mode-name "erlang"
@@ -519,7 +512,6 @@ Minimal setup to begin with, clojure-mode.
 
 #+begin_src emacs-lisp
 (use-package clojure-mode
-  :ensure t
   :mode "\\.clj$\\|\\.edn$"
   :hook
   (clojure-mode . (lambda ()
@@ -531,7 +523,6 @@ Now [[https://github.com/clojure-emacs/cider][CIDER]]. Another creation from bba
 
 #+begin_src emacs-lisp
 (use-package cider
-  :ensure t
   :defer t
   :config
     (setq nrepl-log-messages t
@@ -556,7 +547,6 @@ docs, if you will).
 
 #+begin_src emacs-lisp
 (use-package k8s-mode
-  :ensure t
   :config (setq k8s-site-docs-version "v1.25"))
 #+end_src
 
@@ -743,7 +733,6 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
-  :ensure t
   :init (smartparens-global-mode t))
 #+END_SRC
 
@@ -895,7 +884,6 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
 
 #+begin_src emacs-lisp
 (use-package lsp-mode
-  :ensure t
   :commands (lsp lsp-deferred lsp-format-buffer lsp-organize-imports)
   :config
   (setq lsp-keymap-prefix "C-l"
@@ -926,7 +914,6 @@ Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
   (setq company-backends '((company-capf company-files company-yasnippet))))
 
 (use-package lsp-ui
-  :ensure t
   :commands lsp-ui-mode
   :config
   (setq lsp-ui-doc-enable t
@@ -954,7 +941,6 @@ Adapter Protocol
 #+begin_src emacs-lisp
 (use-package dap-mode
   :defer t
-  :ensure t
   :init (require 'dap-dlv-go)
   :config
   (dap-mode 1)
@@ -989,7 +975,6 @@ Adapter Protocol
 #+begin_src emacs-lisp
 (use-package company
  :defer t
- :ensure t
  :hook
   ((prog-mode org-mode) . company-mode)
  :config
@@ -1006,7 +991,6 @@ Adapter Protocol
 
 (use-package company-box
   :defer t
-  :ensure t
   :hook (company-mode . company-box-mode))
 #+end_src
 
@@ -1018,14 +1002,12 @@ On-the-fly syntax checking
 (use-package flycheck
   :defer t
   :diminish
-  :ensure t
   :init (global-flycheck-mode)
   :config
   (setq flycheck-check-syntax-automatically '(save mode-enabled)))
 
 (use-package flycheck-pos-tip
   :defer t
-  :ensure t
   :after flycheck
   :config
   (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
@@ -1037,7 +1019,6 @@ On-the-fly syntax checking
 
 #+begin_src emacs-lisp
 (use-package vertico
-  :ensure t
   :bind (:map vertico-map
          ("C-n" . vertico-next)
          ("C-p" . vertico-previous)
@@ -1171,7 +1152,6 @@ For it to work, the host must have installed yasnippet and
 yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
-  :ensure t
   :hook ((go-mode . yas-minor-mode)
          (terraform-mode . yas-minor-mode)
          (markdown-mode . yas-minor-mode)
@@ -1183,7 +1163,6 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
   (yas-reload-all))
 
 (use-package yasnippet-snippets
-  :ensure t
   :after yasnippet)
 #+end_src
 
@@ -1194,7 +1173,6 @@ Use flyspell for highlighting and correcting spelling mistakes.
 #+begin_src emacs-lisp
 (use-package flyspell
   :diminish
-  :ensure t
   :defer t
   :hook
     (text-mode . flyspell-mode)
@@ -1208,7 +1186,6 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 #+begin_src emacs-lisp
 (use-package elfeed
   :defer t
-  :ensure t
   :bind (:map elfeed-search-mode-map
    ("m" . elfeed-toggle-star))
   :config
@@ -1231,7 +1208,6 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 
 (use-package elfeed-goodies
   :defer t
-  :ensure t
   :after elfeed
   :config
   (elfeed-goodies/setup)
@@ -1242,7 +1218,6 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 
 (use-package elfeed-org
   :defer t
-  :ensure t
   :after elfeed
   :config
   (elfeed-org)
@@ -1250,7 +1225,6 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 
 (use-package elfeed-dashboard
   :after elfeed
-  :ensure t
   :config
   (setq elfeed-dashboard-file "~/workbench/fun/feeds/dashboard.org")
   ;; update feed counts on elfeed-quit
@@ -1264,7 +1238,6 @@ frontend for Emacs.
 
 #+begin_src emacs-lisp
 (use-package rg
-  :ensure t
   :init (rg-enable-default-bindings))
 #+end_src
 
@@ -1273,8 +1246,7 @@ frontend for Emacs.
 Manages modeline for minor modes
 
 #+begin_src emacs-lisp
-(use-package diminish
-  :ensure t)
+(use-package diminish)
 
 (diminish 'eldoc-mode)
 (diminish 'org-indent-mode)
@@ -1285,8 +1257,7 @@ Manages modeline for minor modes
 Manages modeline for minor and major modes
 
 #+begin_src emacs-lisp
-(use-package delight
-  :ensure t)
+(use-package delight)
 #+end_src
 
 *** UUID
@@ -1295,8 +1266,7 @@ Provide UUID generation support (for all standards) inside Emacs
 
 #+begin_src emacs-lisp
 (use-package uuidgen
-  :defer t
-  :ensure t)
+  :defer t)
 #+end_src
 
 *** Edit-server
@@ -1306,7 +1276,6 @@ browser.
 
 #+begin_src emacs-lisp
 (use-package edit-server
-  :ensure t
   :commands edit-server-start
   :init (if after-init-time
               (edit-server-start)
@@ -1352,7 +1321,6 @@ A thesaurus for synonyms
 #+begin_src emacs-lisp
 (use-package powerthesaurus
   :defer t
-  :ensure t
   :bind (([f7] . powerthesaurus-lookup-dwim))
 )
 #+end_src
@@ -1382,13 +1350,11 @@ Detect the operating system and set ispell-program-name accordingly
 I use vterm as a terminal for Emacs
 
 #+begin_src emacs-lisp
-(use-package vterm
-  :ensure t)
+(use-package vterm)
 #+end_src
 
 #+begin_src emacs-lisp
 (use-package vterm-toggle
-  :ensure t
   :bind (([f2] . vterm-toggle)
          ([C-f2] . vterm-toggle-cd)))
 #+end_src
@@ -1632,7 +1598,6 @@ https://github.com/stathissideris/ditaa
   (cdr (assoc key (json-read-file "~/.emacs.d/org-gcal/gcal.json"))))
 
 (use-package org-gcal
-  :ensure t
   :config
   (setq plstore-cache-passphrase-for-symmetric-encryption t
         org-gcal-client-id (get-gcal-config-value 'org-gcal-client-id)
