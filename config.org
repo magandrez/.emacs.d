@@ -667,6 +667,7 @@ Use ace-window to cycle through windows
                      ("Dired" (mode . dired-mode))
                      ("Org" (mode . org-mode))
                      ("Magit" (name . "^magit"))
+                     ("Mail"  (name . "^\\*mu4e-main\\*$"))
                      ("Agenda" (or
                                   (name . "^\\*Calendar\\*$")
                                   (name . "^\\*Org Agenda\\*")))
@@ -679,6 +680,8 @@ Use ace-window to cycle through windows
                                (name . "^\\*scratch\\*$")
                                (name . "^\\*Async-native-compile-log\\*$")
                                (name . "^\\*Native-compile-Log\\*$")
+                               (name . "^\\*mu4e-last-update\\*$")
+                               (name . "^\\*trace*")
                                (name . "^\\*Messages\\*$")))))))
 
   (add-hook 'ibuffer-mode-hook
