@@ -1649,72 +1649,114 @@ package (hence the requires).
     (require 'mu4e-contrib)
     (require 'mu4e-org)
     (require 'smtpmail)
+    (auth-source-pass-enable)
     (with-eval-after-load 'mu4e
-      (setq-default mu4e-mu-binary "/bin/mu"
-                    mail-user-agent 'mu4e-user-agent ;; This is not something to change lightly. Check docs
-                    mu4e-maildir "~/Maildir/manuel.is"
-                    mu4e-sent-folder   "/manuel.is/Sent"
-                    mu4e-drafts-folder "/manuel.is/Drafts"
-                    mu4e-trash-folder  "/manuel.is/Trash"
-                    mu4e-refile-folder "/manuel.is/Archive"
-                    user-full-name  "Manuel González"
-                    mu4e-attachment-dir "~/Downloads"
-                    mu4e-change-filenames-when-moving t ;; See this link for more info: https://stackoverflow.com/a/43461973
-                    mu4e-completing-read-function 'completing-read
-                    mu4e-compose-complete-addresses t
-                    mu4e-compose-context-policy nil
-                    mu4e-compose-dont-reply-to-self t
-                    mu4e-compose-keep-self-cc nil
-                    mu4e-context-policy 'pick-first
-                    mu4e-get-mail-command "mbsync -a"
-                    mu4e-headers-date-format "%d-%m-%Y %H:%M"
-                    mu4e-headers-fields '((:date . 22)
-                                          (:flags . 6)
-                                          (:from . 22)
-                                          (:subject))
-                    mu4e-headers-include-related t
-                    mu4e-view-show-addresses t
-                    mu4e-view-show-images t
-                    message-kill-buffer-on-exit t
-                    message-send-mail-function 'smtpmail-send-it
-                    smtpmail-debug-info t
-                    smtpmail-smtp-user "manuel@manuel.is"
-                    smtpmail-smtp-server "127.0.0.1"
-                    smtpmail-stream-type 'starttls
-                    smtpmail-smtp-service 1025
-                    mm-sign-option 'guided
-                    mu4e-contexts
-                    `( ,(make-mu4e-context
-                         :name "manuel.is"
-                         :enter-func (lambda () (mu4e-message "Entering manuel.is context"))
-                         :leave-func (lambda () (mu4e-message "Leaving manuel.is context"))
-                         :match-func (lambda (msg)
-                                       (when msg
-                                         (or (mu4e-message-contact-field-matches msg :to "manuel@manuel.is")
-                                             (mu4e-message-contact-field-matches msg :from "manuel@manuel.is")
-                                             (mu4e-message-contact-field-matches msg :cc "manuel@manuel.is")
-                                             (mu4e-message-contact-field-matches msg :bcc "manuel@manuel.is")
-                                             (string-match-p "^/manuel.is/Inbox" (mu4e-message-field msg :maildir)))))
-                         :vars '( ( user-mail-address            . "manuel@manuel.is" )
-                                  ( user-full-name               . "Manuel González"  )
-                                  ( mu4e-maildir-shortcuts       . ((:maildir "/manuel.is/Inbox" :name "Inbox" :key ?i)
-                                                                    (:maildir "/manuel.is/Archive" :name "Archive" :key ?a)
-                                                                    (:maildir "/manuel.is/Drafts" :name "Drafts" :key ?d)
-                                                                    (:maildir "/manuel.is/All Mail" :name "All Mail" :key ?A)
-                                                                    (:maildir "/manuel.is/Trash" :name "Trash" :key ?t)
-                                                                    (:maildir "/manuel.is/Sent" :name "Sent" :key ?s)))
-                                  ( mu4e-bookmarks               . (( :name  "Unread messages"
-                                                                      :query "maildir:/manuel.is/Inbox AND flag:unread AND NOT flag:trashed"
-                                                                      :key ?u)
-                                                                    ( :name "Today's messages"
-                                                                      :query "maildir:/manuel.is/Inbox AND date:today..now"
-                                                                      :key ?n)
-                                                                    ( :name "Last 7 days"
-                                                                      :query "maildir:/manuel.is/Inbox AND date:7d..now"
-                                                                      :key ?w)
-                                                                    ( :name "Deleted"
-                                                                      :query "flag:trashed OR maildir:/manuel.is/Trash"
-                                                                      :key ?D))))))))
+      (setq mu4e-mu-binary "/usr/bin/mu"
+            mail-user-agent 'mu4e-user-agent ;; This is not something to change lightly. Check docs
+            mu4e-maildir "~/Maildir"
+            mu4e-attachment-dir "~/Downloads"
+            mu4e-change-filenames-when-moving t ;; See this link for more info: https://stackoverflow.com/a/43461973
+            mu4e-completing-read-function 'completing-read
+            mu4e-compose-complete-addresses t
+            mu4e-compose-context-policy nil
+            mu4e-compose-dont-reply-to-self t
+            mu4e-compose-keep-self-cc nil
+            mu4e-context-policy 'pick-first
+            mu4e-get-mail-command "mbsync -a"
+            auth-sources '(password-store)
+            auth-source-debug nil
+            auth-source-do-cache nil
+            mu4e-headers-date-format "%d-%m-%Y %H:%M"
+            mu4e-headers-fields '((:date . 22)
+                                  (:flags . 6)
+                                  (:from . 22)
+                                  (:subject))
+            mu4e-headers-include-related t
+            mu4e-view-show-addresses t
+            mu4e-view-show-images t
+            message-kill-buffer-on-exit t
+            message-send-mail-function 'smtpmail-send-it
+            smtpmail-debug-info t
+            mm-sign-option 'guided
+            smtpmail-queue-mail nil
+            mu4e-contexts
+            (list
+             (make-mu4e-context
+              :name "personal"
+              :enter-func
+              (lambda () (mu4e-message "Entering manuel@manuel.is context"))
+              :leave-func
+              (lambda () (mu4e-message "Leaving manuel@manuel.is context"))
+              :match-func (lambda (msg)
+                            (when msg
+                              (or (mu4e-message-contact-field-matches msg :to "manuel@manuel.is")
+                                  (mu4e-message-contact-field-matches msg :from "manuel@manuel.is")
+                                  (string-match-p "^/personal" (mu4e-message-field msg :maildir)))))
+              :vars `((user-mail-address . "manuel@manuel.is")
+                      (user-full-name    . "Manuel González")
+                      (smtpmail-smtp-server  . "127.0.0.1")
+                      (smtpmail-smtp-service . "1025")
+                      (smtpmail-stream-type  . starttls)
+                      (smtpmail-smtp-user . "manuel@manuel.is")
+                      (mu4e-sent-folder . "/personal/Sent")
+                      (mu4e-drafts-folder . "/personal/Drafts")
+                      (mu4e-trash-folder . "/personal/Trash")
+                      (mu4e-refile-folder . "/personal/Archive")
+                      (mu4e-maildir-shortcuts . ((:maildir "/personal/Inbox" :name "Inbox" :key ?i)
+                                                 (:maildir "/personal/Archive" :name "Archive" :key ?a)
+                                                 (:maildir "/personal/Drafts" :name "Drafts" :key ?d)
+                                                 (:maildir "/personal/Trash" :name "Trash" :key ?t)
+                                                 (:maildir "/personal/Starred" :name "Starred" :key ?S)
+                                                 (:maildir "/personal/Sent" :name "Sent" :key ?s)))
+                      (mu4e-bookmarks . ((:name  "Unread messages"
+                                                 :query "maildir:/personal/Inbox AND flag:unread AND NOT flag:trashed"
+                                                 :key ?u)
+                                         (:name "Today's messages"
+                                                :query "maildir:/personal/Inbox AND date:today..now"
+                                                :key ?n)
+                                         (:name "Starred messages"
+                                                :query "maildir:/personal/Starred"
+                                                :key ?s)))))
+    ;;          (make-mu4e-context
+    ;;           :name "gmail"
+    ;;           :enter-func
+    ;;           (lambda () (mu4e-message "Entering Gmail context"))
+    ;;           :leave-func
+    ;;           (lambda () (mu4e-message "Leaving Gmail context"))
+    ;;           :match-func (lambda (msg)
+    ;;                         (when msg
+    ;;                           (or (mu4e-message-contact-field-matches msg :to "spaviladiyo@gmail.com")
+    ;;                               (mu4e-message-contact-field-matches msg :from "spaviladiyo@gmail.com")
+    ;;                               (mu4e-message-contact-field-matches msg :to "magandrez@gmail.com")
+    ;;                               (mu4e-message-contact-field-matches msg :from "magandrez@gmail.com")
+    ;;                               (string-match-p "^/gmail" (mu4e-message-field msg :maildir)))))
+    ;;           :vars `((user-mail-address . "spaviladiyo@gmail.com")
+    ;;                   (user-full-name    . "Manuel González")
+    ;;                   (smtpmail-smtp-server  . "smtp.gmail.com")
+    ;;                   (smtpmail-smtp-service . "587")
+    ;;                   (smtpmail-stream-type  . starttls)
+    ;;                   (smtpmail-smtp-user . "spaviladiyo@gmail.com")
+    ;;                   (mu4e-sent-folder . "/fooooooo/Sent")
+    ;;                   (mu4e-drafts-folder . "/personal/Drafts")
+    ;;                   (mu4e-trash-folder . "/personal/Trash")
+    ;;                   (mu4e-refile-folder . "/personal/Archive")
+    ;;                   (mu4e-maildir-shortcuts . ((:maildir "/personal/Inbox" :name "Inbox" :key ?i)
+    ;;                                              (:maildir "/personal/Archive" :name "Archive" :key ?a)
+    ;;                                              (:maildir "/personal/Drafts" :name "Drafts" :key ?d)
+    ;;                                              (:maildir "/personal/Trash" :name "Trash" :key ?t)
+    ;;                                              (:maildir "/personal/Starred" :name "Starred" :key ?S)
+    ;;                                              (:maildir "/personal/Sent" :name "Sent" :key ?s)))
+    ;;                   (mu4e-bookmarks . ((:name  "Unread messages"
+    ;;                                              :query "maildir:/personal/Inbox AND flag:unread AND NOT flag:trashed"
+    ;;                                              :key ?u)
+    ;;                                      (:name "Today's messages"
+    ;;                                             :query "maildir:/personal/Inbox AND date:today..now"
+    ;;                                             :key ?n)
+    ;;                                      (:name "Starred messages"
+    ;;                                             :query "maildir:/personal/Starred"
+    ;;                                             :key ?s)))))
+
+              )))
 
     (add-hook 'message-send-hook 'sign-or-encrypt-message)
     (set-face-foreground 'mu4e-unread-face "yellow"))
