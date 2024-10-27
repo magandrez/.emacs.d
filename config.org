@@ -1837,13 +1837,6 @@ Bind backward-kill-word to C-w
 (global-set-key (kbd "C-w") 'backward-kill-word)
 #+end_src
 
-Moving things up and down (related defuns under a different heading)
-
-#+begin_src emacs-lisp
-; review this (not working) (global-set-key [(control shift up)]  'move-line-up)
-; review this (not working) (global-set-key [(control shift down)]  'move-line-down)
-#+end_src
-
 Global Copy & Paste in Unix
 
 #+begin_src emacs-lisp
