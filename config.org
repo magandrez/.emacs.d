@@ -25,21 +25,22 @@ Miscellaneous defaults below
 
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
- '(cua-mode t)                                   ;; Set CUA-mode on
+ '(cua-mode t)                                      ;; Set CUA-mode on
  '(initial-scratch-message nil)
  '(inhibit-startup-screen t)
- '(show-paren-delay 0)                           ;; No delay when showing matching parenthesis
- '(confirm-nonexistent-file-or-buffer nil)       ;; Remove confirm dialog on new buffers
- '(confirm-kill-emacs 'y-or-n-p)                 ;; Confirm exiting Emacs
- '(display-time-default-load-average nil)        ;; Don't display load average
- '(indent-tabs-mode nil)                         ;; No tabs for indentation
- '(window-combination-resize t)                  ;; Create new windows proportionally
- '(use-package-always-ensure t)                  ;; Install packages if not found on the system
- '(completions-detailed t)                       ;; Show more info when describing things
- '(use-short-answers t)                          ;; Use instead of y-or-n-p
- '(native-comp-async-report-warnings-errors nil) ;; Don't show native compile warnings
- '(savehist-mode 1)                              ;; Save history typed in minibuffer
+ '(show-paren-delay 0)                              ;; No delay when showing matching parenthesis
+ '(confirm-nonexistent-file-or-buffer nil)          ;; Remove confirm dialog on new buffers
+ '(confirm-kill-emacs 'y-or-n-p)                    ;; Confirm exiting Emacs
+ '(display-time-default-load-average nil)           ;; Don't display load average
+ '(indent-tabs-mode nil)                            ;; No tabs for indentation
+ '(window-combination-resize t)                     ;; Create new windows proportionally
+ '(use-package-always-ensure t)                     ;; Install packages if not found on the system
+ '(completions-detailed t)                          ;; Show more info when describing things
+ '(use-short-answers t)                             ;; Use instead of y-or-n-p
+ '(native-comp-async-report-warnings-errors nil)    ;; Don't show native compile warnings
+ '(savehist-mode 1)                                 ;; Save history typed in minibuffer
  '(dired-kill-when-opening-new-dired-buffer t)
+ '(browse-url-browser-function 'browse-url-firefox) ;; Open links in Firefox
  '(package-native-compile t)
  '(tool-bar-mode nil)
  '(menu-bar-mode nil)
