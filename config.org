@@ -1594,36 +1594,6 @@ https://github.com/stathissideris/ditaa
 (setq org-ditaa-jar-path "/usr/bin/ditaa")
 #+end_src
 
-*** Google Calendar integration
-
-
-(setq package-check-signature nil)
-
-(defun get-gcal-config-value (key)
-  "Return the value of the json file gcal_secret for key"
-  (cdr (assoc key (json-read-file "~/.emacs.d/org-gcal/gcal.json"))))
-
-(use-package org-gcal
-  :config
-  (setq plstore-cache-passphrase-for-symmetric-encryption t
-        org-gcal-client-id (get-gcal-config-value 'org-gcal-client-id)
-        org-gcal-client-secret (get-gcal-config-value 'org-gcal-client-secret)
-        org-gcal-down-days 10
-        org-gcal-up-days 10
-        org-replace-disputed-keys t)
-  (if (eq system-type 'darwin)
-      (setq org-gcal-file-alist '(("magandrez@gmail.com" . "/Users/spav/Dropbox/org/documents/schedule.org.gpg")))
-    (setq org-gcal-file-alist '(("magandrez@gmail.com" . "/home/manuel/Dropbox/org/documents/schedule.org.gpg"))))
-  :hook (org-capture-after-finalize . org-gcal-sync))
-
-(custom-set-variables
- '(org-gcal-down-days 10)
- '(org-gcal-up-days 10))
-
-
-Org-babel languages to interpret in Org code blocks (by default, only
-Lisp is understood).
-
 *** Bindings
 
 #+begin_src emacs-lisp
