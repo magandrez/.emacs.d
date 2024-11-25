@@ -227,24 +227,21 @@ It disables backup creation and auto saving.
 With no argument, this command toggles the mode.
 Non-null prefix argument turns on the mode.
 Null prefix argument turns off the mode."
-  ;; The initial value.
-  nil
-  ;; The indicator for the mode line.
-  " Sensitive"
-  ;; The minor mode bindings.
-  nil
-  (if (symbol-value sensitive-mode)
+  :init-value nil                      ;; The initial value.
+  :lighter " Sensitive"                ;; The indicator for the mode line.
+  :keymap nil                          ;; The minor mode bindings.
+  (if sensitive-mode                   ;; Use the minor mode variable directly.
       (progn
-	;; disable backups
-	(set (make-local-variable 'backup-inhibited) t)
-	;; disable auto-save
-	(if auto-save-default
-	    (auto-save-mode -1)))
-    ;resort to default value of backup-inhibited
+        ;; disable backups
+        (set (make-local-variable 'backup-inhibited) t)
+        ;; disable auto-save
+        (if auto-save-default
+            (auto-save-mode -1)))
+    ;; Resort to default value of backup-inhibited
     (kill-local-variable 'backup-inhibited)
-    ;resort to default auto save setting
+    ;; Resort to default auto save setting
     (if auto-save-default
-	(auto-save-mode 1))))
+        (auto-save-mode 1))))
 #+end_src
 
 Disable for all gpg and pass edits
