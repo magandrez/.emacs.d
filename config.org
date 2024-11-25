@@ -34,7 +34,6 @@ Miscellaneous defaults below
  '(display-time-default-load-average nil)           ;; Don't display load average
  '(indent-tabs-mode nil)                            ;; No tabs for indentation
  '(window-combination-resize t)                     ;; Create new windows proportionally
- '(use-package-always-ensure t)                     ;; Install packages if not found on the system
  '(completions-detailed t)                          ;; Show more info when describing things
  '(use-short-answers t)                             ;; Use instead of y-or-n-p
  '(native-comp-async-report-warnings-errors nil)    ;; Don't show native compile warnings
@@ -102,12 +101,14 @@ coding/encoding (Chinese/Japanese/Korean characters).
   (setq default-buffer-file-coding-system 'utf-8))
 #+END_SRC
 
+
 *** Theme
 
 Use `monokai` theme for Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package monokai-theme
+  :ensure t
   :init
   (load-theme 'monokai t))
 #+END_SRC
@@ -162,6 +163,7 @@ rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 ;; Add the hook to programming-related modes
 (add-hook 'prog-mode-hook 'enable-fill-column-indicator-in-prog-mode)
 #+end_src
+
 
 *** OS customizations
 **** Mac keys
@@ -254,6 +256,7 @@ Disable for all gpg and pass edits
                auto-mode-alist))
 #+end_src
 
+
 *** Filter marked packages from Packages buffer.
 
 #+begin_src emacs-lisp
@@ -266,6 +269,7 @@ Marks are indicated by lines starting with an uppercase letter."
 ;; Bind the function to the "a" key in `package-menu-mode-map`
 (define-key package-menu-mode-map (kbd "a") #'package-menu-find-marks)
 #+end_src
+
 
 *** Reload config
 
@@ -284,7 +288,8 @@ Reloads Emacs config without having to restart the service.
 Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp-bug-hunter
 
 #+begin_src emacs-lisp
-(use-package bug-hunter)
+(use-package bug-hunter
+  :ensure t)
 #+end_src
 
 
@@ -322,6 +327,7 @@ need to start tide or run prettier on them).
 
 #+begin_src emacs-lisp
 (use-package dot-mode
+  :ensure t
   :mode "\\.dot$")
 #+end_src
 
@@ -329,7 +335,8 @@ need to start tide or run prettier on them).
 
 #+begin_src emacs-lisp
 (use-package gnuplot
- :mode (("\\.g\\'" . gnuplot-mode)
+  :ensure t
+  :mode (("\\.g\\'" . gnuplot-mode)
          ("\\.p\\'" . gnuplot-mode)))
 #+end_src
 
@@ -647,8 +654,11 @@ take care of the rest.
 
 *** Environment
 
+Use [[https://github.com/purcell/envrc][envrc]].
+
 #+begin_src emacs-lisp
 (use-package envrc
+  :ensure t
   :hook (after-init . envrc-global-mode))
 #+end_src
 
@@ -658,6 +668,7 @@ Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path
 
 #+BEGIN_SRC emacs-lisp
 (use-package exec-path-from-shell
+  :ensure t
   :init
   (if (eq system-type 'darwin)
       (progn
@@ -673,6 +684,7 @@ Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path
 
 #+BEGIN_SRC emacs-lisp
 (use-package which-key
+  :ensure t
   :diminish
   :hook (after-init . which-key-mode)
   :config
@@ -684,7 +696,8 @@ Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path
 
 For trying packages
 #+begin_src emacs-lisp
-(use-package try)
+(use-package try
+  :ensure)
 #+end_src
 
 *** Ace
@@ -765,6 +778,7 @@ Use `tramp` to shell into other machines.
 
 #+BEGIN_SRC emacs-lisp
 (use-package tramp
+  :ensure t
   :defer t
   :config
   (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "/etc/ssh_config") (tramp-parse-sconfig "~/.ssh/config"))))
@@ -776,6 +790,7 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
+  :ensure t
   :init (smartparens-global-mode t))
 #+END_SRC
 
@@ -785,8 +800,9 @@ Use Projectile to manage projects as an entity.
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
+  :ensure t
   :delight '(:eval (concat " " (projectile-project-name)))
-  :defer 1
+  :defer t
   :init
   (setq-default
    projectile-cache-file (expand-file-name ".projectile-cache" user-emacs-directory)
@@ -808,8 +824,11 @@ Use Projectile to manage projects as an entity.
 
 *** Highlight
 
+Highlight the same symbols across a buffer
+
 #+BEGIN_SRC emacs-lisp
-(use-package highlight)
+(use-package highlight
+  :ensure t)
 #+END_SRC
 
 *** Treemacs
@@ -819,6 +838,7 @@ project or a directory, á la Eclipse or other common IDEs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package treemacs
+  :ensure t
   :init (defvar treemacs-no-load-time-warnings t)
   :defer t
   :config
@@ -842,7 +862,7 @@ project or a directory, á la Eclipse or other common IDEs.
    ("C-c f" . treemacs-select-window)))
 
 (use-package treemacs-projectile
-  :defer t
+  :ensure t
   :after treemacs projectile
   :bind
   (("C-c o p" . treemacs-projectile)))
@@ -874,7 +894,8 @@ Fold code. I found `yafolding` simplier to use than e.g.: `origami`
 Use [[https://github.com/federicotdn/verb][verb]] to explore APIs as an alternative for the defunct [[https://github.com/pashky/restclient.el][restclient]].
 
 #+begin_src emacs-lisp
-(use-package verb)
+(use-package verb
+  :ensure t)
 #+end_src
 
 As verb uses org mode as its default mode, map the verb-command-map when loading org.
@@ -889,6 +910,7 @@ Magit is love for Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
+  :ensure t
   :defer t
   :config
     (setq magit-log-arguments '("-n256" "--graph" "--decorate" "--color"))
@@ -904,13 +926,16 @@ Magit is love for Emacs.
 Configuring forge
 #+begin_src emacs-lisp
 (use-package forge
+  :ensure t
   :defer t
   :after magit)
 #+end_src
 
 Use github-review along with forge. See more [[https://github.com/charignon/github-review][here]].
+
 #+begin_src emacs-lisp
 (use-package github-review
+  :ensure t
   :defer t
   :config
   (setq
@@ -1033,6 +1058,7 @@ Adapter Protocol
        ("C-p" . company-select-previous)))
 
 (use-package company-box
+  :ensure t
   :defer t
   :hook (company-mode . company-box-mode))
 #+end_src
@@ -1043,6 +1069,7 @@ On-the-fly syntax checking
 
 #+begin_src emacs-lisp
 (use-package flycheck
+  :ensure t
   :defer t
   :diminish
   :init (global-flycheck-mode)
@@ -1050,11 +1077,13 @@ On-the-fly syntax checking
   (setq flycheck-check-syntax-automatically '(save mode-enabled)))
 
 (use-package flycheck-pos-tip
+  :ensure t
   :defer t
   :after flycheck
   :config
   (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 #+end_src
+
 
 *** Vertico + Orderless + Marginalia + Consult
 
@@ -1062,6 +1091,7 @@ On-the-fly syntax checking
 
 #+begin_src emacs-lisp
 (use-package vertico
+  :ensure t
   :bind (:map vertico-map
          ("C-n" . vertico-next)
          ("C-p" . vertico-previous)
@@ -1083,6 +1113,7 @@ On-the-fly syntax checking
 
 #+begin_src emacs-lisp
 (use-package orderless
+  :ensure t
   :init
   ;; Configure a custom style dispatcher (see the Consult wiki)
   ; (setq orderless-style-dispatchers '(+orderless-dispatch)
@@ -1096,20 +1127,18 @@ On-the-fly syntax checking
 
 #+begin_src emacs-lisp
 (use-package marginalia
+  :ensure t
   ;; Either bind `marginalia-cycle` globally or only in the minibuffer
-  :bind (("M-A" . marginalia-cycle)
-         :map minibuffer-local-map
+  :bind (:map minibuffer-local-map
          ("M-A" . marginalia-cycle))
-
   :init (marginalia-mode))
-
 #+end_src
 
 [[https://github.com/minad/consult][Consult]] provides practical commands based on the completion functionality
 
 #+begin_src emacs-lisp
-;; Example configuration for Consult
 (use-package consult
+  :ensure t
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c m" . consult-mode-command)
@@ -1195,6 +1224,7 @@ For it to work, the host must have installed yasnippet and
 yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
+  :ensure t
   :hook ((go-mode . yas-minor-mode)
          (terraform-mode . yas-minor-mode)
          (markdown-mode . yas-minor-mode)
@@ -1206,6 +1236,7 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
   (yas-reload-all))
 
 (use-package yasnippet-snippets
+  :ensure t
   :after yasnippet)
 #+end_src
 
@@ -1215,6 +1246,7 @@ Use flyspell for highlighting and correcting spelling mistakes.
 
 #+begin_src emacs-lisp
 (use-package flyspell
+  :ensure t
   :diminish
   :defer t
   :hook
@@ -1228,6 +1260,7 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 
 #+begin_src emacs-lisp
 (use-package elfeed
+  :ensure t
   :defer t
   :bind (:map elfeed-search-mode-map
    ("m" . elfeed-toggle-star))
@@ -1250,6 +1283,7 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 )
 
 (use-package elfeed-goodies
+  :ensure t
   :defer t
   :after elfeed
   :config
@@ -1281,6 +1315,7 @@ frontend for Emacs.
 
 #+begin_src emacs-lisp
 (use-package rg
+  :ensure t
   :init (rg-enable-default-bindings))
 #+end_src
 
@@ -1289,8 +1324,8 @@ frontend for Emacs.
 Manages modeline for minor modes
 
 #+begin_src emacs-lisp
-(use-package diminish)
-
+(use-package diminish
+  :ensure t)
 (diminish 'eldoc-mode)
 (diminish 'org-indent-mode)
 #+end_src
@@ -1300,7 +1335,8 @@ Manages modeline for minor modes
 Manages modeline for minor and major modes
 
 #+begin_src emacs-lisp
-(use-package delight)
+(use-package delight
+  :ensure t)
 #+end_src
 
 *** UUID
@@ -1309,6 +1345,7 @@ Provide UUID generation support (for all standards) inside Emacs
 
 #+begin_src emacs-lisp
 (use-package uuidgen
+  :ensure t
   :defer t)
 #+end_src
 
@@ -1319,6 +1356,7 @@ browser.
 
 #+begin_src emacs-lisp
 (use-package edit-server
+  :ensure t
   :commands edit-server-start
   :init (if after-init-time
               (edit-server-start)
@@ -1353,6 +1391,7 @@ Besides this, make sure to enable dictd system unit
 
 #+begin_src emacs-lisp
 (use-package dictionary
+  :ensure t
   :bind (([f5] . dictionary-search) ([f6] . dictionary-lookup-definition))
   :config
   (setq dictionary-use-single-buffer t)
@@ -1381,6 +1420,7 @@ Detect the operating system and set ispell-program-name accordingly
 
 #+begin_src emacs-lisp
 (use-package emojify
+  :ensure t
   :config
   (when (member "Noto Color Emoji" (font-family-list))
     (set-fontset-font
@@ -1393,11 +1433,13 @@ Detect the operating system and set ispell-program-name accordingly
 I use vterm as a terminal for Emacs
 
 #+begin_src emacs-lisp
-(use-package vterm)
+(use-package vterm
+  :ensure t)
 #+end_src
 
 #+begin_src emacs-lisp
 (use-package vterm-toggle
+  :ensure t
   :bind (([f2] . vterm-toggle)
          ([C-f2] . vterm-toggle-cd)))
 #+end_src
@@ -1497,6 +1539,7 @@ Org journaling
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-journal
+  :ensure t
   :defer t
   :init
   (setq org-journal-prefix-key "C-c j")
@@ -1564,6 +1607,7 @@ After calling this function, call meeting-done to reset the environment."
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
+  :ensure t
   :after org
   :hook
   (org-mode . (lambda () (org-bullets-mode 1))))
@@ -1575,6 +1619,7 @@ Calendar modifications (Finnish calendar, etc)
 
 #+BEGIN_SRC emacs-lisp
 (use-package suomalainen-kalenteri
+  :ensure t
   :defer t
   :after org
   :config
@@ -1910,6 +1955,7 @@ Comment DWIM
 
 
 ** Custom
+
 
 Add week numbers to calendar
 
