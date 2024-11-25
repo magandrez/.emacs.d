@@ -521,74 +521,6 @@ here: https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
   :hook (python-mode . pyenv-mode))
 #+end_src
 
-*** Cucumber
-
-Use [[https://cucumber.io/][Cucumber]] for BDD
-
-#+BEGIN_SRC emacs-lisp
-(use-package feature-mode
-  :mode (("\\.feature$" . feature-mode))
-  :commands feature-mode
-  :config
-  (setq feature-default-language "en"))
-#+END_SRC
-
-*** Erlang
-
-Using standard erlang.el
-
-#+begin_src emacs-lisp
-(use-package erlang
-  :mode "\\.P$\\|\\.E$\\|\\.S$\\|\\.erl?$"
-  :hook (erlang-mode . (lambda ()
-                         (setq mode-name "erlang"
-                               erlang-compile-extra-opts '((i . "../include"))
-                               erlang-root-dir "/usr/local/lib/erlang"))))
-#+end_src
-
-*** Clojure
-
-Minimal setup to begin with, clojure-mode.
-
-#+begin_src emacs-lisp
-(use-package clojure-mode
-  :mode "\\.clj$\\|\\.edn$"
-  :hook
-  (clojure-mode . (lambda ()
-                    (subword-mode)
-                    (eldoc-mode))))
-#+end_src
-
-Now [[https://github.com/clojure-emacs/cider][CIDER]]. Another creation from bbatsov :+1:
-
-#+begin_src emacs-lisp
-(use-package cider
-  :defer t
-  :config
-    (setq nrepl-log-messages t
-          cider-repl-display-in-current-window t
-          cider-repl-use-clojure-font-lock t
-          cider-prompt-save-file-on-load 'always-save
-          cider-font-lock-dynamically '(macro core function var)
-          nrepl-hide-special-buffers t
-          cider-overlays-use-font-lock t)
-    (cider-repl-toggle-pretty-printing))
-#+end_src
-
-Autocompletion and documentation support provided by LSP (see related
-config block).
-
-Note: for LSP integration to work, installing [[https://github.com/snoe/clojure-lsp][clojure-lsp]] is a requirement.
-
-*** Kubernetes
-
-Just a basic mode for K8s artifacts (a wrapper for YAML with calls to
-docs, if you will).
-
-#+begin_src emacs-lisp
-(use-package k8s-mode
-  :config (setq k8s-site-docs-version "v1.25"))
-#+end_src
 
 *** Javascript
 
@@ -632,19 +564,6 @@ take care of the rest.
     :hook (rjsx-mode . prettier-rc-mode)))
 #+end_src
 
-*** Terraform
-
-#+begin_src emacs-lisp
-(use-package terraform-mode
-  :mode ("\\.tf\\'"
-         "\\.hcl\\'"
-         "\\.tfvars\\'")
-  :config
-  (setq lsp-terraform-ls-enable-show-reference t ;; Code lens is experimental in Terraform mode
-        lsp-terraform-ls-prefill-required-fields t
-        lsp-terraform-ls-validate-on-save t))
-
-#+end_src
 
 
 ** Features
