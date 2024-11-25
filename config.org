@@ -678,14 +678,12 @@ Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path
 (use-package exec-path-from-shell
   :ensure t
   :init
-  (if (eq system-type 'darwin)
-      (progn
-        (setq shell-file-name "/usr/local/bin/zsh")
-        (exec-path-from-shell-initialize))
-    (if (eq system-type 'gnu/linux)
-        (progn
-          (setq shell-file-name "/bin/fish")
-          (exec-path-from-shell-initialize)))))
+  (when (memq window-system '(mac ns x))
+    (setq shell-file-name "/usr/local/bin/zsh")
+    (exec-path-from-shell-initialize))
+  (when (daemonp)
+    (setq shell-file-name "/usr/bin/fish")
+    (exec-path-from-shell-initialize)))
 #+END_SRC
 
 *** Which-key
