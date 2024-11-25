@@ -852,14 +852,15 @@ project or a directory, á la Eclipse or other common IDEs.
         treemacs-silent-refresh t
         treemacs-silent-filewatch t
         treemacs-change-root-without-asking t
-        treemacs-sorting 'alphabetic-desc
+        treemacs-sorting 'alphabetic-asc
         treemacs-show-hidden-files t
         treemacs-never-persist nil
         treemacs-is-never-other-window nil
         treemacs-indentation-string (propertize " ǀ " 'face 'font-lock-comment-face)
         treemacs-follow-mode t
         treemacs-filewatch-mode t
-        treemacs-fringe-indicator-mode t)
+        treemacs-fringe-indicator-mode t
+        treemacs-eldoc-display t)
   :bind
   (([f8] . treemacs)
    ("C-c f" . treemacs-select-window)))
@@ -870,10 +871,17 @@ project or a directory, á la Eclipse or other common IDEs.
   :bind
   (("C-c o p" . treemacs-projectile)))
 
-(use-package lsp-treemacs
-  :after treemacs lsp-mode)
+(use-package treemacs-magit
+  :ensure t
+  :after treemacs magit)
 
-(with-eval-after-load 'lsp-mode
+;; Integration between lsp-mode and treemacs and implementation of treeview
+;; controls using treemacs as a tree renderer.
+;; https://github.com/emacs-lsp/lsp-treemacs
+(use-package lsp-treemacs
+  :ensure t
+  :after treemacs
+  :config
   (lsp-treemacs-sync-mode 1))
 #+END_SRC
 
