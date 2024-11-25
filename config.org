@@ -616,7 +616,8 @@ Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path
 
 *** Try
 
-For trying packages
+To try new packages, use try.
+
 #+begin_src emacs-lisp
 (use-package try
   :ensure)
