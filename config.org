@@ -578,14 +578,6 @@ Use [[https://github.com/purcell/envrc][envrc]].
   :hook (after-init . envrc-global-mode))
 #+end_src
 
-Use load [[https://editorconfig.org/][editorconfig]] if available
-#+begin_src emacs-lisp
-(use-package editorconfig
-  :ensure t
-  :config
-  (editorconfig-mode 1))
-#+end_src
-
 **** Load $PATH.
 
 Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
