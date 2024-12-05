@@ -1896,3 +1896,16 @@ NOTE: Only in Finland such a thing is needed as week numbers...
                   (calendar-absolute-from-gregorian (list month day year)))))
         'font-lock-face 'calendar-iso-week-face))
 #+end_src
+
+
+** New stuff
+
+#+begin_src emacs-lisp
+(use-package ob-sql-mode
+  :ensure t)
+
+(setq org-confirm-babel-evaluate
+      (lambda (lang body)
+        (not (string= lang "sql-mode"))))
+#+end_src
+
