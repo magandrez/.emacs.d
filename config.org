@@ -370,6 +370,7 @@ Install `pandoc` package:
 
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
+  :ensure t
   :mode (("INSTALL\\'" . markdown-mode)
          ("CONTRIBUTORS\\'" . markdown-mode)
          ("LICENSE\\'" . markdown-mode)
@@ -1274,7 +1275,7 @@ Provide UUID generation support (for all standards) inside Emacs
 
 *** Edit-server
 [[https://github.com/stsquad/emacs_chrome][edit-server]] is a feature that works in conjunction with browsers' plugins
-(depending on browser) to prompt an Emacs frame when editing text on the
+(depending on browser) to prompt an Emacs frame when editing text areas on the
 browser.
 
 #+begin_src emacs-lisp
@@ -1293,7 +1294,7 @@ browser.
                   (height . 25)
                   (minibuffer . t)
                   (menu-bar-lines . t)
-                  (window-system . x))))
+                  (window-system . pgtk))))
 #+end_src
 
 *** Dictionaries
