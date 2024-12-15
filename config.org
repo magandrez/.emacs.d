@@ -225,6 +225,7 @@ As default write backup files on ~/.emacs.d/backup, auto-save files on
 #+END_SRC
 
 Disable backups for sensitive information. Taken from [[https://anirudhsasikumar.net/blog/2005.01.21.html][here]].
+
 #+begin_src emacs-lisp
 (define-minor-mode sensitive-mode
   "For sensitive files like password lists.
@@ -491,41 +492,10 @@ completion is controlled by lsp-completion-provider.
   :hook ((lsp-mode . lsp-diagnostics-mode)
          (lsp-mode . lsp-enable-which-key-integration)
          ((tsx-ts-mode typescript-ts-mode vue-mode) . lsp-deferred))
-  :preface
-    (defun lsp-booster--advice-json-parse (old-fn &rest args)
-      "Try to parse bytecode instead of json."
-      (or
-       (when (equal (following-char) ?#)
-          (let ((bytecode (read (current-buffer))))
-           (when (byte-code-function-p bytecode)
-             (funcall bytecode))))
-       (apply old-fn args)))
-    (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
-      "Prepend emacs-lsp-booster command to lsp CMD."
-      (let ((orig-result (funcall old-fn cmd test?)))
-        (if (and (not test?)                             ;; for check lsp-server-present?
-                 (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
-                 lsp-use-plists
-                 (not (functionp 'json-rpc-connection))  ;; native json-rpc
-                 (executable-find "emacs-lsp-booster"))
-            (progn
-              (message "Using emacs-lsp-booster for %s!" orig-result)
-              (cons "emacs-lsp-booster" orig-result))
-          orig-result)))
-    :init
-    (setq lsp-use-plists t)
-    ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
-    (advice-add (if (progn (require 'json)
-                           (fboundp 'json-parse-buffer))
-                    'json-parse-buffer
-                  'json-read)
-                :around
-                #'lsp-booster--advice-json-parse)
-    (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
   :custom
     (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
-    (lsp-completion-provider :none)     ; Uses corfu when set to none, uses company when set to capf
+    (lsp-completion-provider :capf)     ; Uses corfu when set to none, uses company when set to capf
     (lsp-diagnostics-provider :flycheck)
     (lsp-session-file (locate-user-emacs-file ".lsp-session"))
     (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
@@ -573,16 +543,11 @@ completion is controlled by lsp-completion-provider.
     (lsp-vetur-validation-template nil)
   :init
     (setq lsp-use-plists t)
+    (setq company-backends '((company-capf company-files company-yasnippet)))
   :config
     (use-package add-node-modules-path
       :defer t
       :hook ((tsx-ts-mode typescript-ts-mode vue-mode) . add-node-modules-path)))
-
-
-'(progn
-  (lsp-dependency
-   'typescript-language-server
-   '(:npm :package "typescript-language-server" :path "emacs-lsp-booster")))
 
 (use-package lsp-completion
   :no-require
@@ -610,40 +575,27 @@ completion is controlled by lsp-completion-provider.
         lsp-ui-sideline-show-hover nil))
 #+end_src
 
-Use corfu for completion
-
 #+begin_src emacs-lisp
-  (use-package corfu
+(use-package company
   :ensure t
-  ;; Optional customizations
-  :custom
-    (corfu-cycle t)                 ; Allows cycling through candidates
-    (corfu-auto t)                  ; Enable auto completion
-    (corfu-auto-prefix 2)           ; Minimum length of prefix for completion
-    (corfu-auto-delay 0.)            ; No delay for completion
-    (corfu-popupinfo-delay 0.2)  ; Automatically update info popup after that numver of seconds
-    (corfu-preview-current 'insert) ; insert previewed candidate
-    (corfu-preselect 'prompt)
-    (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
-  :bind (:map corfu-map
-               ("M-SPC"      . corfu-insert-separator)
-               ("C-n"        . corfu-next)
-               ("C-p"        . corfu-previous)
-               ("S-<return>" . corfu-insert)
-               ("RET"        . corfu-insert))
-
-  :init
-    (global-corfu-mode)
-    (corfu-history-mode)
-    (corfu-popupinfo-mode) ; Popup completion info
+  :hook
+    ((prog-mode org-mode) . company-mode)
   :config
-    (add-hook 'eshell-mode-hook
-             (lambda () (setq-local corfu-quit-at-boundary t
-                               corfu-quit-no-match t
-                               corfu-auto nil)
-                  (corfu-mode)) 
-                 nil t))
+    (global-company-mode t)
+  (setq-default
+     company-minimum-prefix-length 1
+     company-idle-delay 0.05
+     company-tooltip-align-annotations t
+     company-frontends '(company-pseudo-tooltip-unless-just-one-frontend company-preview-frontend)
+   )
+  :bind (:map company-active-map
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous)))
 
+(use-package company-box
+  :ensure t
+  :defer t
+  :hook (company-mode . company-box-mode))
 #+end_src
 
 Here is the setup for treesit, which in combination with LSP, provides "IDE-like
@@ -700,6 +652,7 @@ NOTE: At the moment is only setup for JS/TS mainly.
   :config
   (setup-install-grammars))
 #+end_src
+
 
 ** Features
 
