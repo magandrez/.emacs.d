@@ -298,34 +298,8 @@ Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp
 
 ** Languages / frameworks
 
-Random modes without specific configuration blocks.
-
-#+begin_src emacs-lisp
-  (setq auto-mode-alist
-      (append '(
-                ("\\.pl$"     . perl-mode)
-                ("\\.pm$"     . perl-mode)
-                ("\\.java$"   . java-mode)
-                ("\\.groovy$" . groovy-mode)
-                ("\\.txt$"    . text-mode)
-                ("\\.sql$"    . sql-mode)
-                ("\\.conf$"   . conf-mode)
-                ("\\.erb$"    . web-mode)
-                ("\\.css$"    . css-mode)
-                ("\\.scss"    . scss-mode))
-              auto-mode-alist))
-#+end_src
-
 *** JSON
-
-Edit JSON files and treat them as JSON, not as Javascript (without the
-need to start tide or run prettier on them).
-
-#+begin_src emacs-lisp
-(use-package json-mode
-  :mode "\\.json$")
-#+end_src
-
+--> See 'Treesit + LSP' section.
 *** Dot
 
 #+begin_src emacs-lisp
@@ -344,35 +318,12 @@ need to start tide or run prettier on them).
 #+end_src
 
 *** Docker
-
-#+BEGIN_SRC emacs-lisp
-(use-package dockerfile-mode
-  :mode "Dockerfile$"
-  :mode "Dockerfile.test$")
-#+END_SRC
-
-Docker compose as well
-
-#+begin_src emacs-lisp
-(use-package docker-compose-mode
-  :mode (("\\compose.yml" . docker-compose-mode)
-         ("\\compose.yaml" . docker-compose-mode)))
-#+end_src
-
+--> See 'Treesit + LSP' section.
 *** HTML
-
-#+BEGIN_SRC emacs-lisp
-(use-package sgml-mode
-  :mode (("\\.html$" . sgml-mode)
-         ("\\.htm$" . sgml-mode))
-  :config (setq-default sgml-basic-offset 2))
-#+END_SRC
-
+--> See 'Treesit + LSP' section.
 *** Markdown
 
-Install `pandoc` package:
-
-`$ apt install pandoc`
+Install `pandoc` package with your package manager:
 
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
@@ -391,21 +342,13 @@ Install `pandoc` package:
 #+END_SRC
 
 *** YAML
-
-#+BEGIN_SRC emacs-lisp
-(use-package yaml-mode
-  :mode (("\\.yaml$" . yaml-mode)
-         ("\\.yml$" . yaml-mode))
-  :hook
-  (yaml-mode . (lambda ()
-                 (define-key yaml-mode-map (kbd "C-m") 'newline-and-indent))))
-#+END_SRC
-
+--> See 'Treesit + LSP' section.
 *** CSV
 
 #+BEGIN_SRC emacs-lisp
 (use-package csv-mode
-  :mode "\\.[Cc][Ss][Vv]$"
+  :no-require
+  :mode "\\.[CcTt][Ss][Vv]$"
   :init (setq csv-separators '("," ";" "|" " ")))
 #+END_SRC
 
@@ -414,26 +357,30 @@ Install `pandoc` package:
 Golang setup. Autocompletion et al provided by LSP (see related config
 block).
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package go-mode
+  :ensure t
   :hook ((before-save . lsp-format-buffer)
          (before-save . lsp-organize-imports)
          (go-mode . lsp-deferred))
   :config
   (setq lsp-gopls-complete-unimported t))
-#+END_SRC
+#+end_src
 
 Use flycheck checker for golangci-lint
+
 #+begin_src emacs-lisp
 (use-package flycheck-golangci-lint
+  :ensure t
   :hook (go-mode . flycheck-golangci-lint-setup)
   :config (setq flycheck-golangci-lint-enable-linters '("bodyclose" "errcheck" "gci" "govet" "revive")))
 #+end_src
 
 *** Ruby
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package ruby-mode
+  :ensure t
   :mode (("\\.rb$" . ruby-mode)
          ("\\.rake$" . ruby-mode)
          ("\\.ru$" . ruby-mode)
@@ -445,96 +392,21 @@ Use flycheck checker for golangci-lint
   (setq ruby-insert-encoding-magic-comment nil
         ruby-indent-tabs-mode nil
         ruby-mode-hook 2))
-#+END_SRC
+#+end_src
 
 Use [[https://rvm.io/][RVM]] to manage gems.
 
-#+BEGIN_SRC emacs-lisp
-(use-package rvm
-  :config
-  (rvm-use-default))
-#+END_SRC
-
-*** Python
-
-For Python, this setup uses LSP (see LSP section for more).
-
-For correct functioning, install `python3-pylsp` (from APT). More info here:
-https://github.com/python-lsp/python-lsp-server
-
-In order to setup a Python project:
-
-1. Create/checkout a project folder
-2. Include the following .envrc (and check it out in the code control system):
-
-#+begin_src
-# -*- mode: sh; -*-
-# (rootdir)/.envrc : direnv configuration file
-# see https://direnv.net/
-# pyversion=$(head .python-version)
-# pvenv=$(head     .python-virtualenv)
-pyversion=PYTHON_VERSION
-pvenv=ENVIRONMENT_NAME
-
-use python ${pyversion}
-# Create the virtualenv if not yet done
-layout virtualenv ${pyversion} ${pvenv}
-# activate it
-export PYENV_VERSION=${pvenv}-${pyversion}
-layout activate $PYENV_VERSION
-
-# Set PYTHONPATH
-export PYTHONPATH=$(pyenv root)/versions/${PYENV_VERSION}/lib/python${pyversion}/site-packages
-#+end_src
-
-3. CD into the project folder (and `direnv allow`)
-4. $ pip install --upgrade pip
-5. $ pip install python-lsp-server flake8
-6. Profit
-
-NOTE: In case of needing other packages, update the corresponding
-lsp-pylsp-plugins settings. All settings along with their defaults can be found
-here: https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 
 #+begin_src emacs-lisp
-;; The package is "python" but the mode is "python-mode":
-(use-package python
-  :mode ("\\.py\\'" . python-mode)
-  :interpreter ("python" . python-mode)
-  :hook ((python-mode . lsp-deferred)
-         (before-save . lsp-format-buffer)
-         (before-save . lsp-organize-imports))
+(use-package rvm
+  :ensure
   :config
-  (setq lsp-pylsp-server-command "pylsp"
-        python-indent-guess-indent-offset t
-        python-indent-guess-indent-offset-verbose nil
-        lsp-pylsp-plugins-autopep8-enabled nil
-        lsp-pylsp-plugins-black-enabled nil
-        lsp-pylsp-plugins-jedi-definition-enabled t
-        lsp-pylsp-plugins-jedi-use-pyenv-environment t
-        lsp-pylsp-plugins-mccabe-enabled nil
-        lsp-pylsp-plugins-mypy-enabled nil
-        lsp-pylsp-plugins-pycodestyle-enabled nil
-        lsp-pylsp-plugins-pylint-enabled nil
-        lsp-pylsp-plugins-rope-autoimport-enabled t
-        lsp-pylsp-plugins-pyflakes-enabled nil
-        lsp-pylsp-plugins-flake8-enabled t
-        lsp-pylsp-plugins-isort-enabled t
-        lsp-pylsp-plugins-flake8-max-line-length 79)
-  :hook (python-mode . lsp-deferred))
-
-
-(use-package pyenv-mode
-  :hook (python-mode . pyenv-mode))
+  (rvm-use-default))
 #+end_src
-
 
 *** Javascript
 
-These configs rely on rjsx-mode as the major mode to edit Javascript files
-(whichever the flavor). Additionally, it relies on prettier
-In order to work with Javascript, you would likely need to run (at least) the
-following setup:
+Below, some basic instructions to work with Javascript/Typescript projects:
 
 - Install NVM
 - Before opening a project/subfolder containing a Javascript codebase do:
@@ -548,30 +420,287 @@ The above will ensure Emacs has the path is set and NVM_BIN points to the
 correct location. After that, the following major and minor mode configs should
 take care of the rest.
 
+The below takes care of running prettier on typescript-ts-mode:
+
 #+begin_src emacs-lisp
-(use-package rjsx-mode
-  :mode ("\\.js\\'"
-         "\\.jsx\\'"
-         "\\.ts\\'"
-         "\\.vue\\'"
-         "\\.tsx\\'")
-  :hook (rjsx-mode . (lambda ()
-                       (setq js2-mode-show-parse-errors nil
-                             js2-mode-show-strict-warnings nil
-                             js2-basic-offset 2
-                             js-indent-level 2
-                             flycheck-disabled-checkers (cl-union flycheck-disabled-checkers
-                                                                '(javascript-jshint)))))
+(use-package apheleia
+  :ensure t
+  :diminish ""
+  :defines
+  apheleia-formatters
+  apheleia-mode-alist
+  :functions
+  apheleia-global-mode
+  :hook (typescript-ts-mode . apheleia-mode)
   :config
-  (use-package add-node-modules-path
-    :defer t
-    :hook (rjsx-mode . add-node-modules-path))
-  (use-package prettier-rc
-    :defer t
-    :hook (rjsx-mode . prettier-rc-mode)))
+  (setf (alist-get 'prettier-json apheleia-formatters)
+        '("prettier" "--stdin-filepath" filepath)))
 #+end_src
 
+lsp-eslint is included with LSP. See more [[https://github.com/emacs-lsp/lsp-mode/blob/master/clients/lsp-eslint.el][here]].
 
+#+begin_src emacs-lisp
+(use-package lsp-eslint
+  :no-require
+  :demand t
+  :after lsp-mode
+  :custom
+  (lsp-eslint-package-manager "yarn")
+  (lsp-eslint-run "onSave")
+  (lsp-eslint-provide-lint-task t)
+  (lsp-eslint-lint-task-enable t)
+  (lsp-eslint-server-command '("vscode-eslint-language-server" "--stdio")))
+#+end_src
+
+--> For the rest of JS/TS config, see 'Treesit + LSP' section.
+
+*** Vue
+
+Use Vue mode when dealing with Vue services. Note that an LSP + Treesiter setup
+is possible, but I preferred not to use LSP as with _very old_  (read,
+discontinued versions) of Vue, LSP would break.
+
+Due to the above explained, use vue-mode and prettier, no completion is possible
+as of today.
+
+#+begin_src emacs-lisp
+(use-package vue-mode
+  :ensure t
+  :mode "\\.vue\\'"
+  :hook (vue-mode . apheleia-mode))
+#+end_src
+
+*** Treesit + LSP
+
+Below, the configuration for LSP, reworked to work with treesitter modes.
+
+Note that a few clients are disabled as back when the original LSP configuration
+was put together, the performance and/or functionalities were not optimal (and
+other implementations worked better). Feel free to explore if the
+implementations have improved by removing them from the lsp-disabled-clients
+alist and setting them up.
+
+This setup is originally set to work with Corfu providing completions, but I
+have not made it work yet, so the setup works still with company as the
+backend. See 'Completion' section for the details on that. As for LSP,
+completion is controlled by lsp-completion-provider.
+
+#+begin_src emacs-lisp               
+(use-package lsp-mode
+  :ensure t
+  :diminish "LSP"
+  :hook ((lsp-mode . lsp-diagnostics-mode)
+         (lsp-mode . lsp-enable-which-key-integration)
+         ((tsx-ts-mode typescript-ts-mode vue-mode) . lsp-deferred))
+  :preface
+    (defun lsp-booster--advice-json-parse (old-fn &rest args)
+      "Try to parse bytecode instead of json."
+      (or
+       (when (equal (following-char) ?#)
+          (let ((bytecode (read (current-buffer))))
+           (when (byte-code-function-p bytecode)
+             (funcall bytecode))))
+       (apply old-fn args)))
+    (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+      "Prepend emacs-lsp-booster command to lsp CMD."
+      (let ((orig-result (funcall old-fn cmd test?)))
+        (if (and (not test?)                             ;; for check lsp-server-present?
+                 (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+                 lsp-use-plists
+                 (not (functionp 'json-rpc-connection))  ;; native json-rpc
+                 (executable-find "emacs-lsp-booster"))
+            (progn
+              (message "Using emacs-lsp-booster for %s!" orig-result)
+              (cons "emacs-lsp-booster" orig-result))
+          orig-result)))
+    :init
+    (setq lsp-use-plists t)
+    ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
+    (advice-add (if (progn (require 'json)
+                           (fboundp 'json-parse-buffer))
+                    'json-parse-buffer
+                  'json-read)
+                :around
+                #'lsp-booster--advice-json-parse)
+    (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
+  :custom
+    (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
+    (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
+    (lsp-completion-provider :none)     ; Uses corfu when set to none, uses company when set to capf
+    (lsp-diagnostics-provider :flycheck)
+    (lsp-session-file (locate-user-emacs-file ".lsp-session"))
+    (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
+    (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
+    (lsp-idle-delay 0.25)                 ; Debounce timer for `after-change-function'
+    ;; core
+    (lsp-enable-xref t)                   ; Use xref to find references
+    (lsp-auto-configure t)                ; Used to decide between current active servers
+    (lsp-auto-guess-root t)
+    (lsp-eldoc-enable-hover t)          ; Display signature information
+    (lsp-enable-dap-auto-configure t)     ; Debug support
+    (lsp-enable-file-watchers nil)
+    ;; (lsp-enable-imenu t)
+    (lsp-enable-indentation nil)              ; Use prettifier
+    (lsp-enable-links nil)                    ; No need since we have `browse-url'
+    (lsp-enable-on-type-formatting nil)       ; Prettier handles this
+    (lsp-enable-suggest-server-download nil)  ; Don't prompt to download server
+    (lsp-enable-symbol-highlighting t)        ; Shows usages of symbol at point in the current buffer
+    (lsp-enable-text-document-color nil)      ; This is Treesitter's job
+    ;; completion
+    (lsp-completion-enable t)
+    (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
+    (lsp-enable-snippet t)                         ; Important to provide full JSX completion
+    (lsp-completion-show-kind t)                   ; Optional
+    ;; headerline
+    (lsp-headerline-breadcrumb-enable t)                  ; Optional, I like the breadcrumbs
+    (lsp-headerline-breadcrumb-enable-diagnostics nil)    ; Don't make them red, too noisy
+    (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
+    (lsp-headerline-breadcrumb-icons-enable t)
+    ;; modeline
+    (lsp-modeline-code-actions-enable t)        ; Modeline should be relatively clean
+    (lsp-modeline-diagnostics-enable nil)         ; Already supported through `flycheck'
+    ;; (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
+    (lsp-signature-doc-lines 1)                   ; Don't raise the echo area. It's distracting
+    ;(lsp-ui-doc-use-childframe t)                 ; Show docs for symbol at point
+    (lsp-eldoc-render-all nil)                    ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
+    ;; lens
+    (lsp-lens-enable t)
+    ;; semantic
+    (lsp-semantic-tokens-enable nil)              ; Related to highlighting, and we defer to treesitter
+    ;; Vue.js only
+    (lsp-vetur-format-default-formatter-css "none")
+    (lsp-vetur-format-default-formatter-html "none")
+    (lsp-vetur-format-default-formatter-js "none")
+    (lsp-vetur-validation-template nil)
+  :init
+    (setq lsp-use-plists t)
+  :config
+    (use-package add-node-modules-path
+      :defer t
+      :hook ((tsx-ts-mode typescript-ts-mode vue-mode) . add-node-modules-path)))
+
+
+'(progn
+  (lsp-dependency
+   'typescript-language-server
+   '(:npm :package "typescript-language-server" :path "emacs-lsp-booster")))
+
+(use-package lsp-completion
+  :no-require
+  :hook ((lsp-mode . lsp-completion-mode)))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable t
+        lsp-ui-doc-header nil
+        lsp-ui-doc-include-signature t
+        lsp-ui-doc-position 'at-point
+        lsp-ui-doc-alignment 'window
+        lsp-ui-doc-use-childframe t
+        lsp-ui-doc-use-webkit nil
+        lsp-ui-doc-delay 0.2
+        lsp-ui-doc-show-with-cursor t
+        lsp-ui-sideline-enable t
+        lsp-ui-sideline-diagnostic-max-lines 3
+        lsp-ui-sideline-diagnostic-max-line-length 200
+        lsp-ui-sideline-show-hover nil           ; Sideline used only for diagnostics
+        lsp-ui-sideline-ignore-duplicate t
+        lsp-ui-imenu-enable nil
+        lsp-ui-peek-enable t
+        lsp-ui-sideline-show-hover nil))
+#+end_src
+
+Use corfu for completion
+
+#+begin_src emacs-lisp
+  (use-package corfu
+  :ensure t
+  ;; Optional customizations
+  :custom
+    (corfu-cycle t)                 ; Allows cycling through candidates
+    (corfu-auto t)                  ; Enable auto completion
+    (corfu-auto-prefix 2)           ; Minimum length of prefix for completion
+    (corfu-auto-delay 0.)            ; No delay for completion
+    (corfu-popupinfo-delay 0.2)  ; Automatically update info popup after that numver of seconds
+    (corfu-preview-current 'insert) ; insert previewed candidate
+    (corfu-preselect 'prompt)
+    (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
+  :bind (:map corfu-map
+               ("M-SPC"      . corfu-insert-separator)
+               ("C-n"        . corfu-next)
+               ("C-p"        . corfu-previous)
+               ("S-<return>" . corfu-insert)
+               ("RET"        . corfu-insert))
+
+  :init
+    (global-corfu-mode)
+    (corfu-history-mode)
+    (corfu-popupinfo-mode) ; Popup completion info
+  :config
+    (add-hook 'eshell-mode-hook
+             (lambda () (setq-local corfu-quit-at-boundary t
+                               corfu-quit-no-match t
+                               corfu-auto nil)
+                  (corfu-mode)) 
+                 nil t))
+
+#+end_src
+
+Here is the setup for treesit, which in combination with LSP, provides "IDE-like
+features", that is, syntax coloring, autocompletion, refactoring niceties, etc.
+
+NOTE: At the moment is only setup for JS/TS mainly.
+
+#+begin_src emacs-lisp
+(use-package treesit
+  :mode (("\\.js\\'"  . js-ts-mode)
+         ("\\.mjs\\'" . typescript-ts-mode)
+         ("\\.mts\\'" . typescript-ts-mode)
+         ("\\.cjs\\'" . typescript-ts-mode)
+         ("\\.ts\\'"  . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode)
+         ("\\.jsx\\'" . tsx-ts-mode)
+         ("\\.json\\'" . json-ts-mode)
+         ("Dockerfile$" . dockerfile-ts-mode)
+         ("\\.yaml\\'" . yaml-ts-mode)
+         ("\\.yml\\'" . yaml-ts-mode)
+         ("\\.html\\'" . html-ts-mode)
+         ("\\.css\\'" . css-ts-mode)
+  )
+  :preface
+  (defun setup-install-grammars ()
+    "Install Tree-sitter grammars if they are absent."
+    (interactive)
+    (dolist (grammar
+             '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.23.1"))
+               (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.23.1" "src"))
+               (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.23.2"))
+               (json . ("https://github.com/tree-sitter/tree-sitter-json" "v0.24.8"))
+               (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
+               (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src"))
+               (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src"))
+               (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))))
+      (unless (treesit-language-available-p (car grammar))
+        (add-to-list 'treesit-language-source-alist grammar)
+        (treesit-install-language-grammar (car grammar))))
+    ;; Remapping major modes
+    (dolist (mapping
+             '((typescript-mode . typescript-ts-mode)
+               (js-mode . typescript-ts-mode)
+               (js2-mode . typescript-ts-mode)
+               (json-mode . json-ts-mode)
+               (js-json-mode . json-ts-mode)
+               (rjsx-mode . typescript-ts-mode)
+               (css-mode . css-ts-mode)
+               (html-mode . html-ts-mode)
+               (sgml-mode . html-ts-mode)
+               (yaml-mode . yaml-ts-mode)
+               (dockerfile-mode . dockerfile-ts-mode)))
+      (add-to-list 'major-mode-remap-alist mapping)))
+  :config
+  (setup-install-grammars))
+#+end_src
 
 ** Features
 
@@ -777,7 +906,6 @@ project or a directory, á la Eclipse or other common IDEs.
   (lsp-treemacs-sync-mode 1))
 #+END_SRC
 
-
 *** Yafolding
 
 Fold code. I found `yafolding` simplier to use than e.g.: `origami`
@@ -798,7 +926,9 @@ Use [[https://github.com/federicotdn/verb][verb]] to explore APIs as an alternat
   :ensure t)
 #+end_src
 
-As verb uses org mode as its default mode, map the verb-command-map when loading org.
+As verb uses org mode as its default mode, map the verb-command-map when loading
+org.
+
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
@@ -860,125 +990,6 @@ Use github-review along with forge. See more [[https://github.com/charignon/gith
    github-review-view-comments-in-code-lines-outdated t))
 #+end_src
 
-*** LSP
-
-The Language Server Protocol is becoming a standard, and it rocks.
-
-Emacs has support via [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]].
-
-#+begin_src emacs-lisp
-(use-package lsp-mode
-  :commands (lsp lsp-deferred lsp-format-buffer lsp-organize-imports)
-  :config
-  (setq lsp-keymap-prefix "C-l"
-        lsp-eldoc-render-all nil
-        lsp-inhibit-message t
-        lsp-enable-file-watchers nil
-        lsp-enable-semantic-highlighting t
-        ;; Performance tweaks
-        ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
-        gc-cons-threshold 100000000
-        read-process-output-max (* 1024 1024)
-        lsp-idle-delay 0.25
-        lsp-keep-workspace-alive nil
-        lsp-prefer-flymake nil
-        lsp-enable-snippet t
-        lsp-enable-completion-at-point t
-        lsp-auto-configure t
-        lsp-auto-guess-root t
-        lsp-disabled-clients '(eslint angular-ls deno tfls) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
-        lsp-semantic-tokens-enable t
-        lsp-semantic-tokens-honor-refresh-requests t
-        lsp-enable-which-key-integration t
-        lsp-enable-links t
-        lsp-modeline-diagnostics-scope 'workspace)
-  :hook (((clojure-mode clojurescript-mode terraform-mode) . lsp-deferred)
-         ((c-mode c++-mode js2-mode rjsx-mode) . lsp))
-  :init
-  (setq company-backends '((company-capf company-files company-yasnippet))))
-
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :config
-  (setq lsp-ui-doc-enable t
-        lsp-ui-doc-header nil
-        lsp-ui-doc-include-signature t
-        lsp-ui-doc-position 'top
-        lsp-ui-doc-alignment 'window
-        lsp-ui-doc-use-childframe t
-        lsp-ui-doc-use-webkit nil
-        lsp-ui-doc-delay 0.3
-        lsp-ui-doc-show-with-cursor t
-        lsp-ui-sideline-enable t
-        lsp-ui-sideline-diagnostic-max-lines 3
-        lsp-ui-sideline-diagnostic-max-line-length 200
-        lsp-ui-sideline-show-hover nil
-        lsp-ui-sideline-ignore-duplicate t
-        lsp-ui-imenu-enable t))
-#+end_src
-
-*** DAP
-
-Similar to LSP, but for debugging purposes, [[https://emacs-lsp.github.io/dap-mode/][dap-mode]] implements the Debug
-Adapter Protocol
-
-#+begin_src emacs-lisp
-(use-package dap-mode
-  :defer t
-  :init (require 'dap-dlv-go)
-  :config
-  (dap-mode 1)
-  (setq dap-auto-configure-features '(sessions locals controls tooltip)
-        dap-print-io t))
-
-;; Straight from doom emacs:
-;; https://github.com/doomemacs/doomemacs/blob/master/modules/tools/debugger/config.el
-  (define-minor-mode +dap-running-session-mode
-    "A mode for adding keybindings to running sessions."
-    :init-value nil
-    :keymap (make-sparse-keymap)
-    (when +dap-running-session-mode
-      (let ((session-at-creation (dap--cur-active-session-or-die)))
-        (add-hook 'dap-terminated-hook
-                  (lambda (session)
-                    (when (eq session session-at-creation)
-                      (+dap-running-session-mode -1)))))))
-
-  ;; Activate this minor mode when dap is initialized
-  (add-hook 'dap-session-created-hook #'+dap-running-session-mode)
-  ;; Activate this minor mode when hitting a breakpoint in another file
-  (add-hook 'dap-stopped-hook #'+dap-running-session-mode)
-  ;; Activate this minor mode when stepping into code in another file
-  (add-hook 'dap-stack-frame-changed-hook (lambda (session)
-                                            (when (dap--session-running session)
-                                              (+dap-running-session-mode 1))))
-#+end_src
-
-*** Completion
-
-#+begin_src emacs-lisp
-(use-package company
- :defer t
- :hook
-  ((prog-mode org-mode) . company-mode)
- :config
- (global-company-mode t)
- (setq-default
-    company-minimum-prefix-length 1
-    company-idle-delay 0.05
-    company-tooltip-align-annotations t
-    company-frontends '(company-pseudo-tooltip-unless-just-one-frontend company-preview-frontend)
-  )
- :bind (:map company-active-map
-       ("C-n" . company-select-next)
-       ("C-p" . company-select-previous)))
-
-(use-package company-box
-  :ensure t
-  :defer t
-  :hook (company-mode . company-box-mode))
-#+end_src
-
 *** Flycheck
 
 On-the-fly syntax checking
@@ -999,7 +1010,6 @@ On-the-fly syntax checking
   :config
   (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 #+end_src
-
 
 *** Vertico + Orderless + Marginalia + Consult
 
@@ -1142,9 +1152,9 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 (use-package yasnippet
   :ensure t
   :hook ((go-mode . yas-minor-mode)
-         (terraform-mode . yas-minor-mode)
          (markdown-mode . yas-minor-mode)
-         (rjsx-mode . yas-minor-mode))
+         (tsx-ts-mode  . yas-minor-mode)
+         (typescript-ts-mode . yas-minor-mode))
   :config
   (setq yas-verbosity 1
         yas-wrap-around-region t
@@ -1319,12 +1329,14 @@ A thesaurus for synonyms
 
 #+begin_src emacs-lisp
 (use-package powerthesaurus
+  :ensure t
   :defer t
   :bind (([f7] . powerthesaurus-lookup-dwim))
 )
 #+end_src
 
 Detect the operating system and set ispell-program-name accordingly
+
 #+begin_src emacs-lisp
 (cond
  ((eq system-type 'darwin) ; macOS
