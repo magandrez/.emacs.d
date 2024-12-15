@@ -605,15 +605,6 @@ Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path
         which-key-idle-secondary-delay nil))
 #+END_SRC
 
-*** Try
-
-To try new packages, use try.
-
-#+begin_src emacs-lisp
-(use-package try
-  :ensure)
-#+end_src
-
 *** Ace
 
 Use ace-window to cycle through windows
