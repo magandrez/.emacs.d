@@ -713,6 +713,7 @@ Use smart parens when writing parenthesis to not let any parethesis unmatched.
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
   :ensure t
+  :diminish smartparens-mode
   :init (smartparens-global-mode t))
 #+END_SRC
 
@@ -1262,9 +1263,10 @@ Manages modeline for minor modes
 
 #+begin_src emacs-lisp
 (use-package diminish
-  :ensure t)
-(diminish 'eldoc-mode)
-(diminish 'org-indent-mode)
+  :ensure t
+  :diminish auto-fill-mode
+  :diminish eldoc-mode
+  :diminish org-indent-mode)
 #+end_src
 
 *** Delight
