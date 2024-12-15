@@ -31,3 +31,4 @@ history
 .dap-breakpoints
 oauth2-auto.plist
 multisession
+tree-sitter/*
