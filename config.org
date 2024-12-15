@@ -681,9 +681,11 @@ For credentials, use `auth-source-pass`, included in Emacs 26. See
 more [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][here]].
 
 #+begin_src emacs-lisp
+(use-package auth-source
+  :no-require
+  :config (setq auth-source-debug t
+      auth-source-pass-extra-query-keywords t))
 (auth-source-pass-enable)
-(setq auth-source-debug t
-      auth-source-pass-extra-query-keywords t)
 #+end_src
 
 *** Tramp mode
