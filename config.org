@@ -1605,8 +1605,18 @@ https://github.com/stathissideris/ditaa
 (org-babel-do-load-languages 'org-babel-load-languages '(
                                                          (python . t)
                                                          (shell . t)
+                                                         (sql . t)
                                                          (ditaa . t)))
 (setq org-ditaa-jar-path "/usr/bin/ditaa")
+#+end_src
+
+SQL on Org files (Babel)
+
+#+begin_src emacs-lisp
+(setq sql-mysql-options '("-A" "--default-character-set=utf8"))
+(setq org-confirm-babel-evaluate
+      (lambda (lang body)
+        (not (string= lang "sql"))))
 #+end_src
 
 *** Bindings
@@ -1910,12 +1920,6 @@ NOTE: Only in Finland such a thing is needed as week numbers...
 
 ** New stuff
 
-#+begin_src emacs-lisp
-(use-package ob-sql-mode
-  :ensure t)
 
-(setq org-confirm-babel-evaluate
-      (lambda (lang body)
-        (not (string= lang "sql-mode"))))
 #+end_src
 
