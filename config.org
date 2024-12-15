@@ -1325,6 +1325,18 @@ I use vterm as a terminal for Emacs
          ([C-f2] . vterm-toggle-cd)))
 #+end_src
 
+*** Expand region
+
+See [[https://github.com/magnars/expand-region.el][here]]
+
+#+begin_src emacs-lisp
+(use-package expand-region
+  :ensure t
+  :bind ("C-4" . er/expand-region))
+
+(setq pending-delete-mode t)
+#+end_src
+
 
 ** Org
 
