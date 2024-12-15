@@ -255,10 +255,9 @@ Disable for all gpg and pass edits
 #+begin_src emacs-lisp
 (setq auto-mode-alist
  (append '(("\\.gpg$" . sensitive-mode)
-           ("/dev/shm/pass*" . sensitive-mode))
+           ("!dev!shm!pass.*" . sensitive-mode))
                auto-mode-alist))
 #+end_src
-
 
 *** Filter marked packages from Packages buffer.
 
