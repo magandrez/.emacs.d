@@ -577,14 +577,6 @@ take care of the rest.
 
 *** Environment
 
-Use [[https://github.com/purcell/envrc][envrc]].
-
-#+begin_src emacs-lisp
-(use-package envrc
-  :ensure t
-  :hook (after-init . envrc-global-mode))
-#+end_src
-
 **** Load $PATH.
 
 Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
