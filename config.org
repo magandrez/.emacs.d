@@ -744,15 +744,6 @@ Use Projectile to manage projects as an entity.
    (add-hook 'org-mode-hook (lambda () (projectile-mode -1))))
 #+END_SRC
 
-*** Highlight
-
-Highlight the same symbols across a buffer
-
-#+BEGIN_SRC emacs-lisp
-(use-package highlight
-  :ensure t)
-#+END_SRC
-
 *** Treemacs
 
 Use `treemacs` to open a side window displaying the folder structure of a
