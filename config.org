@@ -784,10 +784,7 @@ Fold code. I found `yafolding` simplier to use than e.g.: `origami`
 #+BEGIN_SRC emacs-lisp
 (use-package yafolding
   :hook ((ruby-mode . yafolding-mode)
-         (go-mode . yafolding-mode)
-         (terraform-mode . yafolding-mode)
-         (json-mode . yafolding-mode)
-         (rjsx-mode . yafolding-mode))
+         (go-mode . yafolding-mode))
   :bind (("M-n" . yafolding-toggle-element)
          ("M-m" . yafolding-toggle-all)))
 #+END_SRC
