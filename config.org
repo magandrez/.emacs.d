@@ -101,6 +101,12 @@ coding/encoding (Chinese/Japanese/Korean characters).
   (setq default-buffer-file-coding-system 'utf-8))
 #+END_SRC
 
+Performance tweak from [[https://emacs-lsp.github.io/lsp-mode/page/performance/][here]].
+#+begin_src emacs-lisp
+(setq read-process-output-max (* 10 1024 1024)) ;; 10mb
+(setq gc-cons-threshold 400000000)
+(setenv "LSP_USE_PLISTS" "true")
+#+end_src
 
 *** Theme
 
