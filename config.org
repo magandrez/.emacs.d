@@ -767,10 +767,6 @@ project or a directory, á la Eclipse or other common IDEs.
   :bind
   (("C-c o p" . treemacs-projectile)))
 
-(use-package treemacs-magit
-  :ensure t
-  :after treemacs magit)
-
 ;; Integration between lsp-mode and treemacs and implementation of treeview
 ;; controls using treemacs as a tree renderer.
 ;; https://github.com/emacs-lsp/lsp-treemacs
