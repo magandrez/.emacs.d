@@ -546,6 +546,7 @@ completion is controlled by lsp-completion-provider.
     (setq company-backends '((company-capf company-files company-yasnippet)))
   :config
     (use-package add-node-modules-path
+      :ensure t
       :defer t
       :hook ((tsx-ts-mode typescript-ts-mode vue-mode) . add-node-modules-path)))
 
@@ -554,6 +555,7 @@ completion is controlled by lsp-completion-provider.
   :hook ((lsp-mode . lsp-completion-mode)))
 
 (use-package lsp-ui
+  :ensure t
   :commands lsp-ui-mode
   :config
   (setq lsp-ui-doc-enable t
@@ -863,6 +865,7 @@ project or a directory, á la Eclipse or other common IDEs.
 Fold code. I found `yafolding` simplier to use than e.g.: `origami`
 #+BEGIN_SRC emacs-lisp
 (use-package yafolding
+  :ensure t
   :hook ((ruby-mode . yafolding-mode)
          (go-mode . yafolding-mode))
   :bind (("M-n" . yafolding-toggle-element)
