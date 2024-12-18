@@ -352,31 +352,6 @@ Install `pandoc` package with your package manager:
   :init (setq csv-separators '("," ";" "|" " ")))
 #+END_SRC
 
-*** Go
-
-Golang setup. Autocompletion et al provided by LSP (see related config
-block).
-
-#+begin_src emacs-lisp
-(use-package go-mode
-  :ensure t
-  :after lsp-mode
-  :hook ((before-save . lsp-format-buffer)
-         (before-save . lsp-organize-imports)
-         (go-mode . lsp-deferred))
-  :config
-  (setq lsp-gopls-complete-unimported t))
-#+end_src
-
-Use flycheck checker for golangci-lint
-
-#+begin_src emacs-lisp
-(use-package flycheck-golangci-lint
-  :ensure t
-  :hook (go-mode . flycheck-golangci-lint-setup)
-  :config (setq flycheck-golangci-lint-enable-linters '("bodyclose" "errcheck" "gci" "govet" "revive")))
-#+end_src
-
 *** Ruby
 
 #+begin_src emacs-lisp
@@ -661,6 +636,32 @@ NOTE: At the moment is only setup for JS/TS mainly.
 
 *** Environment
 
+**** Load specific environment from .envrc
+
+Use direnv for this (make sure it is installed with your package manager)
+
+#+begin_src emacs-lisp
+(use-package envrc
+  :ensure t
+  :after exec-path-from-shell
+  :hook
+  ((after-init . envrc-global-mode)
+   (projectile-after-switch-project . my/envrc-project-switch))
+  :config
+  (defun my/envrc-project-switch ()
+    "Reload envrc and ensure NVM_BIN is appended to exec-path if necessary."
+    (envrc-reload) ; Reload envrc for the new project
+    (message "envrc reloaded for project: %s" (projectile-project-name))
+    ;; Update Node path if NVM_BIN is set
+    (let ((nvm-bin (getenv "NVM_BIN")))
+      (when nvm-bin
+        ;; Remove NVM_BIN if it already exists in exec-path to avoid duplicates
+        (setq exec-path (remove nvm-bin exec-path))
+        ;; Append NVM_BIN to the end of exec-path
+        (setq exec-path (append exec-path (list nvm-bin)))
+        (message "Appended NVM_BIN to exec-path: %s" nvm-bin)))))
+#+end_src
+
 **** Load $PATH.
 
 Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
@@ -867,8 +868,7 @@ Fold code. I found `yafolding` simplier to use than e.g.: `origami`
 #+BEGIN_SRC emacs-lisp
 (use-package yafolding
   :ensure t
-  :hook ((ruby-mode . yafolding-mode)
-         (go-mode . yafolding-mode))
+  :hook ((ruby-mode . yafolding-mode))
   :bind (("M-n" . yafolding-toggle-element)
          ("M-m" . yafolding-toggle-all)))
 #+END_SRC
@@ -1107,8 +1107,7 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :ensure t
-  :hook ((go-mode . yas-minor-mode)
-         (markdown-mode . yas-minor-mode)
+  :hook ((markdown-mode . yas-minor-mode)
          (tsx-ts-mode  . yas-minor-mode)
          (typescript-ts-mode . yas-minor-mode))
   :config
