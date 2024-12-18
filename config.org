@@ -360,6 +360,7 @@ block).
 #+begin_src emacs-lisp
 (use-package go-mode
   :ensure t
+  :after lsp-mode
   :hook ((before-save . lsp-format-buffer)
          (before-save . lsp-organize-imports)
          (go-mode . lsp-deferred))
