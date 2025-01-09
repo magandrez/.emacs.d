@@ -1173,12 +1173,14 @@ Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
 (use-package elfeed-org
   :defer t
   :after elfeed
+  :ensure t
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/workbench/fun/feeds/rss.org")))
 
 (use-package elfeed-dashboard
   :after elfeed
+  :ensure t
   :config
   (setq elfeed-dashboard-file "~/workbench/fun/feeds/dashboard.org")
   ;; update feed counts on elfeed-quit
