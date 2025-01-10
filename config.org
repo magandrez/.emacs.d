@@ -517,6 +517,9 @@ completion is controlled by lsp-completion-provider.
     (lsp-vetur-format-default-formatter-html "none")
     (lsp-vetur-format-default-formatter-js "none")
     (lsp-vetur-validation-template nil)
+    ;; Typescript
+    (lsp-clients-typescript-prefer-use-project-ts-server t) ;; Prefer project tsserver
+    (lsp-clients-typescript-server-args '("--stdio"))
   :init
     (setq lsp-use-plists t)
     (setq company-backends '((company-capf company-files company-yasnippet)))
@@ -576,6 +579,7 @@ completion is controlled by lsp-completion-provider.
   :hook (company-mode . company-box-mode))
 #+end_src
 
+
 Here is the setup for treesit, which in combination with LSP, provides "IDE-like
 features", that is, syntax coloring, autocompletion, refactoring niceties, etc.
 
@@ -583,6 +587,7 @@ NOTE: At the moment is only setup for JS/TS mainly.
 
 #+begin_src emacs-lisp
 (use-package treesit
+  :no-require
   :mode (("\\.js\\'"  . js-ts-mode)
          ("\\.mjs\\'" . typescript-ts-mode)
          ("\\.mts\\'" . typescript-ts-mode)
@@ -660,6 +665,7 @@ Use direnv for this (make sure it is installed with your package manager)
         ;; Append NVM_BIN to the end of exec-path
         (setq exec-path (append exec-path (list nvm-bin)))
         (message "Appended NVM_BIN to exec-path: %s" nvm-bin)))))
+
 #+end_src
 
 **** Load $PATH.
@@ -925,7 +931,6 @@ Configuring forge
 #+begin_src emacs-lisp
 (use-package forge
   :ensure t
-  :defer t
   :after magit)
 #+end_src
 
@@ -1843,11 +1848,5 @@ NOTE: Only in Finland such a thing is needed as week numbers...
                  (calendar-iso-from-absolute
                   (calendar-absolute-from-gregorian (list month day year)))))
         'font-lock-face 'calendar-iso-week-face))
-#+end_src
-
-
-** New stuff
-
-
 #+end_src
 
