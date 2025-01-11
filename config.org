@@ -424,8 +424,7 @@ lsp-eslint is included with LSP. See more [[https://github.com/emacs-lsp/lsp-mod
   (lsp-eslint-package-manager "yarn")
   (lsp-eslint-run "onSave")
   (lsp-eslint-provide-lint-task t)
-  (lsp-eslint-lint-task-enable t)
-  (lsp-eslint-server-command '("vscode-eslint-language-server" "--stdio")))
+  (lsp-eslint-lint-task-enable t))
 #+end_src
 
 --> For the rest of JS/TS config, see 'Treesit + LSP' section.
