@@ -32,3 +32,4 @@ history
 oauth2-auto.plist
 multisession
 tree-sitter/*
+snippets/*
