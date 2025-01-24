@@ -341,6 +341,15 @@ Install `pandoc` package with your package manager:
                 markdown-command "/usr/bin/pandoc"))
 #+END_SRC
 
+Github flavored Markdown. Org-mode files can then be exported with `M-x
+org-gfm-export-to-markdown`. Source: https://github.com/larstvei/ox-gfm
+
+#+begin_src emacs-lisp
+(use-package ox-gfm
+  :ensure t
+  :after org)
+#+end_src
+
 *** YAML
 --> See 'Treesit + LSP' section.
 *** CSV
