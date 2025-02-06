@@ -1351,6 +1351,14 @@ See [[https://github.com/magnars/expand-region.el][here]]
 (setq pending-delete-mode t)
 #+end_src
 
+*** Multiple cursors
+
+Again, Magnars at it. See [[https://github.com/magnars/multiple-cursors.el][here]].
+
+#+begin_src emacs-lisp
+(use-package multiple-cursors
+  :ensure t)
+#+end_src
 
 ** Org
 
