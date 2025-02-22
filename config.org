@@ -405,35 +405,20 @@ The above will ensure Emacs has the path is set and NVM_BIN points to the
 correct location. After that, the following major and minor mode configs should
 take care of the rest.
 
-The below takes care of running prettier on typescript-ts-mode:
+The below takes care of running prettier:
 
 #+begin_src emacs-lisp
 (use-package apheleia
   :ensure t
-  :diminish ""
   :defines
   apheleia-formatters
   apheleia-mode-alist
   :functions
   apheleia-global-mode
-  :hook (typescript-ts-mode . apheleia-mode)
+  :hook ((typescript-ts-mode js-ts-mode) . apheleia-mode)
   :config
   (setf (alist-get 'prettier-json apheleia-formatters)
         '("prettier" "--stdin-filepath" filepath)))
-#+end_src
-
-lsp-eslint is included with LSP. See more [[https://github.com/emacs-lsp/lsp-mode/blob/master/clients/lsp-eslint.el][here]].
-
-#+begin_src emacs-lisp
-(use-package lsp-eslint
-  :no-require
-  :demand t
-  :after lsp-mode
-  :custom
-  (lsp-eslint-package-manager "yarn")
-  (lsp-eslint-run "onSave")
-  (lsp-eslint-provide-lint-task t)
-  (lsp-eslint-lint-task-enable t))
 #+end_src
 
 --> For the rest of JS/TS config, see 'Treesit + LSP' section.
@@ -464,10 +449,8 @@ other implementations worked better). Feel free to explore if the
 implementations have improved by removing them from the lsp-disabled-clients
 alist and setting them up.
 
-This setup is originally set to work with Corfu providing completions, but I
-have not made it work yet, so the setup works still with company as the
-backend. See 'Completion' section for the details on that. As for LSP,
-completion is controlled by lsp-completion-provider.
+This setup is originally set to work with Corfu providing
+completions. Completion framework is controlled by lsp-completion-provider.
 
 #+begin_src emacs-lisp               
 (use-package lsp-mode
@@ -475,11 +458,11 @@ completion is controlled by lsp-completion-provider.
   :diminish "LSP"
   :hook ((lsp-mode . lsp-diagnostics-mode)
          (lsp-mode . lsp-enable-which-key-integration)
-         ((tsx-ts-mode typescript-ts-mode vue-mode) . lsp-deferred))
+         ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . lsp-deferred))
   :custom
     (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
-    (lsp-completion-provider :capf)     ; Uses corfu when set to none, uses company when set to capf
+    (lsp-completion-provider :none)     ; Uses corfu when set to none, uses company when set to capf
     (lsp-diagnostics-provider :flycheck)
     (lsp-session-file (locate-user-emacs-file ".lsp-session"))
     (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
@@ -530,16 +513,11 @@ completion is controlled by lsp-completion-provider.
     (lsp-clients-typescript-server-args '("--stdio"))
   :init
     (setq lsp-use-plists t)
-    (setq company-backends '((company-capf company-files company-yasnippet)))
   :config
     (use-package add-node-modules-path
       :ensure t
       :defer t
-      :hook ((tsx-ts-mode typescript-ts-mode vue-mode) . add-node-modules-path)))
-
-(use-package lsp-completion
-  :no-require
-  :hook ((lsp-mode . lsp-completion-mode)))
+      :hook ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . add-node-modules-path)))
 
 (use-package lsp-ui
   :ensure t
@@ -565,35 +543,6 @@ completion is controlled by lsp-completion-provider.
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package company
-  :ensure t
-  :hook
-    ((prog-mode org-mode) . company-mode)
-  :config
-    (global-company-mode t)
-  (setq-default
-     company-minimum-prefix-length 1
-     company-idle-delay 0.05
-     company-tooltip-align-annotations t
-     company-frontends '(company-pseudo-tooltip-unless-just-one-frontend company-preview-frontend)
-   )
-  :bind (:map company-active-map
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous)))
-
-(use-package company-box
-  :ensure t
-  :defer t
-  :hook (company-mode . company-box-mode))
-#+end_src
-
-
-Here is the setup for treesit, which in combination with LSP, provides "IDE-like
-features", that is, syntax coloring, autocompletion, refactoring niceties, etc.
-
-NOTE: At the moment is only setup for JS/TS mainly.
-
-#+begin_src emacs-lisp
 (use-package treesit
   :no-require
   :mode (("\\.js\\'"  . js-ts-mode)
@@ -615,7 +564,7 @@ NOTE: At the moment is only setup for JS/TS mainly.
     "Install Tree-sitter grammars if they are absent."
     (interactive)
     (dolist (grammar
-             '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.23.1"))
+             '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.23.2"))
                (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.23.1" "src"))
                (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.23.2"))
                (json . ("https://github.com/tree-sitter/tree-sitter-json" "v0.24.8"))
@@ -629,10 +578,9 @@ NOTE: At the moment is only setup for JS/TS mainly.
     ;; Remapping major modes
     (dolist (mapping
              '((typescript-mode . typescript-ts-mode)
-               (js-mode . typescript-ts-mode)
-               (js2-mode . typescript-ts-mode)
-               (json-mode . json-ts-mode)
+               (js-mode . js-ts-mode)
                (js-json-mode . json-ts-mode)
+               (json-mode . json-ts-mode)
                (rjsx-mode . typescript-ts-mode)
                (css-mode . css-ts-mode)
                (html-mode . html-ts-mode)
@@ -644,6 +592,43 @@ NOTE: At the moment is only setup for JS/TS mainly.
   (setup-install-grammars))
 #+end_src
 
+[[https://github.com/minad/corfu][Corfu]] for auto completion.
+
+#+begin_src emacs-lisp
+(use-package corfu
+  :ensure t
+  :custom
+  (corfu-cycle t)                 ; Allows cycling through candidates
+  (corfu-auto t)                  ; Enable auto completion
+  (corfu-auto-prefix 2)           ; Minimum length of prefix for completion
+  (corfu-auto-delay 0.1)
+  (corfu-popupinfo-delay '(0.2 . 0.3))
+  (corfu-preview-current 'insert) ; insert previewed candidate
+  (corfu-preselect 'prompt)
+  (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  :bind (:map corfu-map
+          ("M-SPC"      . corfu-insert-separator)
+          ("TAB"        . corfu-next)
+          ([tab]        . corfu-next)
+          ("S-TAB"      . corfu-previous)
+          ([backtab]    . corfu-previous)
+          ("S-<return>" . corfu-insert)
+          ("RET"        . corfu-insert))
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode)
+  (corfu-popupinfo-mode)) ; Popup completion info
+#+end_src
+
+Auto completion in the terminal.
+#+begin_src emacs-lisp
+(use-package corfu-terminal
+  :ensure t
+  :config
+  (unless (display-graphic-p)
+    (corfu-terminal-mode +1)))
+#+end_src
 
 ** Features
 
@@ -1866,3 +1851,15 @@ NOTE: Only in Finland such a thing is needed as week numbers...
         'font-lock-face 'calendar-iso-week-face))
 #+end_src
 
+
+#+begin_src emacs-lisp
+(defun treesit-show-parser-used-at-point ()
+  "Shows treesit parser used at point."
+  (interactive)
+  (if (and (fboundp 'treesit-available-p)
+           (treesit-available-p))
+      (message (format "%s" (treesit-language-at (point))))
+    (message "treesit is not available")
+  )
+)
+#+end_src
