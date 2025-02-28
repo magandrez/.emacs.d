@@ -1804,8 +1804,17 @@ Ibuffer
 Use `C-x C-0` to restore font size.
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-+") 'text-scale-increase)        ; Bigger
-(global-set-key (kbd "C--") 'text-scale-decrease)        ; Smaller
+(global-set-key (kbd "C-+") (lambda ()
+                              (interactive)
+                              (set-face-attribute 'default nil :height
+                                                  (+ (face-attribute 'default :height) 10))))
+(global-set-key (kbd "C--") (lambda ()
+                              (interactive)
+                              (set-face-attribute 'default nil :height
+                                                  (- (face-attribute 'default :height) 10))))
+(global-set-key (kbd "C-0") (lambda ()
+                              (interactive)
+                              (set-face-attribute 'default nil :height 140)))
 #+END_SRC
 
 Bind backward-kill-word to C-w
