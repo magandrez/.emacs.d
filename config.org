@@ -554,6 +554,13 @@ completions. Completion framework is controlled by lsp-completion-provider.
     :hook ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . add-node-modules-path)))
 
 (advice-add 'lsp :before (lambda (&rest _args) (eval '(setf (lsp-session-server-id->folders (lsp-session)) (ht)))))
+#+begin_src emacs-lisp
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/infrastructure/mysql-data\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/apps/resq-main/public/.*[/\\\\]bundle\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/node_modules\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/apps/resq-main/node_modules\\'")
+)
 #+end_src
 
 LSP UI for all nice IDE-like overlays of documentation
