@@ -881,15 +881,6 @@ project or a directory, á la Eclipse or other common IDEs.
   :after treemacs projectile
   :bind
   (("C-c o p" . treemacs-projectile)))
-
-;; Integration between lsp-mode and treemacs and implementation of treeview
-;; controls using treemacs as a tree renderer.
-;; https://github.com/emacs-lsp/lsp-treemacs
-(use-package lsp-treemacs
-  :ensure t
-  :after treemacs
-  :config
-  (lsp-treemacs-sync-mode 1))
 #+END_SRC
 
 *** Yafolding
