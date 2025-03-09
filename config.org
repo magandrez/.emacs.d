@@ -688,26 +688,10 @@ Auto completion in the terminal.
 Use direnv for this (make sure it is installed with your package manager)
 
 #+begin_src emacs-lisp
-  (use-package envrc
-    :ensure t
-    :after exec-path-from-shell
-    :hook
-    ((after-init . envrc-global-mode)))
-    ;;  (projectile-after-switch-project . my/envrc-project-switch))
-    ;; :config
-    ;; (defun my/envrc-project-switch ()
-    ;;   "Reload envrc and ensure NVM_BIN is appended to exec-path if necessary."
-    ;;   (envrc-reload) ; Reload envrc for the new project
-    ;;   (message "envrc reloaded for project: %s" (projectile-project-name))
-    ;;   ;; Update Node path if NVM_BIN is set
-    ;;   (let ((nvm-bin (getenv "NVM_BIN")))
-    ;;     (when nvm-bin
-    ;;       ;; Remove NVM_BIN if it already exists in exec-path to avoid duplicates
-    ;;       (setq exec-path (remove nvm-bin exec-path))
-    ;;       ;; Append NVM_BIN to the end of exec-path
-    ;;       (setq exec-path (append exec-path (list nvm-bin)))
-    ;;       (message "Appended NVM_BIN to exec-path: %s" nvm-bin)))))
-
+(use-package envrc
+  :ensure t
+  :after (lsp-mode flycheck)
+  :init (envrc-global-mode))
 #+end_src
 
 **** Load $PATH.
