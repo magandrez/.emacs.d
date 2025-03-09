@@ -1042,14 +1042,6 @@ On-the-fly syntax checking
   :bind (:map minibuffer-local-map
          ("M-A" . marginalia-cycle))
   :init (marginalia-mode))
-#+begin_src emacs-lisp
-(use-package all-the-icons-completion
-  :ensure t
-  :after (marginalia all-the-icons)
-  :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
-  :init
-  (all-the-icons-completion-mode))
-
 #+end_src
 
 [[https://github.com/minad/consult][Consult]] provides practical commands based on the completion functionality
