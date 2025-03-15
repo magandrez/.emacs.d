@@ -460,9 +460,8 @@ completions. Completion framework is controlled by lsp-completion-provider.
   (use-package lsp-mode
     :ensure t
     :diminish "LSP"
-    :hook ((lsp-mode . lsp-diagnostics-mode)
-           (lsp-mode . lsp-enable-which-key-integration)
-           ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . lsp-deferred))
+    :hook ((lsp-mode . lsp-enable-which-key-integration)
+           ((tsx-ts-mode typescript-ts-mode vue-mode) . lsp-deferred))
     :custom
     (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
@@ -473,7 +472,7 @@ completions. Completion framework is controlled by lsp-completion-provider.
     (lsp-session-file (locate-user-emacs-file ".lsp-session"))
     (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
     (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
-    (lsp-idle-delay 0.5)                ; Debounce timer for `after-change-function'
+    (lsp-idle-delay 0.7)                ; Debounce timer for `after-change-function'
     ;; core
     (lsp-enable-xref t)                   ; Use xref to find references
     (lsp-auto-configure t)                ; Used to decide between current active servers
@@ -518,6 +517,7 @@ completions. Completion framework is controlled by lsp-completion-provider.
     (lsp-clients-typescript-prefer-use-project-ts-server t) ;; Prefer project tsserver
     (lsp-clients-typescript-server-args '("--stdio"))
   :init
+    (setenv "LSP_USE_PLISTS" "true")
     (setq lsp-use-plists t)
     ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
     (advice-add (if (progn (require 'json)
@@ -569,7 +569,7 @@ LSP UI for all nice IDE-like overlays of documentation
 #+begin_src emacs-lisp
 (use-package lsp-ui
   :ensure t
-  :after lsp-mode
+  :commands lsp-ui-mode
   :config
   (setq lsp-ui-doc-enable t
         lsp-ui-doc-header nil
@@ -648,11 +648,13 @@ And treesit for highlighting tokens according to each language
 (use-package corfu
   :ensure t
   :custom
+  (tab-always-indent 'complete)
+  (completion-cycle-threshold nil)      ; Always show candidates in menu
   (corfu-cycle t)                 ; Allows cycling through candidates
-  (corfu-auto t)                  ; Enable auto completion
+  (corfu-auto t)
   (corfu-auto-prefix 2)           ; Minimum length of prefix for completion
   (corfu-auto-delay 0.1)
-  (corfu-popupinfo-delay '(0.2 . 0.3))
+  (corfu-popupinfo-delay '(0.3 . 0.4))
   (corfu-preview-current 'insert) ; insert previewed candidate
   (corfu-preselect 'prompt)
   (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
