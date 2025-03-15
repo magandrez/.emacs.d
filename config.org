@@ -103,9 +103,8 @@ coding/encoding (Chinese/Japanese/Korean characters).
 
 Performance tweak from [[https://emacs-lsp.github.io/lsp-mode/page/performance/][here]].
 #+begin_src emacs-lisp
-(setq read-process-output-max (* 10 1024 1024)) ;; 10mb
-(setq gc-cons-threshold 400000000)
-(setenv "LSP_USE_PLISTS" "true")
+(setq read-process-output-max (* 30 1024 1024)) ;; 30mb
+(setq gc-cons-threshold 1000000000)
 #+end_src
 
 
