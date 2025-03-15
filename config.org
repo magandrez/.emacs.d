@@ -550,13 +550,11 @@ completions. Completion framework is controlled by lsp-completion-provider.
               (message "Using emacs-lsp-booster for %s!" orig-result)
               (cons "emacs-lsp-booster" orig-result))
           orig-result)))
-  :config
-  (use-package add-node-modules-path
-    :ensure t
-    :defer t
-    :hook ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . add-node-modules-path)))
+)
+#+end_src
 
-Ignore watch list 
+Ignore watch list
+
 #+begin_src emacs-lisp
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/infrastructure/mysql-data\\'")
