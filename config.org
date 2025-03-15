@@ -408,6 +408,10 @@ take care of the rest.
 The below takes care of running prettier:
 
 #+begin_src emacs-lisp
+(setq js-indent-level 2)
+#+end_src
+
+#+begin_src emacs-lisp
 (use-package apheleia
   :ensure t
   :defines
