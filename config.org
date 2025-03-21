@@ -51,6 +51,10 @@ Miscellaneous defaults below
  '(global-prettify-symbols-mode t)
  '(global-auto-revert-mode t)
 )
+
+(setq cua-enable-cursor-indications nil
+      cua-remap-control-v nil) ;; Avoid remapping certain keys
+
 #+END_SRC
 
 Some miscellaneous defaults, but set in a different manner
