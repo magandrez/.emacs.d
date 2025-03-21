@@ -1852,7 +1852,7 @@ Resize window
 Yasnippet insert
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c C-d") 'yas-insert-snippet)
+(global-set-key (kbd "C-c '") 'yas-insert-snippet)
 #+end_src
 
 Insert emoji globally
