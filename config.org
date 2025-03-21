@@ -1344,7 +1344,9 @@ I use vterm as a terminal for Emacs
 
 #+begin_src emacs-lisp
 (use-package vterm
-  :ensure t)
+  :ensure t
+  :bind (:map vterm-mode-map ("C-y" . vterm-yank))
+  :config (setq vterm-max-scrollback 100000))
 #+end_src
 
 #+begin_src emacs-lisp
