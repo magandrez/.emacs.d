@@ -560,8 +560,6 @@ completions. Completion framework is controlled by lsp-completion-provider.
     :defer t
     :hook ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . add-node-modules-path)))
 
-Ignore watch list 
-#+begin_src emacs-lisp
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/infrastructure/mysql-data\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/apps/resq-main/public/.*[/\\\\]bundle\\'")
