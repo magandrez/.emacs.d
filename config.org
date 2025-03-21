@@ -99,6 +99,8 @@ coding/encoding (Chinese/Japanese/Korean characters).
 (set-language-environment 'utf-8)
 (setenv "LC_CTYPE" "en_US.UTF-8")
 (setenv "LC_ALL" "en_US.UTF-8")
+(setenv "LSP_USE_PLISTS" "true")
+(setq lsp-use-plists t)
 
 (if (boundp buffer-file-coding-system)
     (setq buffer-file-coding-system 'utf-8)
@@ -521,8 +523,6 @@ completions. Completion framework is controlled by lsp-completion-provider.
     (lsp-clients-typescript-prefer-use-project-ts-server t) ;; Prefer project tsserver
     (lsp-clients-typescript-server-args '("--stdio"))
   :init
-    (setenv "LSP_USE_PLISTS" "true")
-    (setq lsp-use-plists t)
     ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
     (advice-add (if (progn (require 'json)
                            (fboundp 'json-parse-buffer))
