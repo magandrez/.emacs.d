@@ -1635,7 +1635,6 @@ package (hence the requires).
 
 #+begin_src emacs-lisp
 (use-package mu4e
-  :ensure t
   :if (eq system-type 'gnu/linux)
   :config
   ;; Load mu4e and related packages
