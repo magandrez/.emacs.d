@@ -108,6 +108,7 @@ Performance tweak from [[https://emacs-lsp.github.io/lsp-mode/page/performance/]
 (setenv "LSP_USE_PLISTS" "true")
 #+end_src
 
+
 *** Theme
 
 Use `monokai` theme for Emacs.
@@ -453,29 +454,30 @@ This setup is originally set to work with Corfu providing
 completions. Completion framework is controlled by lsp-completion-provider.
 
 #+begin_src emacs-lisp               
-(use-package lsp-mode
-  :ensure t
-  :diminish "LSP"
-  :hook ((lsp-mode . lsp-diagnostics-mode)
-         (lsp-mode . lsp-enable-which-key-integration)
-         ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . lsp-deferred))
-  :custom
+  (use-package lsp-mode
+    :ensure t
+    :diminish "LSP"
+    :hook ((lsp-mode . lsp-diagnostics-mode)
+           (lsp-mode . lsp-enable-which-key-integration)
+           ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . lsp-deferred))
+    :custom
     (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
     (lsp-completion-provider :none)     ; Uses corfu when set to none, uses company when set to capf
+    (lsp-completion-show-detail t)
     (lsp-diagnostics-provider :flycheck)
+    (lsp-prefer-flymake nil)
     (lsp-session-file (locate-user-emacs-file ".lsp-session"))
     (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
     (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
-    (lsp-idle-delay 0.25)                 ; Debounce timer for `after-change-function'
+    (lsp-idle-delay 0.5)                ; Debounce timer for `after-change-function'
     ;; core
     (lsp-enable-xref t)                   ; Use xref to find references
     (lsp-auto-configure t)                ; Used to decide between current active servers
     (lsp-auto-guess-root t)
-    (lsp-eldoc-enable-hover t)          ; Display signature information
     (lsp-enable-dap-auto-configure t)     ; Debug support
     (lsp-enable-file-watchers nil)
-    ;; (lsp-enable-imenu t)
+    (lsp-enable-imenu nil)
     (lsp-enable-indentation nil)              ; Use prettifier
     (lsp-enable-links nil)                    ; No need since we have `browse-url'
     (lsp-enable-on-type-formatting nil)       ; Prettier handles this
@@ -495,12 +497,13 @@ completions. Completion framework is controlled by lsp-completion-provider.
     ;; modeline
     (lsp-modeline-code-actions-enable t)        ; Modeline should be relatively clean
     (lsp-modeline-diagnostics-enable nil)         ; Already supported through `flycheck'
-    ;; (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
+    (lsp-modeline-code-action-icons-enable t)
     (lsp-signature-doc-lines 1)                   ; Don't raise the echo area. It's distracting
-    ;(lsp-ui-doc-use-childframe t)                 ; Show docs for symbol at point
-    (lsp-eldoc-render-all nil)                    ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
+    ;; eldoc
+    (lsp-eldoc-render-all nil)
+    (lsp-eldoc-enable-hover nil)
     ;; lens
-    (lsp-lens-enable t)
+    (lsp-lens-enable nil)
     ;; semantic
     (lsp-semantic-tokens-enable nil)              ; Related to highlighting, and we defer to treesitter
     ;; Vue.js only
@@ -513,34 +516,73 @@ completions. Completion framework is controlled by lsp-completion-provider.
     (lsp-clients-typescript-server-args '("--stdio"))
   :init
     (setq lsp-use-plists t)
-  :config
-    (use-package add-node-modules-path
-      :ensure t
-      :defer t
-      :hook ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . add-node-modules-path)))
+    ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
+    (advice-add (if (progn (require 'json)
+                           (fboundp 'json-parse-buffer))
+                    'json-parse-buffer
+                  'json-read)
+                :around
+                #'lsp-booster--advice-json-parse)
+    (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 
+  :preface
+    (defun lsp-booster--advice-json-parse (old-fn &rest args)
+      "Try to parse bytecode instead of json."
+      (or
+       (when (equal (following-char) ?#)
+
+         (let ((bytecode (read (current-buffer))))
+           (when (byte-code-function-p bytecode)
+             (funcall bytecode))))
+       (apply old-fn args)))
+    (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+      "Prepend emacs-lsp-booster command to lsp CMD."
+      (let ((orig-result (funcall old-fn cmd test?)))
+        (if (and (not test?)                             ;; for check lsp-server-present?
+                 (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+                 lsp-use-plists
+                 (not (functionp 'json-rpc-connection))  ;; native json-rpc
+                 (executable-find "emacs-lsp-booster"))
+            (progn
+              (message "Using emacs-lsp-booster for %s!" orig-result)
+              (cons "emacs-lsp-booster" orig-result))
+          orig-result)))
+  :config
+  (use-package add-node-modules-path
+    :ensure t
+    :defer t
+    :hook ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . add-node-modules-path)))
+
+(advice-add 'lsp :before (lambda (&rest _args) (eval '(setf (lsp-session-server-id->folders (lsp-session)) (ht)))))
+#+end_src
+
+LSP UI for all nice IDE-like overlays of documentation
+
+#+begin_src emacs-lisp
 (use-package lsp-ui
   :ensure t
-  :commands lsp-ui-mode
+  :after lsp-mode
   :config
   (setq lsp-ui-doc-enable t
         lsp-ui-doc-header nil
         lsp-ui-doc-include-signature t
-        lsp-ui-doc-position 'at-point
+        lsp-ui-doc-position 'top
+        lps-ui-doc-side 'right
         lsp-ui-doc-alignment 'window
         lsp-ui-doc-use-childframe t
         lsp-ui-doc-use-webkit nil
-        lsp-ui-doc-delay 0.2
+        lsp-ui-doc-delay 0.1
         lsp-ui-doc-show-with-cursor t
         lsp-ui-sideline-enable t
-        lsp-ui-sideline-diagnostic-max-lines 3
+        lsp-ui-sideline-diagnostic-max-lines 10
         lsp-ui-sideline-diagnostic-max-line-length 200
-        lsp-ui-sideline-show-hover nil           ; Sideline used only for diagnostics
+        lsp-ui-sideline-show-hover nil
         lsp-ui-sideline-ignore-duplicate t
         lsp-ui-imenu-enable nil
-        lsp-ui-peek-enable t
-        lsp-ui-sideline-show-hover nil))
+        lsp-ui-peek-enable t))
 #+end_src
+
+And treesit for highlighting tokens according to each language
 
 #+begin_src emacs-lisp
 (use-package treesit
@@ -639,25 +681,25 @@ Auto completion in the terminal.
 Use direnv for this (make sure it is installed with your package manager)
 
 #+begin_src emacs-lisp
-(use-package envrc
-  :ensure t
-  :after exec-path-from-shell
-  :hook
-  ((after-init . envrc-global-mode)
-   (projectile-after-switch-project . my/envrc-project-switch))
-  :config
-  (defun my/envrc-project-switch ()
-    "Reload envrc and ensure NVM_BIN is appended to exec-path if necessary."
-    (envrc-reload) ; Reload envrc for the new project
-    (message "envrc reloaded for project: %s" (projectile-project-name))
-    ;; Update Node path if NVM_BIN is set
-    (let ((nvm-bin (getenv "NVM_BIN")))
-      (when nvm-bin
-        ;; Remove NVM_BIN if it already exists in exec-path to avoid duplicates
-        (setq exec-path (remove nvm-bin exec-path))
-        ;; Append NVM_BIN to the end of exec-path
-        (setq exec-path (append exec-path (list nvm-bin)))
-        (message "Appended NVM_BIN to exec-path: %s" nvm-bin)))))
+  (use-package envrc
+    :ensure t
+    :after exec-path-from-shell
+    :hook
+    ((after-init . envrc-global-mode)))
+    ;;  (projectile-after-switch-project . my/envrc-project-switch))
+    ;; :config
+    ;; (defun my/envrc-project-switch ()
+    ;;   "Reload envrc and ensure NVM_BIN is appended to exec-path if necessary."
+    ;;   (envrc-reload) ; Reload envrc for the new project
+    ;;   (message "envrc reloaded for project: %s" (projectile-project-name))
+    ;;   ;; Update Node path if NVM_BIN is set
+    ;;   (let ((nvm-bin (getenv "NVM_BIN")))
+    ;;     (when nvm-bin
+    ;;       ;; Remove NVM_BIN if it already exists in exec-path to avoid duplicates
+    ;;       (setq exec-path (remove nvm-bin exec-path))
+    ;;       ;; Append NVM_BIN to the end of exec-path
+    ;;       (setq exec-path (append exec-path (list nvm-bin)))
+    ;;       (message "Appended NVM_BIN to exec-path: %s" nvm-bin)))))
 
 #+end_src
 
@@ -758,9 +800,7 @@ more [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][here]].
 #+begin_src emacs-lisp
 (use-package auth-source
   :no-require
-  :config (setq auth-source-debug t
-      auth-source-pass-extra-query-keywords t))
-(auth-source-pass-enable)
+  :config (setq auth-sources '("~/.authinfo.gpg")))
 #+end_src
 
 *** Tramp mode
@@ -949,6 +989,9 @@ On-the-fly syntax checking
   :ensure t
   :defer t
   :diminish
+  :bind (:map flycheck-mode-map
+    ("M-n" . flycheck-next-error) ; optional but recommended error navigation
+    ("M-p" . flycheck-previous-error))
   :init (global-flycheck-mode)
   :config
   (setq flycheck-check-syntax-automatically '(save mode-enabled)))
@@ -1008,6 +1051,14 @@ On-the-fly syntax checking
   :bind (:map minibuffer-local-map
          ("M-A" . marginalia-cycle))
   :init (marginalia-mode))
+#+begin_src emacs-lisp
+(use-package all-the-icons-completion
+  :ensure t
+  :after (marginalia all-the-icons)
+  :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
+  :init
+  (all-the-icons-completion-mode))
+
 #+end_src
 
 [[https://github.com/minad/consult][Consult]] provides practical commands based on the completion functionality
