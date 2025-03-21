@@ -471,8 +471,6 @@ completions. Completion framework is controlled by lsp-completion-provider.
     :custom
     (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
-    (lsp-completion-provider :none)     ; Uses corfu when set to none, uses company when set to capf
-    (lsp-completion-show-detail t)
     (lsp-diagnostics-provider :flycheck)
     (lsp-prefer-flymake nil)
     (lsp-session-file (locate-user-emacs-file ".lsp-session"))
@@ -493,19 +491,22 @@ completions. Completion framework is controlled by lsp-completion-provider.
     (lsp-enable-symbol-highlighting t)        ; Shows usages of symbol at point in the current buffer
     (lsp-enable-text-document-color nil)      ; This is Treesitter's job
     ;; completion
+    (lsp-completion-provider :none)                ; Uses corfu when set to none, uses company when set to capf
     (lsp-completion-enable t)
     (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
+    (lsp-completion-show-kind t)
+    (lsp-completion-show-detail t)
     (lsp-enable-snippet t)                         ; Important to provide full JSX completion
-    (lsp-completion-show-kind t)                   ; Optional
     ;; headerline
     (lsp-headerline-breadcrumb-enable t)                  ; Optional, I like the breadcrumbs
     (lsp-headerline-breadcrumb-enable-diagnostics nil)    ; Don't make them red, too noisy
     (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
     (lsp-headerline-breadcrumb-icons-enable t)
     ;; modeline
-    (lsp-modeline-code-actions-enable t)        ; Modeline should be relatively clean
+    (lsp-modeline-code-actions-enable nil)        ; Modeline should be relatively clean
     (lsp-modeline-diagnostics-enable nil)         ; Already supported through `flycheck'
-    (lsp-modeline-code-action-icons-enable t)
+    (lsp-modeline-code-action-icons-enable nil)
+    (lsp-signature-auto-activate nil)         ; Don't show signature in modeline
     (lsp-signature-doc-lines 1)                   ; Don't raise the echo area. It's distracting
     ;; eldoc
     (lsp-eldoc-render-all nil)
@@ -585,11 +586,9 @@ LSP UI for all nice IDE-like overlays of documentation
         lsp-ui-doc-use-webkit nil
         lsp-ui-doc-delay 0.1
         lsp-ui-doc-show-with-cursor t
-        lsp-ui-sideline-enable t
-        lsp-ui-sideline-diagnostic-max-lines 10
-        lsp-ui-sideline-diagnostic-max-line-length 200
+        lsp-ui-sideline-enable nil
+        lsp-ui-sideline-show-diagnostics nil
         lsp-ui-sideline-show-hover nil
-        lsp-ui-sideline-ignore-duplicate t
         lsp-ui-imenu-enable nil
         lsp-ui-peek-enable t))
 #+end_src
