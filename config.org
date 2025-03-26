@@ -467,7 +467,7 @@ completions. Completion framework is controlled by lsp-completion-provider.
     :ensure t
     :diminish "LSP"
     :hook ((lsp-mode . lsp-enable-which-key-integration)
-           ((tsx-ts-mode typescript-ts-mode vue-mode) . lsp-deferred))
+           ((tsx-ts-mode typescript-ts-mode vue-mode go-ts-mode) . lsp-deferred))
     :custom
     (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
@@ -611,6 +611,7 @@ And treesit for highlighting tokens according to each language
          ("\\.yml\\'" . yaml-ts-mode)
          ("\\.html\\'" . html-ts-mode)
          ("\\.css\\'" . css-ts-mode)
+         ("\\.go\\'" . go-ts-mode)
   )
   :preface
   (defun setup-install-grammars ()
@@ -621,6 +622,7 @@ And treesit for highlighting tokens according to each language
                (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.23.1" "src"))
                (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.23.2"))
                (json . ("https://github.com/tree-sitter/tree-sitter-json" "v0.24.8"))
+               (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.23.4"))
                (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
                (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src"))
                (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src"))
@@ -639,6 +641,8 @@ And treesit for highlighting tokens according to each language
                (html-mode . html-ts-mode)
                (sgml-mode . html-ts-mode)
                (yaml-mode . yaml-ts-mode)
+               (go-mode . go-ts-mode)
+               (toml-mode . go-ts-mode)
                (dockerfile-mode . dockerfile-ts-mode)))
       (add-to-list 'major-mode-remap-alist mapping)))
   :config
@@ -684,6 +688,21 @@ Auto completion in the terminal.
   (unless (display-graphic-p)
     (corfu-terminal-mode +1)))
 #+end_src
+
+*** Golang
+
+#+begin_src emacs-lisp
+(require 'lsp-mode)
+(add-hook 'go-mode-hook #'lsp-deferred)
+
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+#+end_src
+
 
 ** Features
 
