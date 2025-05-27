@@ -467,7 +467,7 @@ completions. Completion framework is controlled by lsp-completion-provider.
     :ensure t
     :diminish "LSP"
     :hook ((lsp-mode . lsp-enable-which-key-integration)
-           ((tsx-ts-mode typescript-ts-mode vue-mode go-ts-mode) . lsp-deferred))
+           ((tsx-ts-mode typescript-ts-mode vue-mode go-ts-mode js-ts-mode) . lsp-deferred))
     :custom
     (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
