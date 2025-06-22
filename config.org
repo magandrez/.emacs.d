@@ -1337,8 +1337,17 @@ Detect the operating system and set ispell-program-name accordingly
   (when (member "Noto Color Emoji" (font-family-list))
     (set-fontset-font
      t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend))
-  (setq emojify-display-style 'unicode)
-  (setq emojify-emoji-styles '(unicode)))
+  (setq emojify-display-style 'github)
+  (setq emojify-emoji-styles '(github)))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package company-emojify
+  :ensure t
+  :config
+    (setq company-emojify-emoji-styles '(github)))
+
+(add-to-list 'company-backends 'company-emojify)
 #+end_src
 
 *** Terminal
