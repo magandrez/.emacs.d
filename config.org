@@ -491,7 +491,7 @@ completions. Completion framework is controlled by lsp-completion-provider.
     (lsp-enable-symbol-highlighting t)        ; Shows usages of symbol at point in the current buffer
     (lsp-enable-text-document-color nil)      ; This is Treesitter's job
     ;; completion
-    (lsp-completion-provider :none)                ; Uses corfu when set to none, uses company when set to capf
+    (lsp-completion-provider :capf)                ; Uses corfu when set to none, uses company when set to capf
     (lsp-completion-enable t)
     (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
     (lsp-completion-show-kind t)
@@ -649,44 +649,26 @@ And treesit for highlighting tokens according to each language
   (setup-install-grammars))
 #+end_src
 
-[[https://github.com/minad/corfu][Corfu]] for auto completion.
 
 #+begin_src emacs-lisp
-(use-package corfu
+(use-package company
   :ensure t
-  :custom
-  (tab-always-indent 'complete)
-  (completion-cycle-threshold nil)      ; Always show candidates in menu
-  (corfu-cycle t)                 ; Allows cycling through candidates
-  (corfu-auto t)
-  (corfu-auto-prefix 2)           ; Minimum length of prefix for completion
-  (corfu-auto-delay 0.1)
-  (corfu-popupinfo-delay '(0.3 . 0.4))
-  (corfu-preview-current 'insert) ; insert previewed candidate
-  (corfu-preselect 'prompt)
-  (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
-  ;; Optionally use TAB for cycling, default is `corfu-complete'.
-  :bind (:map corfu-map
-          ("M-SPC"      . corfu-insert-separator)
-          ("TAB"        . corfu-next)
-          ([tab]        . corfu-next)
-          ("S-TAB"      . corfu-previous)
-          ([backtab]    . corfu-previous)
-          ("S-<return>" . corfu-insert)
-          ("RET"        . corfu-insert))
   :init
-  (global-corfu-mode)
-  (corfu-history-mode)
-  (corfu-popupinfo-mode)) ; Popup completion info
-#+end_src
-
-Auto completion in the terminal.
-#+begin_src emacs-lisp
-(use-package corfu-terminal
-  :ensure t
+  (setq company-backends '((company-files company-keywords company-capf company-dabbrev-code company-etags company-dabbrev))) 
   :config
-  (unless (display-graphic-p)
-    (corfu-terminal-mode +1)))
+  (global-company-mode t)
+  (setq-default
+     company-minimum-prefix-length 2
+     company-idle-delay 0.05
+     company-tooltip-align-annotations t)
+  :bind (:map company-active-map
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous)))
+
+(use-package company-box
+  :ensure t
+  :defer t
+  :hook (company-mode . company-box-mode))
 #+end_src
 
 *** Golang
