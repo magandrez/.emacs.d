@@ -1157,7 +1157,7 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
   :config
   (setq yas-verbosity 1
         yas-wrap-around-region t
-        yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets"))
+        yas-snippet-dirs '("~/.emacs.d/snippets"))
   (yas-reload-all))
 
 (use-package yasnippet-snippets
