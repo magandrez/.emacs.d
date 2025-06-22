@@ -500,12 +500,12 @@ completions. Completion framework is controlled by lsp-completion-provider.
     ;; headerline
     (lsp-headerline-breadcrumb-enable t)                  ; Optional, I like the breadcrumbs
     (lsp-headerline-breadcrumb-enable-diagnostics nil)    ; Don't make them red, too noisy
-    (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
+    (lsp-headerline-breadcrumb-enable-symbol-numbers t)
     (lsp-headerline-breadcrumb-icons-enable t)
     ;; modeline
     (lsp-modeline-code-actions-enable nil)        ; Modeline should be relatively clean
     (lsp-modeline-diagnostics-enable nil)         ; Already supported through `flycheck'
-    (lsp-modeline-code-action-icons-enable nil)
+    (lsp-modeline-code-action-icons-enable t)
     (lsp-signature-auto-activate nil)         ; Don't show signature in modeline
     (lsp-signature-doc-lines 1)                   ; Don't raise the echo area. It's distracting
     ;; eldoc
@@ -520,9 +520,17 @@ completions. Completion framework is controlled by lsp-completion-provider.
     (lsp-vetur-format-default-formatter-html "none")
     (lsp-vetur-format-default-formatter-js "none")
     (lsp-vetur-validation-template nil)
-    ;; Typescript
-    (lsp-clients-typescript-prefer-use-project-ts-server t) ;; Prefer project tsserver
+    ;; Typescript / Javascript
+    (lsp-clients-typescript-max-ts-server-memory 8192)
     (lsp-clients-typescript-server-args '("--stdio"))
+    (lsp-typescript-suggestion-actions-enabled nil)
+    (lsp-javascript-suggestion-actions-enabled nil)
+    (lsp-typescript-suggest-complete-function-calls t)
+    (lsp-javascript-suggest-complete-function-calls t)
+    (lsp-typescript-suggest-complete-js-docs nil)
+    (lsp-javascript-suggest-complete-js-docs nil)
+    (lsp-typescript-surveys-enabled nil)
+
   :init
     ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
     (advice-add (if (progn (require 'json)
@@ -562,10 +570,9 @@ completions. Completion framework is controlled by lsp-completion-provider.
     :hook ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . add-node-modules-path)))
 
 (with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/infrastructure/mysql-data\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/infrastructure/\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/ecs/\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/apps/resq-main/public/.*[/\\\\]bundle\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/node_modules\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/apps/resq-main/node_modules\\'")
 )
 #+end_src
 
