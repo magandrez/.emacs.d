@@ -491,7 +491,7 @@ completions. Completion framework is controlled by lsp-completion-provider.
     (lsp-enable-symbol-highlighting t)        ; Shows usages of symbol at point in the current buffer
     (lsp-enable-text-document-color nil)      ; This is Treesitter's job
     ;; completion
-    (lsp-completion-provider :capf)                ; Uses corfu when set to none, uses company when set to capf
+    (lsp-completion-provider :capf)
     (lsp-completion-enable t)
     (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
     (lsp-completion-show-kind t)
@@ -661,21 +661,32 @@ And treesit for highlighting tokens according to each language
 (use-package company
   :ensure t
   :init
-  (setq company-backends '((company-files company-keywords company-capf company-dabbrev-code company-etags company-dabbrev))) 
-  :config
-  (global-company-mode t)
+  (setq company-backends '(company-files company-keywords company-ispell company-dabbrev-code company-etags))
   (setq-default
      company-minimum-prefix-length 2
      company-idle-delay 0.05
-     company-tooltip-align-annotations t)
+     company-tooltip-align-annotations t
+     company-tooltip-limit 15 ;; Limit on how many options to display
+     company-show-numbers t   ;; Show numbers behind options
+     company-require-match nil           ;; Allow free typing
+     company-selection-wrap-around t) ;; Wrap around to beginning when you hit bottom of
   :bind (:map company-active-map
+        ("<tab>" . company-complete-selection)
         ("C-n" . company-select-next)
-        ("C-p" . company-select-previous)))
+        ("C-p" . company-select-previous))
+        (:map lsp-mode-map
+        ("<tab>" . company-indent-or-complete-common))
+  :hook (prog-mode . company-mode))
 
 (use-package company-box
   :ensure t
   :defer t
   :hook (company-mode . company-box-mode))
+
+(use-package company-quickhelp
+  :ensure t
+  :defer t
+  :hook (company-mode . company-quickhelp-mode))
 #+end_src
 
 *** Golang
@@ -1146,7 +1157,8 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
   :config
   (setq yas-verbosity 1
         yas-wrap-around-region t
-        yas-snippet-dirs '("~/.emacs.d/snippets"))
+        yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets")
+        company-backends '((company-capf company-yasnippet)))
   (yas-reload-all))
 
 (use-package yasnippet-snippets
