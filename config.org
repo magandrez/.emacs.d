@@ -23,40 +23,52 @@ https://macowners.club/posts/setq-vs-customize-set-variable/
 
 Miscellaneous defaults below
 
-#+BEGIN_SRC emacs-lisp
-;;; -*- lexical-binding: t -*-
-(custom-set-variables
- '(cua-mode t)                                      ;; Set CUA-mode on
- '(initial-scratch-message nil)
- '(inhibit-startup-screen t)
- '(show-paren-delay 0)                              ;; No delay when showing matching parenthesis
- '(confirm-nonexistent-file-or-buffer nil)          ;; Remove confirm dialog on new buffers
- '(confirm-kill-emacs 'y-or-n-p)                    ;; Confirm exiting Emacs
- '(display-time-default-load-average nil)           ;; Don't display load average
- '(indent-tabs-mode nil)                            ;; No tabs for indentation
- '(window-combination-resize t)                     ;; Create new windows proportionally
- '(completions-detailed t)                          ;; Show more info when describing things
- '(use-short-answers t)                             ;; Use instead of y-or-n-p
- '(native-comp-async-report-warnings-errors nil)    ;; Don't show native compile warnings
- '(savehist-mode 1)                                 ;; Save history typed in minibuffer
- '(dired-kill-when-opening-new-dired-buffer t)
- '(browse-url-browser-function 'browse-url-firefox) ;; Open links in Firefox
- '(package-native-compile t)
- '(tool-bar-mode nil)
- '(menu-bar-mode nil)
- '(blink-cursor-mode nil)
- '(auth-source-save-behavior nil)
- '(column-number-mode t)
- '(xref-search-program 'ripgrep)
- '(global-display-line-numbers-mode t)
- '(global-prettify-symbols-mode t)
- '(global-auto-revert-mode t)
-)
+#+begin_src emacs-lisp
+(savehist-mode 1)              ;; Save history typed in minibuffer
+(global-auto-revert-mode 1)
 
-(setq cua-enable-cursor-indications nil
-      cua-remap-control-v nil) ;; Avoid remapping certain keys
+;; Explicit mode enabling via function calls ---
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(blink-cursor-mode -1)
+(cua-mode 1)                   ;; Enable CUA-mode properly (replaces '(cua-mode t))
 
-#+END_SRC
+(setq
+  cua-remap-control-v nil      ;; Avoid remapping certain keys
+  cua-enable-cursor-indications nil
+  auth-source-save-behavior nil
+  backup-by-copying t
+  browse-url-browser-function 'browse-url-firefox
+  completions-detailed t
+  confirm-kill-emacs 'y-or-n-p
+  confirm-nonexistent-file-or-buffer nil
+  create-lockfiles nil
+  delete-old-versions t
+  dired-kill-when-opening-new-dired-buffer t
+  display-time-default-load-average nil
+  fill-column 80
+  ibuffer-expert t
+  ibuffer-show-empty-filter-groups nil
+  indent-tabs-mode nil
+  inhibit-startup-screen t
+  initial-scratch-message nil
+  kept-new-versions 3
+  kept-old-versions 2
+  native-comp-async-report-warnings-errors nil
+  package-native-compile t
+  package-selected-packages nil
+  scroll-bar-mode nil
+  scroll-conservatively 0
+  scroll-down-aggressively 0.01
+  scroll-margin 1
+  scroll-up-aggressively 0.01
+  show-paren-delay 0
+  use-short-answers t
+  vc-follow-symlinks t
+  version-control t
+  window-combination-resize t
+  xref-search-program 'ripgrep)
+#+end_src
 
 Some miscellaneous defaults, but set in a different manner
 
@@ -64,24 +76,11 @@ Some miscellaneous defaults, but set in a different manner
 (setq-default visible-bell nil                        ;; No shaking
               select-enable-clipboard t               ;; Unite Emacs & system clipboard
               line-number-mode t                      ;; Line number
-              package-native-compile t
               debug-on-error nil
               horizontal-scroll-bar-mode nil
-)
-#+END_SRC
-
-Scrolling defaults.
-
-#+BEGIN_SRC emacs-lisp
-(custom-set-variables
- '(scroll-margin 1)
- '(scroll-conservatively 0)
- '(scroll-up-aggressively 0.01)
- '(scroll-down-aggressively 0.01)
- '(scroll-up-aggressively 0.01)
- '(scroll-down-aggressively 0.01)
- '(scroll-bar-mode nil)
-)
+              column-number-mode t
+              global-display-line-numbers-mode t
+              global-prettify-symbols-mode t)
 #+END_SRC
 
 UTF-8 everywhere, because it is the standard and disable CJK
@@ -146,9 +145,9 @@ https://www.nerdfonts.com/font-downloads
 #+end_src
 
 #+begin_src emacs-lisp
-(custom-set-variables
-  '(custom-safe-themes '("37c8c2817010e59734fe1f9302a7e6a2b5e8cc648cf6a6cc8b85f3bf17fececf" default))
-)
+(setq custom-safe-themes
+ '("37c8c2817010e59734fe1f9302a7e6a2b5e8cc648cf6a6cc8b85f3bf17fececf" default)
+ )
 #+end_src
 
 Increase text size on Mac OS X (Macbook Air )
@@ -171,7 +170,6 @@ rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 
 (custom-set-variables
  '(global-display-fill-column-indicator-mode nil)
- '(fill-column 80)
 )
 ;; Add the hook to programming-related modes
 (add-hook 'prog-mode-hook 'enable-fill-column-indicator-in-prog-mode)
@@ -219,16 +217,6 @@ As default write backup files on ~/.emacs.d/backup, auto-save files on
         auto-save-file-name-transforms `((".*" ,auto-saves-dir t))
         tramp-backup-directory-alist `((".*" . ,backup-dir))
         tramp-auto-save-directory auto-saves-dir))
-
-(custom-set-variables
-  '(backup-by-copying t)
-  '(delete-old-versions t)
-  '(kept-new-versions 3)
-  '(kept-old-versions 2)
-  '(version-control t)
-  '(create-lockfiles nil)
-  '(vc-follow-symlinks t)
-)
 #+END_SRC
 
 Disable backups for sensitive information. Taken from [[https://anirudhsasikumar.net/blog/2005.01.21.html][here]].
@@ -786,11 +774,6 @@ Use ace-window to cycle through windows
   (add-hook 'ibuffer-mode-hook
             (lambda ()
               (ibuffer-switch-to-saved-filter-groups "Default")))
-
-  ;; Custom variables for `ibuffer`
-  (custom-set-variables
-   '(ibuffer-expert t)  ;; Don't ask for confirmation when performing actions.
-   '(ibuffer-show-empty-filter-groups nil))  ;; Hide empty groups
 #+END_SRC
 
 *** Encryption
