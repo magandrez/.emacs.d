@@ -24,6 +24,7 @@ https://macowners.club/posts/setq-vs-customize-set-variable/
 Miscellaneous defaults below
 
 #+BEGIN_SRC emacs-lisp
+;;; -*- lexical-binding: t -*-
 (custom-set-variables
  '(cua-mode t)                                      ;; Set CUA-mode on
  '(initial-scratch-message nil)
