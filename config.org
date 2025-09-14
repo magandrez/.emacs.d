@@ -592,7 +592,7 @@ And treesit for highlighting tokens according to each language
 
 #+begin_src emacs-lisp
 (use-package treesit
-  :no-require
+  :ensure nil
   :mode (("\\.js\\'"  . js-ts-mode)
          ("\\.mjs\\'" . typescript-ts-mode)
          ("\\.mts\\'" . typescript-ts-mode)
