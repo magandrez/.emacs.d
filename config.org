@@ -31,7 +31,9 @@ Miscellaneous defaults below
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (blink-cursor-mode -1)
-(cua-mode 1)                   ;; Enable CUA-mode properly (replaces '(cua-mode t))
+(cua-mode 1)                         ;; Enable CUA-mode properly (replaces '(cua-mode t))
+(global-display-line-numbers-mode 1)
+
 
 (setq
   cua-remap-control-v nil      ;; Avoid remapping certain keys
@@ -79,7 +81,6 @@ Some miscellaneous defaults, but set in a different manner
               debug-on-error nil
               horizontal-scroll-bar-mode nil
               column-number-mode t
-              global-display-line-numbers-mode t
               global-prettify-symbols-mode t)
 #+END_SRC
 
