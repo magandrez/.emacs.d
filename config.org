@@ -406,7 +406,6 @@ Below, some basic instructions to work with Javascript/Typescript projects:
 - $ nvm use
 - $ npm i -g typescript-language-server && npm i -g typescript && npm i -g prettier
 - $ yarn install
-- $ [[https://github.com/magandrez/dotfiles/blob/main/bin/.local/bin/emacs_export][emacs_export]] PATH && emacs_export NVM_BIN
 
 The above will ensure Emacs has the path is set and NVM_BIN points to the
 correct location. After that, the following major and minor mode configs should
