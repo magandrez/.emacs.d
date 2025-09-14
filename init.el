@@ -3,6 +3,10 @@
 ;;; This template init.el setups the basic config that enable
 ;;; Tangling config.org file into config.el
 ;; Set repositories
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
 (require 'package)
 ;;; Code:
 (setq-default
@@ -27,3 +31,5 @@ use-package-always-ensure t)
 
 ;; Tangle configuration
 (org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
+
+;;; init.el ends here
