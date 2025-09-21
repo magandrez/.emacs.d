@@ -406,21 +406,22 @@ take care of the rest.
 The below takes care of running prettier:
 
 #+begin_src emacs-lisp
-(setq js-indent-level 2)
+(defun my/lsp-js-ts-indent-setup ()
+  "Set indentation level to 2 for TS/JS tree-sitter modes with LSP."
+  (when (derived-mode-p 'typescript-ts-mode 'tsx-ts-mode 'js-ts-mode 'javascript-mode)
+    (setq-local tab-width 2)
+    (setq-local indent-tabs-mode nil)
+    (setq-local typescript-indent-level 2)
+    (setq-local js-indent-level 2)))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package apheleia
+(use-package prettier
   :ensure t
-  :defines
-  apheleia-formatters
-  apheleia-mode-alist
-  :functions
-  apheleia-global-mode
-  :hook ((typescript-ts-mode js-ts-mode) . apheleia-mode)
-  :config
-  (setf (alist-get 'prettier-json apheleia-formatters)
-        '("prettier" "--stdin-filepath" filepath)))
+  :hook ((typescript-ts-mode
+          tsx-ts-mode
+          js-ts-mode
+          js-mode) . prettier-mode))
 #+end_src
 
 --> For the rest of JS/TS config, see 'Treesit + LSP' section.
@@ -455,12 +456,14 @@ This setup is originally set to work with Corfu providing
 completions. Completion framework is controlled by lsp-completion-provider.
 
 #+begin_src emacs-lisp               
-  (use-package lsp-mode
-    :ensure t
-    :diminish "LSP"
-    :hook ((lsp-mode . lsp-enable-which-key-integration)
-           ((tsx-ts-mode typescript-ts-mode vue-mode go-ts-mode js-ts-mode) . lsp-deferred))
-    :custom
+(use-package lsp-mode
+  :ensure t
+  :diminish "LSP"
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (lsp-mode . my/lsp-js-ts-indent-setup)
+         ((tsx-ts-mode typescript-ts-mode vue-mode go-ts-mode js-ts-mode) . lsp-deferred)
+)
+  :custom
     (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
     (lsp-diagnostics-provider :flycheck)
@@ -513,6 +516,7 @@ completions. Completion framework is controlled by lsp-completion-provider.
     (lsp-vetur-format-default-formatter-js "none")
     (lsp-vetur-validation-template nil)
     ;; Typescript / Javascript
+    (lsp-clients-typescript-server "typescript-language-server")
     (lsp-clients-typescript-max-ts-server-memory 8192)
     (lsp-clients-typescript-server-args '("--stdio"))
     (lsp-typescript-suggestion-actions-enabled nil)
@@ -700,32 +704,49 @@ And treesit for highlighting tokens according to each language
 
 *** Environment
 
-**** Load specific environment from .envrc
+**** Load specific environment with custom-made stuff.
 
-Use direnv for this (make sure it is installed with your package manager)
+Use direnv for this (make sure it is installed with your package manager).
 
 #+begin_src emacs-lisp
-(use-package envrc
-  :ensure t
-  :after (lsp-mode flycheck)
-  :init (envrc-global-mode))
+(defun my/load-project-env-from-shell ()
+  "Load env variables from direnv+fish shell for the current project."
+  (interactive)
+  (let* ((default-directory (or (when (fboundp 'project-root)
+                                  (project-root (project-current)))
+                                default-directory))
+         (env-output (with-temp-buffer
+                       (when (zerop
+                              (call-process
+                               "/usr/bin/direnv" nil t nil
+                               "exec" default-directory
+                               "fish" "-c" "env"))
+                         (buffer-string))))
+         (lines (split-string env-output "\n" t)))
+    (dolist (line lines)
+      (when (string-match "\\`\\([^=]+\\)=\\(.*\\)\\'" line)
+        (let ((var (match-string 1 line))
+              (val (match-string 2 line)))
+          (setenv var val)
+          (when (string= var "PATH")
+            (setq exec-path
+                  (append (parse-colon-path val)
+                          (list exec-directory)))))))
+    (message "[env] Loaded environment for %s" default-directory)))
+
+(add-hook 'projectile-after-switch-project-hook #'my/load-project-env-from-shell)
+
+(defun my/maybe-load-env-and-start-lsp ()
+  (when (derived-mode-p 'typescript-ts-mode 'tsx-ts-mode 'js-ts-mode)
+    (my/load-project-env-from-shell)
+    (when (executable-find "node")
+      (message "[env+lsp] Found node, starting LSP.")
+      (lsp-deferred))))
+
+(add-hook 'typescript-ts-mode-hook #'my/maybe-load-env-and-start-lsp)
+(add-hook 'tsx-ts-mode-hook #'my/maybe-load-env-and-start-lsp)
+(add-hook 'js-ts-mode-hook #'my/maybe-load-env-and-start-lsp)
 #+end_src
-
-**** Load $PATH.
-
-Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
-
-#+BEGIN_SRC emacs-lisp
-(use-package exec-path-from-shell
-  :ensure t
-  :init
-  (when (memq window-system '(mac ns x))
-    (setq shell-file-name "/usr/local/bin/zsh")
-    (exec-path-from-shell-initialize))
-  (when (daemonp)
-    (setq shell-file-name "/usr/bin/fish")
-    (exec-path-from-shell-initialize)))
-#+END_SRC
 
 *** Which-key
 
