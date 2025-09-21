@@ -31,7 +31,6 @@ Miscellaneous defaults below
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (blink-cursor-mode -1)
-(cua-mode 1)                         ;; Enable CUA-mode properly (replaces '(cua-mode t))
 (global-display-line-numbers-mode 1)
 
 
@@ -59,7 +58,6 @@ Miscellaneous defaults below
   native-comp-async-report-warnings-errors nil
   package-native-compile t
   package-selected-packages nil
-  scroll-bar-mode nil
   scroll-conservatively 0
   scroll-down-aggressively 0.01
   scroll-margin 1
@@ -70,6 +68,11 @@ Miscellaneous defaults below
   version-control t
   window-combination-resize t
   xref-search-program 'ripgrep)
+
+(add-hook 'window-setup-hook
+          (lambda ()
+            (scroll-bar-mode -1) ;; reliably disable scroll bar
+            (cua-mode 1)))       ;; reliably enable CUA mode
 #+end_src
 
 Some miscellaneous defaults, but set in a different manner
