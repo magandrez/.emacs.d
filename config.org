@@ -455,12 +455,11 @@ completions. Completion framework is controlled by lsp-completion-provider.
 
 #+begin_src emacs-lisp               
 (use-package lsp-mode
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (lsp-mode . my/lsp-js-ts-indent-setup))
+  :commands lsp lsp-deferred
   :ensure t
   :diminish "LSP"
-  :hook ((lsp-mode . lsp-enable-which-key-integration)
-         (lsp-mode . my/lsp-js-ts-indent-setup)
-         ((tsx-ts-mode typescript-ts-mode vue-mode go-ts-mode js-ts-mode) . lsp-deferred)
-)
   :custom
     (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
@@ -707,43 +706,42 @@ And treesit for highlighting tokens according to each language
 Use direnv for this (make sure it is installed with your package manager).
 
 #+begin_src emacs-lisp
-(defun my/load-project-env-from-shell ()
-  "Load env variables from direnv+fish shell for the current project."
-  (interactive)
-  (let* ((default-directory (or (when (fboundp 'project-root)
-                                  (project-root (project-current)))
-                                default-directory))
+(defun my/load-direnv-env ()
+  "Load environment using direnv and fish for current buffer's project."
+  (let* ((project-dir (or (when-let ((proj (project-current)))
+                            (project-root proj))
+                          default-directory))
          (env-output (with-temp-buffer
                        (when (zerop
                               (call-process
                                "/usr/bin/direnv" nil t nil
-                               "exec" default-directory
-                               "fish" "-c" "env"))
-                         (buffer-string))))
-         (lines (split-string env-output "\n" t)))
-    (dolist (line lines)
-      (when (string-match "\\`\\([^=]+\\)=\\(.*\\)\\'" line)
-        (let ((var (match-string 1 line))
-              (val (match-string 2 line)))
-          (setenv var val)
-          (when (string= var "PATH")
-            (setq exec-path
-                  (append (parse-colon-path val)
-                          (list exec-directory)))))))
-    (message "[env] Loaded environment for %s" default-directory)))
+                               "exec" project-dir "fish" "-c" "env"))
+                         (buffer-string)))))
+    (when env-output
+      (dolist (line (split-string env-output "\n" t))
+        (when (string-match "\\`\\([^=]+\\)=\\(.*\\)\\'" line)
+          (let ((var (match-string 1 line))
+                (val (match-string 2 line)))
+            (setenv var val)
+            (when (string= var "PATH")
+              (setq exec-path
+                    (append (parse-colon-path val)
+                            (list exec-directory))))))))
+    (message "[env] Loaded env for %s" project-dir)))
 
-(add-hook 'projectile-after-switch-project-hook #'my/load-project-env-from-shell)
+(defun my/setup-js-env-and-lsp ()
+  "Load direnv environment and start LSP if node is found."
+  (my/load-direnv-env)
+  (if (executable-find "node")
+      (progn
+        (message "[env+lsp] Found node, starting LSP.")
+        (lsp-deferred))
+    (message "[env+lsp] Node not found in PATH after env load.")))
 
-(defun my/maybe-load-env-and-start-lsp ()
-  (when (derived-mode-p 'typescript-ts-mode 'tsx-ts-mode 'js-ts-mode)
-    (my/load-project-env-from-shell)
-    (when (executable-find "node")
-      (message "[env+lsp] Found node, starting LSP.")
-      (lsp-deferred))))
-
-(add-hook 'typescript-ts-mode-hook #'my/maybe-load-env-and-start-lsp)
-(add-hook 'tsx-ts-mode-hook #'my/maybe-load-env-and-start-lsp)
-(add-hook 'js-ts-mode-hook #'my/maybe-load-env-and-start-lsp)
+(dolist (hook '(typescript-ts-mode-hook
+                tsx-ts-mode-hook
+                js-ts-mode-hook))
+  (add-hook hook #'my/setup-js-env-and-lsp))
 #+end_src
 
 *** Which-key
