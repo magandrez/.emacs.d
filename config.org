@@ -35,8 +35,6 @@ Miscellaneous defaults below
 
 
 (setq
-  cua-remap-control-v nil      ;; Avoid remapping certain keys
-  cua-enable-cursor-indications nil
   auth-source-save-behavior nil
   backup-by-copying t
   browse-url-browser-function 'browse-url-firefox
