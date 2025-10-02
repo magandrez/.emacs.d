@@ -657,27 +657,36 @@ Use tree-sitter for grokking language tokens for highlighting syntax.
   (setup-install-grammars))
 #+end_src
 
+*** Company
+
+Handles code completion
 
 #+begin_src emacs-lisp
 (use-package company
   :ensure t
+  :hook (prog-mode . company-mode)
   :init
-  (setq company-backends '(company-files company-keywords company-ispell company-dabbrev-code company-etags))
-  (setq-default
-     company-minimum-prefix-length 2
-     company-idle-delay 0.05
-     company-tooltip-align-annotations t
-     company-tooltip-limit 15 ;; Limit on how many options to display
-     company-show-numbers t   ;; Show numbers behind options
-     company-require-match nil           ;; Allow free typing
-     company-selection-wrap-around t) ;; Wrap around to beginning when you hit bottom of
-  :bind (:map company-active-map
-        ("<tab>" . company-complete-selection)
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous))
-        (:map lsp-mode-map
-        ("<tab>" . company-indent-or-complete-common))
-  :hook (prog-mode . company-mode))
+  (setq company-minimum-prefix-length 2
+        company-idle-delay 0.05
+        company-tooltip-align-annotations t
+        company-tooltip-limit 15
+        company-show-numbers t
+        company-require-match nil
+        company-selection-wrap-around t)
+  :config
+  ;; Backend list
+  (setq company-backends
+        '((company-capf company-yasnippet)
+          company-files
+          company-keywords
+          company-ispell
+          company-dabbrev-code
+          company-etags))
+  ;; Keybindings
+  (define-key company-active-map (kbd "<tab>") 'company-complete-selection)
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key lsp-mode-map (kbd "<tab>") 'company-indent-or-complete-common))
 
 (use-package company-box
   :ensure t
@@ -1182,14 +1191,13 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :ensure t
-  :hook ((markdown-mode . yas-minor-mode)
-         (tsx-ts-mode  . yas-minor-mode)
-         (typescript-ts-mode . yas-minor-mode))
-  :config
+  :hook (prog-mode . yas-minor-mode)
+  :init
   (setq yas-verbosity 1
         yas-wrap-around-region t
-        yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets")
-        company-backends '((company-capf company-yasnippet)))
+        yas-snippet-dirs '("~/.emacs.d/snippets"
+                           "/usr/share/yasnippet-snippets"))
+  :config
   (yas-reload-all))
 
 (use-package yasnippet-snippets
@@ -1397,7 +1405,8 @@ Detect the operating system and set ispell-program-name accordingly
   :config
     (setq company-emojify-emoji-styles '(github)))
 
-(add-to-list 'company-backends 'company-emojify)
+(with-eval-after-load 'company
+  (add-to-list 'company-backends 'company-emojify))
 #+end_src
 
 *** Terminal
