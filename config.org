@@ -296,7 +296,7 @@ Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp
 ** Languages / frameworks
 
 *** JSON
---> See 'Treesit + LSP' section.
+--> Handled with Treesitter and LSP.
 *** Dot
 
 #+begin_src emacs-lisp
@@ -315,9 +315,9 @@ Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp
 #+end_src
 
 *** Docker
---> See 'Treesit + LSP' section.
+--> Handled with Treesitter and LSP.
 *** HTML
---> See 'Treesit + LSP' section.
+--> Handled with Treesitter and LSP.
 *** Markdown
 
 Install `pandoc` package with your package manager:
@@ -348,7 +348,7 @@ org-gfm-export-to-markdown`. Source: https://github.com/larstvei/ox-gfm
 #+end_src
 
 *** YAML
---> See 'Treesit + LSP' section.
+--> Handled with Treesitter and LSP.
 *** CSV
 
 #+BEGIN_SRC emacs-lisp
@@ -416,13 +416,10 @@ The below takes care of running prettier:
 #+begin_src emacs-lisp
 (use-package prettier
   :ensure t
-  :hook ((typescript-ts-mode
-          tsx-ts-mode
-          js-ts-mode
-          js-mode) . prettier-mode))
+  :hook ((typescript-ts-mode tsx-ts-mode js-ts-mode js-mode) . prettier-mode))
 #+end_src
 
---> For the rest of JS/TS config, see 'Treesit + LSP' section.
+--> For the rest of JS/TS config, see Treesitter and LSP sections.
 
 *** Vue
 
@@ -440,7 +437,7 @@ as of today.
   :hook (vue-mode . apheleia-mode))
 #+end_src
 
-*** Treesit + LSP
+*** LSP
 
 Below, the configuration for LSP, reworked to work with treesitter modes.
 
@@ -455,13 +452,12 @@ completions. Completion framework is controlled by lsp-completion-provider.
 
 #+begin_src emacs-lisp               
 (use-package lsp-mode
-  :hook ((lsp-mode . lsp-enable-which-key-integration)
-         (lsp-mode . my/lsp-js-ts-indent-setup))
+  :hook (lsp-mode . lsp-enable-which-key-integration)
   :commands lsp lsp-deferred
   :ensure t
   :diminish "LSP"
   :custom
-    (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
+    (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls credo-language-server)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
     (lsp-diagnostics-provider :flycheck)
     (lsp-prefer-flymake nil)
@@ -523,7 +519,10 @@ completions. Completion framework is controlled by lsp-completion-provider.
     (lsp-typescript-suggest-complete-js-docs nil)
     (lsp-javascript-suggest-complete-js-docs nil)
     (lsp-typescript-surveys-enabled nil)
-
+    ;; Elixir
+    (lsp-elixir-server-command `(,(expand-file-name "~/.local/share/elixir-ls/release/language_server.sh")))
+    (lsp-elixir-dialyzer-enabled nil)
+    (lsp-elixir-fetch-deps t)
   :init
     ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
     (advice-add (if (progn (require 'json)
@@ -575,25 +574,30 @@ LSP UI for all nice IDE-like overlays of documentation
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
+  :bind (:map lsp-mode-map
+              ("C-l i" . lsp-ui-doc-glance))
   :config
   (setq lsp-ui-doc-enable t
-        lsp-ui-doc-header nil
+        lsp-ui-doc-header t
         lsp-ui-doc-include-signature t
-        lsp-ui-doc-position 'top
-        lps-ui-doc-side 'right
+        lsp-ui-doc-position 'at-point
+        lsp-ui-doc-border (face-foreground 'default)
         lsp-ui-doc-alignment 'window
         lsp-ui-doc-use-childframe t
         lsp-ui-doc-use-webkit nil
         lsp-ui-doc-delay 0.1
-        lsp-ui-doc-show-with-cursor t
+        lsp-ui-doc-show-with-cursor nil
+        lsp-ui-doc-show-with-mouse nil
         lsp-ui-sideline-enable nil
-        lsp-ui-sideline-show-diagnostics nil
-        lsp-ui-sideline-show-hover nil
         lsp-ui-imenu-enable nil
+        lsp-ui-doc-max-height 20
+        lsp-ui-doc-max-width 80
         lsp-ui-peek-enable t))
 #+end_src
 
-And treesit for highlighting tokens according to each language
+*** Treesit
+
+Use tree-sitter for grokking language tokens for highlighting syntax.
 
 #+begin_src emacs-lisp
 (use-package treesit
@@ -612,6 +616,8 @@ And treesit for highlighting tokens according to each language
          ("\\.html\\'" . html-ts-mode)
          ("\\.css\\'" . css-ts-mode)
          ("\\.go\\'" . go-ts-mode)
+         ("\\.ex\\'" . elixir-ts-mode)
+         ("\\.exs\\'" . elixir-ts-mode)
   )
   :preface
   (defun setup-install-grammars ()
@@ -619,6 +625,7 @@ And treesit for highlighting tokens according to each language
     (interactive)
     (dolist (grammar
              '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.23.2"))
+               (elixir . ("https://github.com/elixir-lang/tree-sitter-elixir" "v0.3.4" "src"))
                (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.23.1" "src"))
                (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.23.2"))
                (json . ("https://github.com/tree-sitter/tree-sitter-json" "v0.24.8"))
@@ -633,6 +640,7 @@ And treesit for highlighting tokens according to each language
     ;; Remapping major modes
     (dolist (mapping
              '((typescript-mode . typescript-ts-mode)
+               (elixir-mode . elixir-ts-mode)
                (js-mode . js-ts-mode)
                (js-json-mode . json-ts-mode)
                (json-mode . json-ts-mode)
@@ -707,16 +715,17 @@ Use direnv for this (make sure it is installed with your package manager).
 
 #+begin_src emacs-lisp
 (defun my/load-direnv-env ()
-  "Load environment using direnv and fish for current buffer's project."
+  "Load environment using direnv with fish for the current buffer's project."
   (let* ((project-dir (or (when-let ((proj (project-current)))
                             (project-root proj))
                           default-directory))
-         (env-output (with-temp-buffer
-                       (when (zerop
-                              (call-process
-                               "/usr/bin/direnv" nil t nil
-                               "exec" project-dir "fish" "-c" "env"))
-                         (buffer-string)))))
+         (env-output
+          (with-temp-buffer
+            (when (zerop
+                   (call-process
+                    "/usr/bin/direnv" nil t nil
+                    "exec" project-dir "fish" "-c" "env"))
+              (buffer-string)))))
     (when env-output
       (dolist (line (split-string env-output "\n" t))
         (when (string-match "\\`\\([^=]+\\)=\\(.*\\)\\'" line)
@@ -729,19 +738,37 @@ Use direnv for this (make sure it is installed with your package manager).
                             (list exec-directory))))))))
     (message "[env] Loaded env for %s" project-dir)))
 
-(defun my/setup-js-env-and-lsp ()
-  "Load direnv environment and start LSP if node is found."
+(defun my/setup-direnv-and-lsp ()
+  "Load direnv env and start lsp-deferred if any LSP-relevant executable is found."
   (my/load-direnv-env)
-  (if (executable-find "node")
-      (progn
-        (message "[env+lsp] Found node, starting LSP.")
-        (lsp-deferred))
-    (message "[env+lsp] Node not found in PATH after env load.")))
+  (cond
+   ;; Elixir
+   ((executable-find "elixir")
+    (message "[env+lsp] Found elixir, starting LSP.")
+    (lsp-deferred))
+   ;; Node/JS/TS
+   ((executable-find "node")
+    (message "[env+lsp] Found node, starting LSP.")
+    (lsp-deferred))
+   ;; Python (example)
+   ((executable-find "python")
+    (message "[env+lsp] Found python, starting LSP.")
+    (lsp-deferred))
+   ;; Go
+   ((executable-find "go")
+    (message "[env+lsp] Found Go, starting LSP.")
+    (lsp-deferred))
+   ;; Default fallback
+   (t
+    (message "[env+lsp] No known language runtime found in PATH."))))
 
-(dolist (hook '(typescript-ts-mode-hook
+(dolist (hook '(elixir-ts-mode-hook
+                typescript-ts-mode-hook
                 tsx-ts-mode-hook
-                js-ts-mode-hook))
-  (add-hook hook #'my/setup-js-env-and-lsp))
+                js-ts-mode-hook
+                python-ts-mode-hook
+                go-ts-mode-hook))
+  (add-hook hook #'my/setup-direnv-and-lsp))
 #+end_src
 
 *** Which-key
