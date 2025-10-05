@@ -1420,10 +1420,19 @@ I use vterm as a terminal for Emacs
 #+end_src
 
 #+begin_src emacs-lisp
+
 (use-package vterm-toggle
   :ensure t
   :bind (([f2] . vterm-toggle)
-         ([C-f2] . vterm-toggle-cd)))
+         ([C-f2] . vterm-toggle-cd))
+  :config
+  ;; Advice to set vterm-environment before opening vterm-toggle
+  (defun my/vterm-toggle-set-env (orig-fun &rest args)
+    "Ensure `vterm-toggle` uses Emacs's PATH environment."
+    (let ((vterm-environment (list (concat "PATH=" (getenv "PATH")))))
+      (apply orig-fun args)))
+  (advice-add 'vterm-toggle :around #'my/vterm-toggle-set-env)
+  (advice-add 'vterm-toggle-cd :around #'my/vterm-toggle-set-env))
 #+end_src
 
 *** Expand region
