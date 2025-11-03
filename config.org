@@ -711,17 +711,25 @@ Handles code completion
 *** Golang
 
 #+begin_src emacs-lisp
-(require 'lsp-mode)
-(add-hook 'go-mode-hook #'lsp-deferred)
-
-;; Set up before-save hooks to format buffer and add/delete imports.
-;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
+(defun my/setup-go-env-and-lsp ()
+  (my/load-direnv-env)
+  (message "[env+lsp] Setting up Go LSP.")
+  (lsp-deferred)
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 #+end_src
 
+*** Elixir
+
+This relies on the custom-made kludge that is defined in the section
+"Environment".
+
+#+begin_src emacs-lisp
+(defun my/setup-elixir-env-and-lsp ()
+  (my/load-direnv-env)
+  (message "[env+lsp] Setting up Elixir LSP.")
+  (lsp-deferred))
+#+end_src
 
 ** Features
 
