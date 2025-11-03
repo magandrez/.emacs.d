@@ -664,6 +664,7 @@ Handles code completion
 #+begin_src emacs-lisp
 (use-package company
   :ensure t
+  :after lsp-mode ;; ensures lsp-mode-map is defined
   :hook (prog-mode . company-mode)
   :init
   (setq company-minimum-prefix-length 2
