@@ -386,7 +386,7 @@ Use [[https://rvm.io/][RVM]] to manage gems.
   (rvm-use-default))
 #+end_src
 
-*** Javascript
+*** Javascript/Typescript
 
 Below, some basic instructions to work with Javascript/Typescript projects:
 
@@ -404,13 +404,15 @@ take care of the rest.
 The below takes care of running prettier:
 
 #+begin_src emacs-lisp
-(defun my/lsp-js-ts-indent-setup ()
-  "Set indentation level to 2 for TS/JS tree-sitter modes with LSP."
+(defun my/setup-typescript-env-and-lsp ()
+  (my/load-direnv-env)
   (when (derived-mode-p 'typescript-ts-mode 'tsx-ts-mode 'js-ts-mode 'javascript-mode)
     (setq-local tab-width 2)
     (setq-local indent-tabs-mode nil)
     (setq-local typescript-indent-level 2)
-    (setq-local js-indent-level 2)))
+    (setq-local js-indent-level 2))
+  (message "[env+lsp] Setting up TypeScript LSP.")
+  (lsp-deferred))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -452,7 +454,13 @@ completions. Completion framework is controlled by lsp-completion-provider.
 
 #+begin_src emacs-lisp               
 (use-package lsp-mode
-  :hook (lsp-mode . lsp-enable-which-key-integration)
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (elixir-ts-mode . my/setup-elixir-env-and-lsp)
+         (typescript-ts-mode . my/setup-typescript-env-and-lsp)
+         (tsx-ts-mode . my/setup-typescript-env-and-lsp)
+         (js-ts-mode . my/setup-typescript-env-and-lsp)
+         (python-ts-mode . my/setup-python-env-and-lsp)
+         (go-ts-mode . my/setup-go-env-and-lsp))
   :commands lsp lsp-deferred
   :ensure t
   :diminish "LSP"
@@ -747,38 +755,6 @@ Use direnv for this (make sure it is installed with your package manager).
                     (append (parse-colon-path val)
                             (list exec-directory))))))))
     (message "[env] Loaded env for %s" project-dir)))
-
-(defun my/setup-direnv-and-lsp ()
-  "Load direnv env and start lsp-deferred if any LSP-relevant executable is found."
-  (my/load-direnv-env)
-  (cond
-   ;; Elixir
-   ((executable-find "elixir")
-    (message "[env+lsp] Found elixir, starting LSP.")
-    (lsp-deferred))
-   ;; Node/JS/TS
-   ((executable-find "node")
-    (message "[env+lsp] Found node, starting LSP.")
-    (lsp-deferred))
-   ;; Python (example)
-   ((executable-find "python")
-    (message "[env+lsp] Found python, starting LSP.")
-    (lsp-deferred))
-   ;; Go
-   ((executable-find "go")
-    (message "[env+lsp] Found Go, starting LSP.")
-    (lsp-deferred))
-   ;; Default fallback
-   (t
-    (message "[env+lsp] No known language runtime found in PATH."))))
-
-(dolist (hook '(elixir-ts-mode-hook
-                typescript-ts-mode-hook
-                tsx-ts-mode-hook
-                js-ts-mode-hook
-                python-ts-mode-hook
-                go-ts-mode-hook))
-  (add-hook hook #'my/setup-direnv-and-lsp))
 #+end_src
 
 *** Which-key

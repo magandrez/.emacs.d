@@ -6,19 +6,18 @@
  ;; If there is more than one, they won't work right.
  '(global-display-fill-column-indicator-mode nil)
  '(package-selected-packages
-   '(add-node-modules-path bug-hunter company-box company-emojify
-			   company-quickhelp consult csv-mode delight
-			   diminish dot-mode edit-server
-			   elfeed-dashboard elfeed-goodies elfeed-org
-			   elfeed-protocol envrc exec-path-from-shell
-			   expand-region flycheck-pos-tip forge
-			   github-review gnuplot lsp-ui marginalia
-			   monokai-theme multiple-cursors orderless
-			   org-bullets org-contrib org-journal ox-gfm
-			   powerthesaurus prettier rg rvm smartparens
-			   suomalainen-kalenteri treemacs-projectile
-			   uuidgen verb vertico vterm-toggle vue-mode
-			   yafolding yasnippet-snippets)))
+   '(activities add-node-modules-path bug-hunter company-box
+		company-emojify company-quickhelp consult csv-mode
+		dap-mode delight diminish dot-mode edit-server
+		elfeed-dashboard elfeed-goodies elfeed-org
+		expand-region flycheck-pos-tip forge github-review
+		gnuplot lsp-ui marginalia monokai-theme
+		multiple-cursors orderless org-bullets org-contrib
+		org-journal ox-gfm powerthesaurus prettier rg rvm
+		smartparens suomalainen-kalenteri treemacs-projectile
+		uuidgen verb vertico vterm-toggle vue-mode yafolding
+		yasnippet-snippets))
+ '(safe-local-variable-values '((eval auth-source-pass-enable))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
