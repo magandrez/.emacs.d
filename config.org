@@ -822,6 +822,7 @@ Use ace-window to cycle through windows
 
 #+begin_src emacs-lisp
 (use-package activities
+  :ensure t
   :init
   (activities-mode)
   (activities-tabs-mode)
