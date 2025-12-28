@@ -468,7 +468,6 @@ completions. Completion framework is controlled by lsp-completion-provider.
          (typescript-ts-mode . my/setup-typescript-env-and-lsp)
          (tsx-ts-mode . my/setup-typescript-env-and-lsp)
          (js-ts-mode . my/setup-typescript-env-and-lsp)
-         (python-ts-mode . my/setup-python-env-and-lsp)
          (go-ts-mode . my/setup-go-env-and-lsp))
   :commands lsp lsp-deferred
   :ensure t
