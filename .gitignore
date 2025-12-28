@@ -34,3 +34,4 @@ multisession
 tree-sitter/*
 snippets/*
 .mc-lists.el
+custom.el
