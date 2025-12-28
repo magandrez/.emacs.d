@@ -445,7 +445,7 @@ as of today.
 (use-package vue-mode
   :ensure t
   :mode "\\.vue\\'"
-  :hook (vue-mode . apheleia-mode))
+  :hook (vue-mode . prettier-mode))
 #+end_src
 
 *** LSP
@@ -738,6 +738,7 @@ This relies on the custom-made kludge that is defined in the section
   (message "[env+lsp] Setting up Elixir LSP.")
   (lsp-deferred))
 #+end_src
+
 
 ** Features
 
