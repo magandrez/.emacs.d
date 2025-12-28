@@ -1501,6 +1501,44 @@ Again, Magnars at it. See [[https://github.com/magnars/multiple-cursors.el][here
   :ensure t)
 #+end_src
 
+*** Casual
+
+See intro to Casual in this EmacsConf video:
+https://www.youtube.com/watch?v=-eMmmAKcFR4
+
+#+begin_src emacs-lisp
+(use-package casual
+  :ensure t)
+
+(keymap-global-set "C-o" #'casual-editkit-main-tmenu)
+
+(keymap-set dired-mode-map "C-o" #'casual-dired-tmenu)
+(keymap-set dired-mode-map "s" #'casual-dired-sort-by-tmenu)
+(keymap-set dired-mode-map "/" #'casual-dired-search-replace-tmenu)
+
+(keymap-set org-agenda-mode-map "C-o" #'casual-agenda-tmenu)
+(keymap-set help-mode-map "C-o" #'casual-help-tmenu)
+(keymap-set csv-mode-map "C-o" #'casual-csv-tmenu)
+(keymap-set makefile-mode-map "C-o" #'casual-make-tmenu)
+(keymap-set calendar-mode-map "C-o" #'casual-calendar-tmenu)
+
+(add-hook 'ediff-keymap-setup-hook
+          (lambda ()
+            (keymap-set ediff-mode-map "C-o" #'casual-ediff-tmenu)))
+
+(keymap-set ibuffer-mode-map "C-o" #'casual-ibuffer-tmenu)
+(keymap-set ibuffer-mode-map "F"   #'casual-ibuffer-filter-tmenu)
+(keymap-set ibuffer-mode-map "s"   #'casual-ibuffer-sortby-tmenu)
+
+(keymap-set Info-mode-map "C-o" #'casual-info-tmenu)
+(keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
+(keymap-set reb-mode-map "C-o" #'casual-re-builder-tmenu)
+(keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
+(keymap-set calc-alg-map "C-o" #'casual-calc-tmenu)
+(keymap-set compilation-mode-map "C-o" #'casual-compile-tmenu)
+(keymap-set grep-mode-map "C-o" #'casual-compile-tmenu)
+#+end_src
+
 
 ** Org
 
