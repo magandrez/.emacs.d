@@ -407,10 +407,19 @@ The below takes care of running prettier:
 (defun my/setup-typescript-env-and-lsp ()
   (my/load-direnv-env)
   (when (derived-mode-p 'typescript-ts-mode 'tsx-ts-mode 'js-ts-mode 'javascript-mode)
-    (setq-local tab-width 2)
-    (setq-local indent-tabs-mode nil)
-    (setq-local typescript-indent-level 2)
-    (setq-local js-indent-level 2))
+    (setq-local tab-width 2
+                indent-tabs-mode nil
+                typescript-indent-level 2
+                js-indent-level 2))
+  (unless yas-minor-mode
+    (yas-minor-mode 1))
+  (cond
+   ((derived-mode-p 'js-ts-mode 'javascript-mode)
+    (with-eval-after-load 'js2-mode
+      (yas-reload-all)))
+   ((derived-mode-p 'typescript-ts-mode 'tsx-ts-mode)
+    (with-eval-after-load 'typescript-mode
+      (yas-reload-all))))
   (message "[env+lsp] Setting up TypeScript LSP.")
   (lsp-deferred))
 #+end_src
@@ -1236,14 +1245,19 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :ensure t
-  :hook (prog-mode . yas-minor-mode)
+  :hook
+  ((prog-mode . yas-minor-mode)
+   (text-mode . yas-minor-mode))
   :init
   (setq yas-verbosity 1
         yas-wrap-around-region t
         yas-snippet-dirs '("~/.emacs.d/snippets"
                            "/usr/share/yasnippet-snippets"))
   :config
-  (yas-reload-all))
+  (define-key yas-keymap (kbd "TAB") 'yas-next-field)
+  (define-key yas-keymap (kbd "<tab>") 'yas-next-field)
+  (define-key yas-keymap (kbd "S-TAB") 'yas-prev-field)
+  (global-set-key (kbd "C-c y") #'yas-insert-snippet))
 
 (use-package yasnippet-snippets
   :ensure t
@@ -1873,12 +1887,6 @@ Resize window
 (define-key global-map (kbd "M-s-<right>") 'enlarge-window-horizontally)
 (define-key global-map (kbd "M-s-<down>") 'shrink-window)
 (define-key global-map (kbd "M-s-<up>") 'enlarge-window)
-#+end_src
-
-Yasnippet insert
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-c '") 'yas-insert-snippet)
 #+end_src
 
 Insert emoji globally
