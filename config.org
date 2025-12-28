@@ -23,35 +23,55 @@ https://macowners.club/posts/setq-vs-customize-set-variable/
 
 Miscellaneous defaults below
 
-#+BEGIN_SRC emacs-lisp
-(custom-set-variables
- '(cua-mode t)                                      ;; Set CUA-mode on
- '(initial-scratch-message nil)
- '(inhibit-startup-screen t)
- '(show-paren-delay 0)                              ;; No delay when showing matching parenthesis
- '(confirm-nonexistent-file-or-buffer nil)          ;; Remove confirm dialog on new buffers
- '(confirm-kill-emacs 'y-or-n-p)                    ;; Confirm exiting Emacs
- '(display-time-default-load-average nil)           ;; Don't display load average
- '(indent-tabs-mode nil)                            ;; No tabs for indentation
- '(window-combination-resize t)                     ;; Create new windows proportionally
- '(completions-detailed t)                          ;; Show more info when describing things
- '(use-short-answers t)                             ;; Use instead of y-or-n-p
- '(native-comp-async-report-warnings-errors nil)    ;; Don't show native compile warnings
- '(savehist-mode 1)                                 ;; Save history typed in minibuffer
- '(dired-kill-when-opening-new-dired-buffer t)
- '(browse-url-browser-function 'browse-url-firefox) ;; Open links in Firefox
- '(package-native-compile t)
- '(tool-bar-mode nil)
- '(menu-bar-mode nil)
- '(blink-cursor-mode nil)
- '(auth-source-save-behavior nil)
- '(column-number-mode t)
- '(xref-search-program 'ripgrep)
- '(global-display-line-numbers-mode t)
- '(global-prettify-symbols-mode t)
- '(global-auto-revert-mode t)
-)
-#+END_SRC
+#+begin_src emacs-lisp
+(savehist-mode 1)              ;; Save history typed in minibuffer
+(global-auto-revert-mode 1)
+
+;; Explicit mode enabling via function calls ---
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(blink-cursor-mode -1)
+(global-display-line-numbers-mode 1)
+
+
+(setq
+  auth-source-save-behavior nil
+  backup-by-copying t
+  browse-url-browser-function 'browse-url-firefox
+  completions-detailed t
+  confirm-kill-emacs 'y-or-n-p
+  confirm-nonexistent-file-or-buffer nil
+  create-lockfiles nil
+  delete-old-versions t
+  dired-kill-when-opening-new-dired-buffer t
+  display-time-default-load-average nil
+  fill-column 80
+  ibuffer-expert t
+  ibuffer-show-empty-filter-groups nil
+  indent-tabs-mode nil
+  inhibit-startup-screen t
+  initial-scratch-message nil
+  kept-new-versions 3
+  kept-old-versions 2
+  native-comp-async-report-warnings-errors nil
+  package-native-compile t
+  package-selected-packages nil
+  scroll-conservatively 0
+  scroll-down-aggressively 0.01
+  scroll-margin 1
+  scroll-up-aggressively 0.01
+  show-paren-delay 0
+  use-short-answers t
+  vc-follow-symlinks t
+  version-control t
+  window-combination-resize t
+  xref-search-program 'ripgrep)
+
+(add-hook 'window-setup-hook
+          (lambda ()
+            (scroll-bar-mode -1) ;; reliably disable scroll bar
+            (cua-mode 1)))       ;; reliably enable CUA mode
+#+end_src
 
 Some miscellaneous defaults, but set in a different manner
 
@@ -59,24 +79,10 @@ Some miscellaneous defaults, but set in a different manner
 (setq-default visible-bell nil                        ;; No shaking
               select-enable-clipboard t               ;; Unite Emacs & system clipboard
               line-number-mode t                      ;; Line number
-              package-native-compile t
               debug-on-error nil
               horizontal-scroll-bar-mode nil
-)
-#+END_SRC
-
-Scrolling defaults.
-
-#+BEGIN_SRC emacs-lisp
-(custom-set-variables
- '(scroll-margin 1)
- '(scroll-conservatively 0)
- '(scroll-up-aggressively 0.01)
- '(scroll-down-aggressively 0.01)
- '(scroll-up-aggressively 0.01)
- '(scroll-down-aggressively 0.01)
- '(scroll-bar-mode nil)
-)
+              column-number-mode t
+              global-prettify-symbols-mode t)
 #+END_SRC
 
 UTF-8 everywhere, because it is the standard and disable CJK
@@ -95,6 +101,8 @@ coding/encoding (Chinese/Japanese/Korean characters).
 (set-language-environment 'utf-8)
 (setenv "LC_CTYPE" "en_US.UTF-8")
 (setenv "LC_ALL" "en_US.UTF-8")
+(setenv "LSP_USE_PLISTS" "true")
+(setq lsp-use-plists t)
 
 (if (boundp buffer-file-coding-system)
     (setq buffer-file-coding-system 'utf-8)
@@ -103,10 +111,10 @@ coding/encoding (Chinese/Japanese/Korean characters).
 
 Performance tweak from [[https://emacs-lsp.github.io/lsp-mode/page/performance/][here]].
 #+begin_src emacs-lisp
-(setq read-process-output-max (* 10 1024 1024)) ;; 10mb
-(setq gc-cons-threshold 400000000)
-(setenv "LSP_USE_PLISTS" "true")
+(setq read-process-output-max (* 30 1024 1024)) ;; 30mb
+(setq gc-cons-threshold 1000000000)
 #+end_src
+
 
 *** Theme
 
@@ -139,9 +147,9 @@ https://www.nerdfonts.com/font-downloads
 #+end_src
 
 #+begin_src emacs-lisp
-(custom-set-variables
-  '(custom-safe-themes '("37c8c2817010e59734fe1f9302a7e6a2b5e8cc648cf6a6cc8b85f3bf17fececf" default))
-)
+(setq custom-safe-themes
+ '("37c8c2817010e59734fe1f9302a7e6a2b5e8cc648cf6a6cc8b85f3bf17fececf" default)
+ )
 #+end_src
 
 Increase text size on Mac OS X (Macbook Air )
@@ -164,7 +172,6 @@ rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 
 (custom-set-variables
  '(global-display-fill-column-indicator-mode nil)
- '(fill-column 80)
 )
 ;; Add the hook to programming-related modes
 (add-hook 'prog-mode-hook 'enable-fill-column-indicator-in-prog-mode)
@@ -212,16 +219,6 @@ As default write backup files on ~/.emacs.d/backup, auto-save files on
         auto-save-file-name-transforms `((".*" ,auto-saves-dir t))
         tramp-backup-directory-alist `((".*" . ,backup-dir))
         tramp-auto-save-directory auto-saves-dir))
-
-(custom-set-variables
-  '(backup-by-copying t)
-  '(delete-old-versions t)
-  '(kept-new-versions 3)
-  '(kept-old-versions 2)
-  '(version-control t)
-  '(create-lockfiles nil)
-  '(vc-follow-symlinks t)
-)
 #+END_SRC
 
 Disable backups for sensitive information. Taken from [[https://anirudhsasikumar.net/blog/2005.01.21.html][here]].
@@ -299,7 +296,7 @@ Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp
 ** Languages / frameworks
 
 *** JSON
---> See 'Treesit + LSP' section.
+--> Handled with Treesitter and LSP.
 *** Dot
 
 #+begin_src emacs-lisp
@@ -318,9 +315,9 @@ Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp
 #+end_src
 
 *** Docker
---> See 'Treesit + LSP' section.
+--> Handled with Treesitter and LSP.
 *** HTML
---> See 'Treesit + LSP' section.
+--> Handled with Treesitter and LSP.
 *** Markdown
 
 Install `pandoc` package with your package manager:
@@ -351,7 +348,7 @@ org-gfm-export-to-markdown`. Source: https://github.com/larstvei/ox-gfm
 #+end_src
 
 *** YAML
---> See 'Treesit + LSP' section.
+--> Handled with Treesitter and LSP.
 *** CSV
 
 #+BEGIN_SRC emacs-lisp
@@ -389,7 +386,7 @@ Use [[https://rvm.io/][RVM]] to manage gems.
   (rvm-use-default))
 #+end_src
 
-*** Javascript
+*** Javascript/Typescript
 
 Below, some basic instructions to work with Javascript/Typescript projects:
 
@@ -399,44 +396,41 @@ Below, some basic instructions to work with Javascript/Typescript projects:
 - $ nvm use
 - $ npm i -g typescript-language-server && npm i -g typescript && npm i -g prettier
 - $ yarn install
-- $ [[https://github.com/magandrez/dotfiles/blob/main/bin/.local/bin/emacs_export][emacs_export]] PATH && emacs_export NVM_BIN
 
 The above will ensure Emacs has the path is set and NVM_BIN points to the
 correct location. After that, the following major and minor mode configs should
 take care of the rest.
 
-The below takes care of running prettier on typescript-ts-mode:
+The below takes care of running prettier:
 
 #+begin_src emacs-lisp
-(use-package apheleia
+(defun my/setup-typescript-env-and-lsp ()
+  (my/load-direnv-env)
+  (when (derived-mode-p 'typescript-ts-mode 'tsx-ts-mode 'js-ts-mode 'javascript-mode)
+    (setq-local tab-width 2
+                indent-tabs-mode nil
+                typescript-indent-level 2
+                js-indent-level 2))
+  (unless yas-minor-mode
+    (yas-minor-mode 1))
+  (cond
+   ((derived-mode-p 'js-ts-mode 'javascript-mode)
+    (with-eval-after-load 'js2-mode
+      (yas-reload-all)))
+   ((derived-mode-p 'typescript-ts-mode 'tsx-ts-mode)
+    (with-eval-after-load 'typescript-mode
+      (yas-reload-all))))
+  (message "[env+lsp] Setting up TypeScript LSP.")
+  (lsp-deferred))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package prettier
   :ensure t
-  :diminish ""
-  :defines
-  apheleia-formatters
-  apheleia-mode-alist
-  :functions
-  apheleia-global-mode
-  :hook (typescript-ts-mode . apheleia-mode)
-  :config
-  (setf (alist-get 'prettier-json apheleia-formatters)
-        '("prettier" "--stdin-filepath" filepath)))
+  :hook ((typescript-ts-mode tsx-ts-mode js-ts-mode js-mode) . prettier-mode))
 #+end_src
 
-lsp-eslint is included with LSP. See more [[https://github.com/emacs-lsp/lsp-mode/blob/master/clients/lsp-eslint.el][here]].
-
-#+begin_src emacs-lisp
-(use-package lsp-eslint
-  :no-require
-  :demand t
-  :after lsp-mode
-  :custom
-  (lsp-eslint-package-manager "yarn")
-  (lsp-eslint-run "onSave")
-  (lsp-eslint-provide-lint-task t)
-  (lsp-eslint-lint-task-enable t))
-#+end_src
-
---> For the rest of JS/TS config, see 'Treesit + LSP' section.
+--> For the rest of JS/TS config, see Treesitter and LSP sections.
 
 *** Vue
 
@@ -451,10 +445,10 @@ as of today.
 (use-package vue-mode
   :ensure t
   :mode "\\.vue\\'"
-  :hook (vue-mode . apheleia-mode))
+  :hook (vue-mode . prettier-mode))
 #+end_src
 
-*** Treesit + LSP
+*** LSP
 
 Below, the configuration for LSP, reworked to work with treesitter modes.
 
@@ -464,35 +458,36 @@ other implementations worked better). Feel free to explore if the
 implementations have improved by removing them from the lsp-disabled-clients
 alist and setting them up.
 
-This setup is originally set to work with Corfu providing completions, but I
-have not made it work yet, so the setup works still with company as the
-backend. See 'Completion' section for the details on that. As for LSP,
-completion is controlled by lsp-completion-provider.
+This setup is originally set to work with Corfu providing
+completions. Completion framework is controlled by lsp-completion-provider.
 
 #+begin_src emacs-lisp               
 (use-package lsp-mode
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (elixir-ts-mode . my/setup-elixir-env-and-lsp)
+         (typescript-ts-mode . my/setup-typescript-env-and-lsp)
+         (tsx-ts-mode . my/setup-typescript-env-and-lsp)
+         (js-ts-mode . my/setup-typescript-env-and-lsp)
+         (go-ts-mode . my/setup-go-env-and-lsp))
+  :commands lsp lsp-deferred
   :ensure t
   :diminish "LSP"
-  :hook ((lsp-mode . lsp-diagnostics-mode)
-         (lsp-mode . lsp-enable-which-key-integration)
-         ((tsx-ts-mode typescript-ts-mode vue-mode) . lsp-deferred))
   :custom
-    (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
+    (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls credo-language-server)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
-    (lsp-completion-provider :capf)     ; Uses corfu when set to none, uses company when set to capf
     (lsp-diagnostics-provider :flycheck)
+    (lsp-prefer-flymake nil)
     (lsp-session-file (locate-user-emacs-file ".lsp-session"))
     (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
     (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
-    (lsp-idle-delay 0.25)                 ; Debounce timer for `after-change-function'
+    (lsp-idle-delay 0.7)                ; Debounce timer for `after-change-function'
     ;; core
     (lsp-enable-xref t)                   ; Use xref to find references
     (lsp-auto-configure t)                ; Used to decide between current active servers
     (lsp-auto-guess-root t)
-    (lsp-eldoc-enable-hover t)          ; Display signature information
     (lsp-enable-dap-auto-configure t)     ; Debug support
     (lsp-enable-file-watchers nil)
-    ;; (lsp-enable-imenu t)
+    (lsp-enable-imenu nil)
     (lsp-enable-indentation nil)              ; Use prettifier
     (lsp-enable-links nil)                    ; No need since we have `browse-url'
     (lsp-enable-on-type-formatting nil)       ; Prettier handles this
@@ -500,24 +495,28 @@ completion is controlled by lsp-completion-provider.
     (lsp-enable-symbol-highlighting t)        ; Shows usages of symbol at point in the current buffer
     (lsp-enable-text-document-color nil)      ; This is Treesitter's job
     ;; completion
+    (lsp-completion-provider :capf)
     (lsp-completion-enable t)
     (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
+    (lsp-completion-show-kind t)
+    (lsp-completion-show-detail t)
     (lsp-enable-snippet t)                         ; Important to provide full JSX completion
-    (lsp-completion-show-kind t)                   ; Optional
     ;; headerline
     (lsp-headerline-breadcrumb-enable t)                  ; Optional, I like the breadcrumbs
     (lsp-headerline-breadcrumb-enable-diagnostics nil)    ; Don't make them red, too noisy
-    (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
+    (lsp-headerline-breadcrumb-enable-symbol-numbers t)
     (lsp-headerline-breadcrumb-icons-enable t)
     ;; modeline
-    (lsp-modeline-code-actions-enable t)        ; Modeline should be relatively clean
+    (lsp-modeline-code-actions-enable nil)        ; Modeline should be relatively clean
     (lsp-modeline-diagnostics-enable nil)         ; Already supported through `flycheck'
-    ;; (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
+    (lsp-modeline-code-action-icons-enable t)
+    (lsp-signature-auto-activate nil)         ; Don't show signature in modeline
     (lsp-signature-doc-lines 1)                   ; Don't raise the echo area. It's distracting
-    ;(lsp-ui-doc-use-childframe t)                 ; Show docs for symbol at point
-    (lsp-eldoc-render-all nil)                    ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
+    ;; eldoc
+    (lsp-eldoc-render-all nil)
+    (lsp-eldoc-enable-hover nil)
     ;; lens
-    (lsp-lens-enable t)
+    (lsp-lens-enable nil)
     ;; semantic
     (lsp-semantic-tokens-enable nil)              ; Related to highlighting, and we defer to treesitter
     ;; Vue.js only
@@ -525,77 +524,100 @@ completion is controlled by lsp-completion-provider.
     (lsp-vetur-format-default-formatter-html "none")
     (lsp-vetur-format-default-formatter-js "none")
     (lsp-vetur-validation-template nil)
-    ;; Typescript
-    (lsp-clients-typescript-prefer-use-project-ts-server t) ;; Prefer project tsserver
+    ;; Typescript / Javascript
+    (lsp-clients-typescript-server "typescript-language-server")
+    (lsp-clients-typescript-max-ts-server-memory 8192)
     (lsp-clients-typescript-server-args '("--stdio"))
+    (lsp-typescript-suggestion-actions-enabled nil)
+    (lsp-javascript-suggestion-actions-enabled nil)
+    (lsp-typescript-suggest-complete-function-calls t)
+    (lsp-javascript-suggest-complete-function-calls t)
+    (lsp-typescript-suggest-complete-js-docs nil)
+    (lsp-javascript-suggest-complete-js-docs nil)
+    (lsp-typescript-surveys-enabled nil)
+    ;; Elixir
+    (lsp-elixir-server-command `(,(expand-file-name "~/.local/share/elixir-ls/release/language_server.sh")))
+    (lsp-elixir-dialyzer-enabled nil)
+    (lsp-elixir-fetch-deps t)
   :init
-    (setq lsp-use-plists t)
-    (setq company-backends '((company-capf company-files company-yasnippet)))
+    ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
+    (advice-add (if (progn (require 'json)
+                           (fboundp 'json-parse-buffer))
+                    'json-parse-buffer
+                  'json-read)
+                :around
+                #'lsp-booster--advice-json-parse)
+    (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
+
+  :preface
+    (defun lsp-booster--advice-json-parse (old-fn &rest args)
+      "Try to parse bytecode instead of json."
+      (or
+       (when (equal (following-char) ?#)
+
+         (let ((bytecode (read (current-buffer))))
+           (when (byte-code-function-p bytecode)
+             (funcall bytecode))))
+       (apply old-fn args)))
+    (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+      "Prepend emacs-lsp-booster command to lsp CMD."
+      (let ((orig-result (funcall old-fn cmd test?)))
+        (if (and (not test?)                             ;; for check lsp-server-present?
+                 (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+                 lsp-use-plists
+                 (not (functionp 'json-rpc-connection))  ;; native json-rpc
+                 (executable-find "emacs-lsp-booster"))
+            (progn
+              (message "Using emacs-lsp-booster for %s!" orig-result)
+              (cons "emacs-lsp-booster" orig-result))
+          orig-result)))
   :config
-    (use-package add-node-modules-path
-      :ensure t
-      :defer t
-      :hook ((tsx-ts-mode typescript-ts-mode vue-mode) . add-node-modules-path)))
+  (use-package add-node-modules-path
+    :ensure t
+    :defer t
+    :hook ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . add-node-modules-path)))
 
-(use-package lsp-completion
-  :no-require
-  :hook ((lsp-mode . lsp-completion-mode)))
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/infrastructure/\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/ecs/\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/apps/resq-main/public/.*[/\\\\]bundle\\'")
+)
+#+end_src
 
+LSP UI for all nice IDE-like overlays of documentation
+
+#+begin_src emacs-lisp
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
+  :bind (:map lsp-mode-map
+              ("C-l i" . lsp-ui-doc-glance))
   :config
   (setq lsp-ui-doc-enable t
-        lsp-ui-doc-header nil
+        lsp-ui-doc-header t
         lsp-ui-doc-include-signature t
         lsp-ui-doc-position 'at-point
+        lsp-ui-doc-border (face-foreground 'default)
         lsp-ui-doc-alignment 'window
         lsp-ui-doc-use-childframe t
         lsp-ui-doc-use-webkit nil
-        lsp-ui-doc-delay 0.2
-        lsp-ui-doc-show-with-cursor t
-        lsp-ui-sideline-enable t
-        lsp-ui-sideline-diagnostic-max-lines 3
-        lsp-ui-sideline-diagnostic-max-line-length 200
-        lsp-ui-sideline-show-hover nil           ; Sideline used only for diagnostics
-        lsp-ui-sideline-ignore-duplicate t
+        lsp-ui-doc-delay 0.1
+        lsp-ui-doc-show-with-cursor nil
+        lsp-ui-doc-show-with-mouse nil
+        lsp-ui-sideline-enable nil
         lsp-ui-imenu-enable nil
-        lsp-ui-peek-enable t
-        lsp-ui-sideline-show-hover nil))
+        lsp-ui-doc-max-height 20
+        lsp-ui-doc-max-width 80
+        lsp-ui-peek-enable t))
 #+end_src
 
-#+begin_src emacs-lisp
-(use-package company
-  :ensure t
-  :hook
-    ((prog-mode org-mode) . company-mode)
-  :config
-    (global-company-mode t)
-  (setq-default
-     company-minimum-prefix-length 1
-     company-idle-delay 0.05
-     company-tooltip-align-annotations t
-     company-frontends '(company-pseudo-tooltip-unless-just-one-frontend company-preview-frontend)
-   )
-  :bind (:map company-active-map
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous)))
+*** Treesit
 
-(use-package company-box
-  :ensure t
-  :defer t
-  :hook (company-mode . company-box-mode))
-#+end_src
-
-
-Here is the setup for treesit, which in combination with LSP, provides "IDE-like
-features", that is, syntax coloring, autocompletion, refactoring niceties, etc.
-
-NOTE: At the moment is only setup for JS/TS mainly.
+Use tree-sitter for grokking language tokens for highlighting syntax.
 
 #+begin_src emacs-lisp
 (use-package treesit
-  :no-require
+  :ensure nil
   :mode (("\\.js\\'"  . js-ts-mode)
          ("\\.mjs\\'" . typescript-ts-mode)
          ("\\.mts\\'" . typescript-ts-mode)
@@ -609,17 +631,22 @@ NOTE: At the moment is only setup for JS/TS mainly.
          ("\\.yml\\'" . yaml-ts-mode)
          ("\\.html\\'" . html-ts-mode)
          ("\\.css\\'" . css-ts-mode)
+         ("\\.go\\'" . go-ts-mode)
+         ("\\.ex\\'" . elixir-ts-mode)
+         ("\\.exs\\'" . elixir-ts-mode)
   )
   :preface
   (defun setup-install-grammars ()
     "Install Tree-sitter grammars if they are absent."
     (interactive)
     (dolist (grammar
-             '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.23.1"))
-               (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.23.1" "src"))
+             '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.23.2"))
+               (elixir . ("https://github.com/elixir-lang/tree-sitter-elixir" "v0.3.4" "src"))
+               (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.25.0" "src"))
                (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.23.2"))
                (json . ("https://github.com/tree-sitter/tree-sitter-json" "v0.24.8"))
-               (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
+               (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.25.0"))
+               (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile" "v0.2.0"))
                (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src"))
                (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src"))
                (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))))
@@ -629,19 +656,87 @@ NOTE: At the moment is only setup for JS/TS mainly.
     ;; Remapping major modes
     (dolist (mapping
              '((typescript-mode . typescript-ts-mode)
-               (js-mode . typescript-ts-mode)
-               (js2-mode . typescript-ts-mode)
-               (json-mode . json-ts-mode)
+               (elixir-mode . elixir-ts-mode)
+               (js-mode . js-ts-mode)
                (js-json-mode . json-ts-mode)
+               (json-mode . json-ts-mode)
                (rjsx-mode . typescript-ts-mode)
                (css-mode . css-ts-mode)
                (html-mode . html-ts-mode)
                (sgml-mode . html-ts-mode)
                (yaml-mode . yaml-ts-mode)
+               (go-mode . go-ts-mode)
+               (toml-mode . go-ts-mode)
                (dockerfile-mode . dockerfile-ts-mode)))
       (add-to-list 'major-mode-remap-alist mapping)))
   :config
   (setup-install-grammars))
+#+end_src
+
+*** Company
+
+Handles code completion
+
+#+begin_src emacs-lisp
+(use-package company
+  :ensure t
+  :after lsp-mode ;; ensures lsp-mode-map is defined
+  :hook (prog-mode . company-mode)
+  :init
+  (setq company-minimum-prefix-length 2
+        company-idle-delay 0.05
+        company-tooltip-align-annotations t
+        company-tooltip-limit 15
+        company-show-numbers t
+        company-require-match nil
+        company-selection-wrap-around t)
+  :config
+  ;; Backend list
+  (setq company-backends
+        '((company-capf company-yasnippet)
+          company-files
+          company-keywords
+          company-ispell
+          company-dabbrev-code
+          company-etags))
+  ;; Keybindings
+  (define-key company-active-map (kbd "<tab>") 'company-complete-selection)
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key lsp-mode-map (kbd "<tab>") 'company-indent-or-complete-common))
+
+(use-package company-box
+  :ensure t
+  :defer t
+  :hook (company-mode . company-box-mode))
+
+(use-package company-quickhelp
+  :ensure t
+  :defer t
+  :hook (company-mode . company-quickhelp-mode))
+#+end_src
+
+*** Golang
+
+#+begin_src emacs-lisp
+(defun my/setup-go-env-and-lsp ()
+  (my/load-direnv-env)
+  (message "[env+lsp] Setting up Go LSP.")
+  (lsp-deferred)
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+#+end_src
+
+*** Elixir
+
+This relies on the custom-made kludge that is defined in the section
+"Environment".
+
+#+begin_src emacs-lisp
+(defun my/setup-elixir-env-and-lsp ()
+  (my/load-direnv-env)
+  (message "[env+lsp] Setting up Elixir LSP.")
+  (lsp-deferred))
 #+end_src
 
 
@@ -649,48 +744,35 @@ NOTE: At the moment is only setup for JS/TS mainly.
 
 *** Environment
 
-**** Load specific environment from .envrc
+**** Load specific environment with custom-made stuff.
 
-Use direnv for this (make sure it is installed with your package manager)
+Use direnv for this (make sure it is installed with your package manager).
 
 #+begin_src emacs-lisp
-(use-package envrc
-  :ensure t
-  :after exec-path-from-shell
-  :hook
-  ((after-init . envrc-global-mode)
-   (projectile-after-switch-project . my/envrc-project-switch))
-  :config
-  (defun my/envrc-project-switch ()
-    "Reload envrc and ensure NVM_BIN is appended to exec-path if necessary."
-    (envrc-reload) ; Reload envrc for the new project
-    (message "envrc reloaded for project: %s" (projectile-project-name))
-    ;; Update Node path if NVM_BIN is set
-    (let ((nvm-bin (getenv "NVM_BIN")))
-      (when nvm-bin
-        ;; Remove NVM_BIN if it already exists in exec-path to avoid duplicates
-        (setq exec-path (remove nvm-bin exec-path))
-        ;; Append NVM_BIN to the end of exec-path
-        (setq exec-path (append exec-path (list nvm-bin)))
-        (message "Appended NVM_BIN to exec-path: %s" nvm-bin)))))
-
+(defun my/load-direnv-env ()
+  "Load environment using direnv with fish for the current buffer's project."
+  (let* ((project-dir (or (when-let ((proj (project-current)))
+                            (project-root proj))
+                          default-directory))
+         (env-output
+          (with-temp-buffer
+            (when (zerop
+                   (call-process
+                    "/usr/bin/direnv" nil t nil
+                    "exec" project-dir "fish" "-c" "env"))
+              (buffer-string)))))
+    (when env-output
+      (dolist (line (split-string env-output "\n" t))
+        (when (string-match "\\`\\([^=]+\\)=\\(.*\\)\\'" line)
+          (let ((var (match-string 1 line))
+                (val (match-string 2 line)))
+            (setenv var val)
+            (when (string= var "PATH")
+              (setq exec-path
+                    (append (parse-colon-path val)
+                            (list exec-directory))))))))
+    (message "[env] Loaded env for %s" project-dir)))
 #+end_src
-
-**** Load $PATH.
-
-Use Steve Purcell's [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
-
-#+BEGIN_SRC emacs-lisp
-(use-package exec-path-from-shell
-  :ensure t
-  :init
-  (when (memq window-system '(mac ns x))
-    (setq shell-file-name "/usr/local/bin/zsh")
-    (exec-path-from-shell-initialize))
-  (when (daemonp)
-    (setq shell-file-name "/usr/bin/fish")
-    (exec-path-from-shell-initialize)))
-#+END_SRC
 
 *** Which-key
 
@@ -743,12 +825,67 @@ Use ace-window to cycle through windows
   (add-hook 'ibuffer-mode-hook
             (lambda ()
               (ibuffer-switch-to-saved-filter-groups "Default")))
-
-  ;; Custom variables for `ibuffer`
-  (custom-set-variables
-   '(ibuffer-expert t)  ;; Don't ask for confirmation when performing actions.
-   '(ibuffer-show-empty-filter-groups nil))  ;; Hide empty groups
 #+END_SRC
+
+*** Activities
+
+#+begin_src emacs-lisp
+(use-package activities
+  :ensure t
+  :init
+  (activities-mode)
+  (activities-tabs-mode)
+  (setq edebug-inhibit-emacs-lisp-mode-bindings t)
+
+  :bind
+  (("C-x C-a C-n" . activities-new)
+   ("C-x C-a C-d" . activities-define)
+   ("C-x C-a C-a" . activities-resume)
+   ("C-x C-a C-s" . activities-suspend)
+   ("C-x C-a C-k" . activities-kill)
+   ("C-x C-a RET" . activities-switch)
+   ("C-x C-a b" . activities-switch-buffer)
+   ("C-x C-a g" . activities-revert)
+   ("C-x C-a l" . activities-list))
+
+  :config
+  (defun my/activities-switch-to-scratch (&rest _)
+    "Switch to *scratch* buffer after creating a new activity."
+    (switch-to-buffer "*scratch*"))
+
+  ;; Add post advice to activities-new
+  (advice-add 'activities-new :after #'my/activities-switch-to-scratch))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package tab-bar
+  :ensure nil
+  :init
+  (setq tab-bar-show nil)
+  :config
+  (tab-bar-mode 1)
+
+  (defface my/tab-name-face
+    '((t (:inherit mode-line-buffer-id :foreground "#ffaa00")))
+    "Face for tab name in the mode line.")
+
+  (defun my/tab-bar-tab-name ()
+    (let ((name (alist-get 'name (tab-bar--current-tab))))
+      (propertize (format " 📁 %s " name) 'face 'my/tab-name-face)))
+
+  ;; Only append once to avoid duplication
+  (unless (member '(:eval (my/tab-bar-tab-name)) mode-line-format)
+    (setq-default
+     mode-line-format
+     (append mode-line-format
+             '((:eval (my/tab-bar-tab-name))))))
+
+  ;; Keybindings
+  (global-set-key (kbd "C-c t n") #'tab-bar-new-tab)
+  (global-set-key (kbd "C-c t k") #'tab-bar-close-tab)
+  (global-set-key (kbd "C-c t o") #'tab-bar-switch-to-tab)
+  (global-set-key (kbd "C-c t r") #'my/rename-current-tab))
+#+end_src
 
 *** Encryption
 
@@ -773,9 +910,7 @@ more [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][here]].
 #+begin_src emacs-lisp
 (use-package auth-source
   :no-require
-  :config (setq auth-source-debug t
-      auth-source-pass-extra-query-keywords t))
-(auth-source-pass-enable)
+  :config (setq auth-sources '("~/.authinfo.gpg")))
 #+end_src
 
 *** Tramp mode
@@ -865,15 +1000,6 @@ project or a directory, á la Eclipse or other common IDEs.
   :after treemacs projectile
   :bind
   (("C-c o p" . treemacs-projectile)))
-
-;; Integration between lsp-mode and treemacs and implementation of treeview
-;; controls using treemacs as a tree renderer.
-;; https://github.com/emacs-lsp/lsp-treemacs
-(use-package lsp-treemacs
-  :ensure t
-  :after treemacs
-  :config
-  (lsp-treemacs-sync-mode 1))
 #+END_SRC
 
 *** Yafolding
@@ -964,6 +1090,9 @@ On-the-fly syntax checking
   :ensure t
   :defer t
   :diminish
+  :bind (:map flycheck-mode-map
+    ("M-s-n" . flycheck-next-error) ; optional but recommended error navigation
+    ("M-s-p" . flycheck-previous-error))
   :init (global-flycheck-mode)
   :config
   (setq flycheck-check-syntax-automatically '(save mode-enabled)))
@@ -1116,14 +1245,19 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :ensure t
-  :hook ((markdown-mode . yas-minor-mode)
-         (tsx-ts-mode  . yas-minor-mode)
-         (typescript-ts-mode . yas-minor-mode))
-  :config
+  :hook
+  ((prog-mode . yas-minor-mode)
+   (text-mode . yas-minor-mode))
+  :init
   (setq yas-verbosity 1
         yas-wrap-around-region t
-        yas-snippet-dirs '("~/.emacs.d/snippets" "/usr/share/yasnippet-snippets"))
-  (yas-reload-all))
+        yas-snippet-dirs '("~/.emacs.d/snippets"
+                           "/usr/share/yasnippet-snippets"))
+  :config
+  (define-key yas-keymap (kbd "TAB") 'yas-next-field)
+  (define-key yas-keymap (kbd "<tab>") 'yas-next-field)
+  (define-key yas-keymap (kbd "S-TAB") 'yas-prev-field)
+  (global-set-key (kbd "C-c y") #'yas-insert-snippet))
 
 (use-package yasnippet-snippets
   :ensure t
@@ -1320,8 +1454,18 @@ Detect the operating system and set ispell-program-name accordingly
   (when (member "Noto Color Emoji" (font-family-list))
     (set-fontset-font
      t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend))
-  (setq emojify-display-style 'unicode)
-  (setq emojify-emoji-styles '(unicode)))
+  (setq emojify-display-style 'github)
+  (setq emojify-emoji-styles '(github)))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package company-emojify
+  :ensure t
+  :config
+    (setq company-emojify-emoji-styles '(github)))
+
+(with-eval-after-load 'company
+  (add-to-list 'company-backends 'company-emojify))
 #+end_src
 
 *** Terminal
@@ -1329,14 +1473,25 @@ I use vterm as a terminal for Emacs
 
 #+begin_src emacs-lisp
 (use-package vterm
-  :ensure t)
+  :ensure t
+  :bind (:map vterm-mode-map ("C-y" . vterm-yank))
+  :config (setq vterm-max-scrollback 100000))
 #+end_src
 
 #+begin_src emacs-lisp
+
 (use-package vterm-toggle
   :ensure t
   :bind (([f2] . vterm-toggle)
-         ([C-f2] . vterm-toggle-cd)))
+         ([C-f2] . vterm-toggle-cd))
+  :config
+  ;; Advice to set vterm-environment before opening vterm-toggle
+  (defun my/vterm-toggle-set-env (orig-fun &rest args)
+    "Ensure `vterm-toggle` uses Emacs's PATH environment."
+    (let ((vterm-environment (list (concat "PATH=" (getenv "PATH")))))
+      (apply orig-fun args)))
+  (advice-add 'vterm-toggle :around #'my/vterm-toggle-set-env)
+  (advice-add 'vterm-toggle-cd :around #'my/vterm-toggle-set-env))
 #+end_src
 
 *** Expand region
@@ -1346,7 +1501,7 @@ See [[https://github.com/magnars/expand-region.el][here]]
 #+begin_src emacs-lisp
 (use-package expand-region
   :ensure t
-  :bind ("C-4" . er/expand-region))
+  :bind ("C-d" . er/expand-region))
 
 (setq pending-delete-mode t)
 #+end_src
@@ -1360,6 +1515,56 @@ Again, Magnars at it. See [[https://github.com/magnars/multiple-cursors.el][here
   :ensure t)
 #+end_src
 
+*** Casual
+
+See intro to Casual in this EmacsConf video:
+https://www.youtube.com/watch?v=-eMmmAKcFR4
+
+#+begin_src emacs-lisp
+(use-package casual
+  :ensure t)
+(keymap-global-set "C-o" #'casual-editkit-main-tmenu)
+(keymap-set dired-mode-map "C-o" #'casual-dired-tmenu)
+(keymap-set dired-mode-map "s" #'casual-dired-sort-by-tmenu)
+(keymap-set dired-mode-map "/" #'casual-dired-search-replace-tmenu)
+(add-hook 'org-agenda-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-o") #'casual-agenda-tmenu)))
+(keymap-set help-mode-map "C-o" #'casual-help-tmenu)
+(add-hook 'csv-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-o") #'casual-csv-tmenu)))
+(add-hook 'makefile-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-o") #'casual-make-tmenu)))
+(keymap-set calendar-mode-map "C-o" #'casual-calendar-tmenu)
+(add-hook 'ediff-keymap-setup-hook
+          (lambda ()
+            (keymap-set ediff-mode-map "C-o" #'casual-ediff-tmenu)))
+(keymap-set ibuffer-mode-map "C-o" #'casual-ibuffer-tmenu)
+(keymap-set ibuffer-mode-map "F"   #'casual-ibuffer-filter-tmenu)
+(keymap-set ibuffer-mode-map "s"   #'casual-ibuffer-sortby-tmenu)
+(keymap-set Info-mode-map "C-o" #'casual-info-tmenu)
+(keymap-set isearch-mode-map "C-o" #'casual-isearch-tmenu)
+(add-hook 'reb-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-o") #'casual-re-builder-tmenu)))
+(add-hook 'calc-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-o") #'casual-calc-tmenu)))
+(with-eval-after-load 'calc
+  (keymap-set calc-mode-map "C-o" #'casual-calc-tmenu)
+  (keymap-set calc-alg-map  "C-o" #'casual-calc-tmenu))
+(keymap-set compilation-mode-map "C-o" #'casual-compile-tmenu)
+(keymap-set grep-mode-map "C-o" #'casual-compile-tmenu)
+#+end_src
+
+*** Timezones
+
+#+begin_src emacs-lisp
+(use-package time-zones
+  :ensure t)
+#+end_src
 ** Org
 
 *** Agenda files
@@ -1606,151 +1811,6 @@ SQL on Org files (Babel)
 #+end_src
 
 
-** Mail
-
-Configuration emailing with `mu4e` client and `mbsync` as backend. The
-package is not available in MELPA/ELPA/GNU, but rather a system
-package (hence the requires).
-
-*** Mu4e config
-
-#+begin_src emacs-lisp
-(use-package mu4e
-  :ensure t
-  :if (eq system-type 'gnu/linux)
-  :config
-  ;; Load mu4e and related packages
-  (require 'mu4e-contrib)
-  (require 'mu4e-org)
-  (require 'smtpmail)
-
-  ;; mu4e settings
-  (setq mu4e-mu-binary "/usr/bin/mu"
-        mail-user-agent 'mu4e-user-agent
-        mu4e-maildir "~/Maildir"
-        mu4e-attachment-dir "~/Downloads"
-        mu4e-change-filenames-when-moving t
-        mu4e-completing-read-function 'completing-read
-        mu4e-compose-complete-addresses t
-        mu4e-compose-context-policy nil
-        mu4e-compose-dont-reply-to-self t
-        mu4e-compose-keep-self-cc nil
-        mu4e-context-policy 'pick-first
-        mu4e-get-mail-command "mbsync -a"
-        auth-source-debug nil
-        auth-source-do-cache nil
-        mu4e-headers-date-format "%d-%m-%Y %H:%M"
-        mu4e-headers-fields '((:date . 22)
-                              (:flags . 6)
-                              (:from . 22)
-                              (:subject))
-        mu4e-headers-include-related t
-        mu4e-view-show-addresses t
-        mu4e-view-show-images t
-        message-kill-buffer-on-exit t
-        message-send-mail-function 'smtpmail-send-it
-        smtpmail-debug-info t
-        mm-sign-option 'guided
-        smtpmail-queue-mail nil)
-
-  ;; Define contexts
-  (setq mu4e-contexts
-        (list
-         (make-mu4e-context
-          :name "personal"
-          :enter-func
-          (lambda () (mu4e-message "Entering manuel@manuel.is context"))
-          :leave-func
-          (lambda () (mu4e-message "Leaving manuel@manuel.is context"))
-          :match-func (lambda (msg)
-                        (when msg
-                          (or (mu4e-message-contact-field-matches msg :to "manuel@manuel.is")
-                              (mu4e-message-contact-field-matches msg :from "manuel@manuel.is")
-                              (string-match-p "^/personal" (mu4e-message-field msg :maildir)))))
-          :vars `((user-mail-address . "manuel@manuel.is")
-                  (user-full-name    . "Manuel González")
-                  (smtpmail-smtp-server  . "127.0.0.1")
-                  (smtpmail-smtp-service . "1025")
-                  (smtpmail-stream-type  . starttls)
-                  (smtpmail-smtp-user . "manuel@manuel.is")
-                  (mu4e-sent-folder . "/personal/Sent")
-                  (mu4e-drafts-folder . "/personal/Drafts")
-                  (mu4e-trash-folder . "/personal/Trash")
-                  (mu4e-refile-folder . "/personal/Archive")
-                  (mu4e-maildir-shortcuts . ((:maildir "/personal/Inbox" :name "Inbox" :key ?i)
-                                             (:maildir "/personal/Archive" :name "Archive" :key ?a)
-                                             (:maildir "/personal/Drafts" :name "Drafts" :key ?d)
-                                             (:maildir "/personal/Trash" :name "Trash" :key ?t)
-                                             (:maildir "/personal/Starred" :name "Starred" :key ?S)
-                                             (:maildir "/personal/Sent" :name "Sent" :key ?s)))
-                  (mu4e-bookmarks . ((:name  "Unread messages"
-                                         :query "maildir:/personal/Inbox AND flag:unread AND NOT flag:trashed"
-                                         :key ?u)
-                                     (:name "Today's messages"
-                                            :query "maildir:/personal/Inbox AND date:today..now"
-                                            :key ?n)
-                                     (:name "Starred messages"
-                                            :query "maildir:/personal/Starred"
-                                            :key ?s)))))
-   )
-
-  ;; Set face for unread emails
-  (set-face-foreground 'mu4e-unread-face "yellow"))
-
-  ;; Define the sign or encrypt message function
-  (defun sign-or-encrypt-message ()
-    "Request to sign or encrypt the email upon sending."
-    (let ((answer (read-from-minibuffer "Sign or encrypt?\nEmpty to do nothing.\n[s/e]: ")))
-      (cond
-       ((string-equal answer "s") (progn
-                                    (message "Signing message.")
-                                    (mml-secure-message-sign-pgpmime)))
-       ((string-equal answer "e") (progn
-                                    (message "Encrypt and signing message.")
-                                    (mml-secure-message-encrypt-pgpmime)))
-       (t (progn
-            (message "Don't signing or encrypting message.")
-            nil)))))
-
-  :hook
-  ;; Automatically sign or encrypt the message when sending
-  (message-send-hook . sign-or-encrypt-message))
-#+end_src
-
-
-*** Inline images
-Viewing inline images, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Viewing-images-inline.html][here]].
-
-#+begin_src emacs-lisp
-(if (eq system-type 'gnu/linux)
-  (when (fboundp 'imagemagick-register-types)
-    (imagemagick-register-types)))
-#+end_src
-
-*** Attachments
-Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-files-with-dired.html][here]].
-
-#+begin_src emacs-lisp
-;; make the `gnus-dired-mail-buffers' function also work on
-;; message-mode derived modes, such as mu4e-compose-mode
-(defun gnus-dired-mail-buffers ()
-  "Return a list of active message buffers."
-  (let (buffers)
-    (save-current-buffer
-      (dolist (buffer (buffer-list t))
-        (set-buffer buffer)
-        (when (and (derived-mode-p 'message-mode)
-                (null message-sent-message-via))
-          (push (buffer-name buffer) buffers))))
-    (nreverse buffers)))
-
-(if (eq system-type 'gnu/linux)
-  (when (require 'gnus-dired nil 'noerror)
-  (setq gnus-dired-mail-mode 'mu4e-user-agent)
-  (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)))
-#+end_src
-
-
 ** Keybindings
 
 Open this file
@@ -1768,8 +1828,17 @@ Ibuffer
 Use `C-x C-0` to restore font size.
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-+") 'text-scale-increase)        ; Bigger
-(global-set-key (kbd "C--") 'text-scale-decrease)        ; Smaller
+(global-set-key (kbd "C-+") (lambda ()
+                              (interactive)
+                              (set-face-attribute 'default nil :height
+                                                  (+ (face-attribute 'default :height) 10))))
+(global-set-key (kbd "C--") (lambda ()
+                              (interactive)
+                              (set-face-attribute 'default nil :height
+                                                  (- (face-attribute 'default :height) 10))))
+(global-set-key (kbd "C-0") (lambda ()
+                              (interactive)
+                              (set-face-attribute 'default nil :height 140)))
 #+END_SRC
 
 Bind backward-kill-word to C-w
@@ -1825,12 +1894,6 @@ Resize window
 (define-key global-map (kbd "M-s-<up>") 'enlarge-window)
 #+end_src
 
-Yasnippet insert
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-'") 'yas-insert-snippet)
-#+end_src
-
 Insert emoji globally
 
 #+begin_src emacs-lisp
@@ -1866,3 +1929,15 @@ NOTE: Only in Finland such a thing is needed as week numbers...
         'font-lock-face 'calendar-iso-week-face))
 #+end_src
 
+
+#+begin_src emacs-lisp
+(defun treesit-show-parser-used-at-point ()
+  "Shows treesit parser used at point."
+  (interactive)
+  (if (and (fboundp 'treesit-available-p)
+           (treesit-available-p))
+      (message (format "%s" (treesit-language-at (point))))
+    (message "treesit is not available")
+  )
+)
+#+end_src
