@@ -1559,7 +1559,12 @@ https://www.youtube.com/watch?v=-eMmmAKcFR4
 (keymap-set grep-mode-map "C-o" #'casual-compile-tmenu)
 #+end_src
 
+*** Timezones
 
+#+begin_src emacs-lisp
+(use-package time-zones
+  :ensure t)
+#+end_src
 ** Org
 
 *** Agenda files

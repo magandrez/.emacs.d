@@ -35,3 +35,4 @@ tree-sitter/*
 snippets/*
 .mc-lists.el
 custom.el
+.time-zones.el
