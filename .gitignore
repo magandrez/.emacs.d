@@ -33,3 +33,4 @@ oauth2-auto.plist
 multisession
 tree-sitter/*
 snippets/*
+.mc-lists.el
