@@ -1524,9 +1524,9 @@ https://www.youtube.com/watch?v=-eMmmAKcFR4
 (use-package casual
   :ensure t)
 (keymap-global-set "C-o" #'casual-editkit-main-tmenu)
-(keymap-set dired-mode-map "C-o" #'casual-dired-tmenu)
-(keymap-set dired-mode-map "s" #'casual-dired-sort-by-tmenu)
-(keymap-set dired-mode-map "/" #'casual-dired-search-replace-tmenu)
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-o") #'casual-dired-tmenu)))
 (add-hook 'org-agenda-mode-hook
           (lambda ()
             (local-set-key (kbd "C-o") #'casual-agenda-tmenu)))
