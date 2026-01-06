@@ -135,19 +135,22 @@ https://www.nerdfonts.com/font-downloads
 
 #+begin_src emacs-lisp
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 140 :width normal :foundry "PfEd" :family "InconsolataGo Nerd Font Mono"))))
+ '(default ((t (:background "#272822"
+                            :foreground "#F8F8F2"
+                            :height 140
+                            :weight regular
+                            :slant normal
+                            :width normal
+                            :foundry "PfEd"
+                            :family "InconsolataGo Nerd Font Mono"))))
  '(italic ((t (:underline nil))))
- '(lazy-highlight ((t (:inherit highlight :background "DarkGoldenrod1")))))
-#+end_src
+ '(highlight ((t (:distant-foreground unspecified))))
+ '(lazy-highlight ((t (:background "DarkGoldenrod1"
+                                   :distant-foreground unspecified
+                                   :underline nil
+                                   :weight normal
+                                   :slant normal)))))
 
-#+begin_src emacs-lisp
-(setq custom-safe-themes
- '("37c8c2817010e59734fe1f9302a7e6a2b5e8cc648cf6a6cc8b85f3bf17fececf" default)
- )
 #+end_src
 
 Increase text size on Mac OS X (Macbook Air )
