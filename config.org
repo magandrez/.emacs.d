@@ -444,7 +444,7 @@ as of today.
   :hook (vue-mode . prettier-js-mode))
 #+end_src
 
-*** LSP
+*** Language Server Protocol (LSP)
 
 Below, the configuration for LSP, reworked to work with treesitter modes.
 
@@ -682,26 +682,17 @@ Handles code completion
 #+begin_src emacs-lisp
 (use-package company
   :ensure t
-  :after lsp-mode ;; ensures lsp-mode-map is defined
+  :after lsp-mode
   :hook (prog-mode . company-mode)
   :init
   (setq company-minimum-prefix-length 2
-        company-idle-delay 0.05
+        company-idle-delay 0.150
         company-tooltip-align-annotations t
-        company-tooltip-limit 15
+        company-tooltip-limit 10
         company-show-numbers t
-        company-require-match nil
         company-selection-wrap-around t)
   :config
-  ;; Backend list
-  (setq company-backends
-        '((company-capf company-yasnippet)
-          company-files
-          company-keywords
-          company-ispell
-          company-dabbrev-code
-          company-etags))
-  ;; Keybindings
+  (setq company-backends '((company-capf company-yasnippet)))
   (define-key company-active-map (kbd "<tab>") 'company-complete-selection)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
@@ -710,12 +701,8 @@ Handles code completion
 (use-package company-box
   :ensure t
   :defer t
+  :diminish
   :hook (company-mode . company-box-mode))
-
-(use-package company-quickhelp
-  :ensure t
-  :defer t
-  :hook (company-mode . company-quickhelp-mode))
 #+end_src
 
 *** Golang
