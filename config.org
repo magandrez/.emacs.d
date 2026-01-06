@@ -1246,9 +1246,10 @@ Use flyspell for highlighting and correcting spelling mistakes.
   :ensure t
   :diminish
   :defer t
-  :hook
-    (text-mode . flyspell-mode)
-  :custom (setq flyspell-correct-interface #'flyspell-correct-dummy))
+  :hook (text-mode . flyspell-mode)
+  :custom
+    (flyspell-correct-interface #'flyspell-correct-dummy)
+    (ispell-quietly t))
 #+end_src
 
 *** Ripgrep
