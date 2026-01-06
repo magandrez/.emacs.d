@@ -1355,7 +1355,8 @@ Detect the operating system and set ispell-program-name accordingly
     (set-fontset-font
      t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend))
   (setq emojify-display-style 'github)
-  (setq emojify-emoji-styles '(github)))
+  (setq emojify-emoji-styles '(github))
+  (global-set-key (kbd "C-ö") #'emojify-insert-emoji))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1799,7 +1800,6 @@ Resize window
 Insert emoji globally
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-ö") 'emojify-insert-emoji)
 #+end_src
 
 Comment DWIM
