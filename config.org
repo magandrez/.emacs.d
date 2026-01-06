@@ -1802,7 +1802,7 @@ Insert emoji globally
 Comment DWIM
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-;") 'comment-dwim)
+(global-set-key (kbd "s-;") 'comment-dwim)
 #+end_src
 
 
