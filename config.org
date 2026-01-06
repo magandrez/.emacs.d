@@ -1786,25 +1786,19 @@ Global Copy & Paste in Unix
 Miscellaneous keybindings
 
 #+begin_src emacs-lisp
-(define-key global-map (kbd "s-d") 'projectile-find-dir)       ;; Find folder in project
-(define-key global-map (kbd "s-f") 'projectile-find-file)      ;; Find file in project
-(define-key global-map (kbd "s-p") 'projectile-switch-project) ;; Switch project
-(define-key global-map (kbd "s-m") 'magit-status)              ;; Magit status
-(define-key global-map (kbd "s-e") 'elfeed) ;; Elfeed
+(global-set-key (kbd "s-d") #'projectile-find-dir)       ;; Find folder in project
+(global-set-key (kbd "s-f") #'projectile-find-file)      ;; Find file in project
+(global-set-key (kbd "s-p") #'projectile-switch-project) ;; Switch project
+(global-set-key (kbd "s-m") #'magit-status)              ;; Magit status
 #+end_src
 
 Resize window
 
 #+begin_src emacs-lisp
-(define-key global-map (kbd "M-s-<left>") 'shrink-window-horizontally)
-(define-key global-map (kbd "M-s-<right>") 'enlarge-window-horizontally)
-(define-key global-map (kbd "M-s-<down>") 'shrink-window)
-(define-key global-map (kbd "M-s-<up>") 'enlarge-window)
-#+end_src
-
-Insert emoji globally
-
-#+begin_src emacs-lisp
+(global-set-key (kbd "M-s-<left>")  #'shrink-window-horizontally)
+(global-set-key (kbd "M-s-<right>") #'enlarge-window-horizontally)
+(global-set-key (kbd "M-s-<down>")  #'shrink-window)
+(global-set-key (kbd "M-s-<up>")    #'enlarge-window)
 #+end_src
 
 Comment DWIM
