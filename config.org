@@ -1278,62 +1278,6 @@ Use flyspell for highlighting and correcting spelling mistakes.
   :custom (setq flyspell-correct-interface #'flyspell-correct-dummy))
 #+end_src
 
-*** RSS
-
-Use [[https://github.com/skeeto/elfeed][elfeed]] for RSS
-
-#+begin_src emacs-lisp
-(use-package elfeed
-  :ensure t
-  :defer t
-  :bind (:map elfeed-search-mode-map
-   ("m" . elfeed-toggle-star))
-  :config
-  (setq elfeed-search-title-max-width 150)
-
-(defalias 'elfeed-toggle-star
-  (elfeed-expose #'elfeed-search-toggle-all 'star))
-
-(eval-after-load 'elfeed-search
-  '(define-key elfeed-search-mode-map (kbd "m") 'elfeed-toggle-star))
-
-;; face for starred articles
-(defface elfeed-search-star-title-face
-  '((t :foreground "#f77"))
-  "Marks a starred Elfeed entry.")
-
-(push '(star elfeed-search-star-title-face) elfeed-search-face-alist)
-
-)
-
-(use-package elfeed-goodies
-  :ensure t
-  :defer t
-  :after elfeed
-  :config
-  (elfeed-goodies/setup)
-  (setq elfeed-goodies/entry-pane-position 'bottom
-        elfeed-goodies/switch-to-entry nil
-        elfeed-goodies/feed-source-column-width 25
-        elfeed-goodies/tag-column-width 27))
-
-(use-package elfeed-org
-  :defer t
-  :after elfeed
-  :ensure t
-  :config
-  (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/workbench/fun/feeds/rss.org")))
-
-(use-package elfeed-dashboard
-  :after elfeed
-  :ensure t
-  :config
-  (setq elfeed-dashboard-file "~/workbench/fun/feeds/dashboard.org")
-  ;; update feed counts on elfeed-quit
-  (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
-#+end_src
-
 *** Ripgrep
 
 `ripgrep` is a fast grep tool built in Rust. [[https://github.com/dajva/rg.el][rg]] is a `ripgrep`
@@ -1565,6 +1509,7 @@ https://www.youtube.com/watch?v=-eMmmAKcFR4
 (use-package time-zones
   :ensure t)
 #+end_src
+
 ** Org
 
 *** Agenda files
