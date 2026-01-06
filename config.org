@@ -360,30 +360,32 @@ org-gfm-export-to-markdown`. Source: https://github.com/larstvei/ox-gfm
 
 *** Ruby
 
+Controlled by LSP and direnv
+
+- Create a folder and drop .ruby-version and .ruby-gemset with the
+  desired Ruby version and gemset to use.
+- Create a .envrc with the following:
+
+#+begin_src
+source "$HOME/.rvm/scripts/rvm"
+rvm use
+#+end_src
+
+- Make sure to install ruby-lsp
+
+#+begin_src
+gem install ruby-lsp
+#+end_src
+
 #+begin_src emacs-lisp
 (use-package ruby-mode
   :ensure t
-  :mode (("\\.rb$" . ruby-mode)
-         ("\\.rake$" . ruby-mode)
-         ("\\.ru$" . ruby-mode)
-         ("Gemfile$" . ruby-mode)
-         ("Rakefile$" . ruby-mode)
-         ("Capfile$" . ruby-mode)
-         ("\\.gemspec$" . ruby-mode))
-  :init
-  (setq ruby-insert-encoding-magic-comment nil
-        ruby-indent-tabs-mode nil
-        ruby-mode-hook 2))
-#+end_src
-
-Use [[https://rvm.io/][RVM]] to manage gems.
-
-
-#+begin_src emacs-lisp
-(use-package rvm
-  :ensure
-  :config
-  (rvm-use-default))
+  :hook
+  ((ruby-ts-mode . (lambda ()
+                     (setq-local ruby-insert-encoding-magic-comment nil
+                                 ruby-indent-tabs-mode nil
+                                 tab-width 2)
+                     (add-hook 'before-save-hook #'lsp-format-buffer nil t)))))
 #+end_src
 
 *** Javascript/Typescript
@@ -533,6 +535,9 @@ Completion framework is controlled by lsp-completion-provider.
     (lsp-elixir-server-command `(,(expand-file-name "~/.local/share/elixir-ls/release/language_server.sh")))
     (lsp-elixir-dialyzer-enabled nil)
     (lsp-elixir-fetch-deps t)
+    ;; Ruby
+    (lsp-ruby-lsp-server-command '("ruby-lsp"))
+    (lsp-ruby-lsp-use-bundler nil)
   :init
     ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
     (advice-add (if (progn (require 'json)
@@ -542,7 +547,6 @@ Completion framework is controlled by lsp-completion-provider.
                 :around
                 #'lsp-booster--advice-json-parse)
     (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
-
   :preface
     (defun lsp-booster--advice-json-parse (old-fn &rest args)
       "Try to parse bytecode instead of json."
@@ -623,6 +627,13 @@ Use tree-sitter for grokking language tokens for highlighting syntax.
          ("\\.go\\'" . go-ts-mode)
          ("\\.ex\\'" . elixir-ts-mode)
          ("\\.exs\\'" . elixir-ts-mode)
+         ("\\.rb\\'" . ruby-ts-mode)
+         ("\\.rake\\'" . ruby-ts-mode)
+         ("\\.ru\\'" . ruby-ts-mode)
+         ("Gemfile\\'" . ruby-ts-mode)
+         ("Rakefile\\'" . ruby-ts-mode)
+         ("Capfile\\'" . ruby-ts-mode)
+         ("\\.gemspec\\'" . ruby-ts-mode)
   )
   :preface
   (defun setup-install-grammars ()
@@ -637,6 +648,7 @@ Use tree-sitter for grokking language tokens for highlighting syntax.
                (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.25.0"))
                (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile" "v0.2.0"))
                (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src"))
+               (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby" "v0.23.1"))
                (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src"))
                (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))))
       (unless (treesit-language-available-p (car grammar))
@@ -656,6 +668,7 @@ Use tree-sitter for grokking language tokens for highlighting syntax.
                (yaml-mode . yaml-ts-mode)
                (go-mode . go-ts-mode)
                (toml-mode . go-ts-mode)
+               (ruby-mode . ruby-ts-mode)
                (dockerfile-mode . dockerfile-ts-mode)))
       (add-to-list 'major-mode-remap-alist mapping)))
   :config
