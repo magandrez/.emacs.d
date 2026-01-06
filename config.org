@@ -973,15 +973,17 @@ project or a directory, á la Eclipse or other common IDEs.
   (("C-c o p" . treemacs-projectile)))
 #+END_SRC
 
-*** Yafolding
+*** Code folding
 
-Fold code. I found `yafolding` simplier to use than e.g.: `origami`
+Fold code. I found yafolding simplier to use than e.g.: origami and
+more feature complete than treesit-fold.
 #+BEGIN_SRC emacs-lisp
 (use-package yafolding
   :ensure t
-  :hook ((ruby-mode . yafolding-mode))
-  :bind (("M-n" . yafolding-toggle-element)
-         ("M-m" . yafolding-toggle-all)))
+  :hook ((prog-mode text-mode) . yafolding-mode)
+  :bind (:map yafolding-mode-map
+              ("M-n" . yafolding-toggle-element)
+              ("M-m" . yafolding-toggle-all)))
 #+END_SRC
 
 *** Verb
