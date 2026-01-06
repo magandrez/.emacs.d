@@ -27,12 +27,11 @@ Miscellaneous defaults below
 (savehist-mode 1)              ;; Save history typed in minibuffer
 (global-auto-revert-mode 1)
 
-;; Explicit mode enabling via function calls ---
+;; Explicit mode enabling via function calls
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (blink-cursor-mode -1)
 (global-display-line-numbers-mode 1)
-
 
 (setq
   auth-source-save-behavior nil
@@ -115,10 +114,9 @@ Performance tweak from [[https://emacs-lsp.github.io/lsp-mode/page/performance/]
 (setq gc-cons-threshold 1000000000)
 #+end_src
 
-
 *** Theme
 
-Use `monokai` theme for Emacs.
+Use monokai theme for Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package monokai-theme
@@ -159,7 +157,6 @@ Increase text size on Mac OS X (Macbook Air )
   (set-face-attribute 'default nil :height 140))
 #+end_src
 
-
 *** Column enforce mode
 Because 80 columns is THE
 rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
@@ -176,7 +173,6 @@ rule. https://www.kernel.org/doc/Documentation/process/coding-style.rst
 ;; Add the hook to programming-related modes
 (add-hook 'prog-mode-hook 'enable-fill-column-indicator-in-prog-mode)
 #+end_src
-
 
 *** OS customizations
 **** Mac keys
@@ -202,7 +198,6 @@ The values can be `'control`, `'alt`, `'meta`, `'super`, `'hyper` or `nil` (sett
                   mac-right-option-modifier nil                     ; Disable the right Alt key
                   dired-use-ls-dired nil)))                         ; macOS command ls doesn't support --dired option
 #+end_src
-
 
 *** Backups
 
@@ -270,7 +265,6 @@ Marks are indicated by lines starting with an uppercase letter."
 (define-key package-menu-mode-map (kbd "a") #'package-menu-find-marks)
 #+end_src
 
-
 *** Reload config
 
 Reloads Emacs config without having to restart the service.
@@ -281,7 +275,6 @@ Reloads Emacs config without having to restart the service.
   (interactive)
   (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
 #+end_src
-
 
 *** Bug hunting on Emacs init file
 
@@ -718,6 +711,7 @@ Handles code completion
 *** Elixir
 
 --> Handled with Treesitter.
+
 
 ** Features
 
@@ -1239,7 +1233,7 @@ Use flyspell for highlighting and correcting spelling mistakes.
 
 *** Ripgrep
 
-`ripgrep` is a fast grep tool built in Rust. [[https://github.com/dajva/rg.el][rg]] is a `ripgrep`
+ripgrep is a fast grep tool built in Rust. [[https://github.com/dajva/rg.el][rg]] is a ripgrep
 frontend for Emacs.
 
 #+begin_src emacs-lisp
@@ -1832,17 +1826,4 @@ NOTE: Only in Finland such a thing is needed as week numbers...
                  (calendar-iso-from-absolute
                   (calendar-absolute-from-gregorian (list month day year)))))
         'font-lock-face 'calendar-iso-week-face))
-#+end_src
-
-
-#+begin_src emacs-lisp
-(defun treesit-show-parser-used-at-point ()
-  "Shows treesit parser used at point."
-  (interactive)
-  (if (and (fboundp 'treesit-available-p)
-           (treesit-available-p))
-      (message (format "%s" (treesit-language-at (point))))
-    (message "treesit is not available")
-  )
-)
 #+end_src
