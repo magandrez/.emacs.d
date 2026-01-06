@@ -1218,9 +1218,7 @@ yasnippet-snippets. Note the folders stored in yas-snippet-dirs.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :ensure t
-  :hook
-  ((prog-mode . yas-minor-mode)
-   (text-mode . yas-minor-mode))
+  :hook ((prog-mode . yas-minor-mode))
   :init
   (setq yas-verbosity 1
         yas-wrap-around-region t
