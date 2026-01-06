@@ -296,7 +296,7 @@ Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp
 ** Languages / frameworks
 
 *** JSON
---> Handled with Treesitter and LSP.
+--> Handled with Treesitter.
 *** Dot
 
 #+begin_src emacs-lisp
@@ -315,9 +315,9 @@ Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp
 #+end_src
 
 *** Docker
---> Handled with Treesitter and LSP.
+--> Handled with Treesitter.
 *** HTML
---> Handled with Treesitter and LSP.
+--> Handled with Treesitter.
 *** Markdown
 
 Install `pandoc` package with your package manager:
@@ -348,7 +348,7 @@ org-gfm-export-to-markdown`. Source: https://github.com/larstvei/ox-gfm
 #+end_src
 
 *** YAML
---> Handled with Treesitter and LSP.
+--> Handled with Treesitter.
 *** CSV
 
 #+BEGIN_SRC emacs-lisp
@@ -404,30 +404,24 @@ take care of the rest.
 The below takes care of running prettier:
 
 #+begin_src emacs-lisp
-(defun my/setup-typescript-env-and-lsp ()
-  (my/load-direnv-env)
-  (when (derived-mode-p 'typescript-ts-mode 'tsx-ts-mode 'js-ts-mode 'javascript-mode)
-    (setq-local tab-width 2
-                indent-tabs-mode nil
-                typescript-indent-level 2
-                js-indent-level 2))
-  (unless yas-minor-mode
-    (yas-minor-mode 1))
-  (cond
-   ((derived-mode-p 'js-ts-mode 'javascript-mode)
-    (with-eval-after-load 'js2-mode
-      (yas-reload-all)))
-   ((derived-mode-p 'typescript-ts-mode 'tsx-ts-mode)
-    (with-eval-after-load 'typescript-mode
-      (yas-reload-all))))
-  (message "[env+lsp] Setting up TypeScript LSP.")
-  (lsp-deferred))
+(use-package typescript-mode
+  :ensure t
+  :hook ((typescript-ts-mode
+          tsx-ts-mode
+          js-ts-mode)
+         . (lambda ()
+             (setq-local tab-width 2
+                         indent-tabs-mode nil
+                         typescript-indent-level 2
+                         js-indent-level 2))))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package prettier
+(use-package prettier-js
   :ensure t
-  :hook ((typescript-ts-mode tsx-ts-mode js-ts-mode js-mode) . prettier-mode))
+  :hook ((typescript-ts-mode
+          tsx-ts-mode
+          js-ts-mode) . prettier-js-mode))
 #+end_src
 
 --> For the rest of JS/TS config, see Treesitter and LSP sections.
@@ -458,22 +452,22 @@ other implementations worked better). Feel free to explore if the
 implementations have improved by removing them from the lsp-disabled-clients
 alist and setting them up.
 
-This setup is originally set to work with Corfu providing
-completions. Completion framework is controlled by lsp-completion-provider.
+Completion framework is controlled by lsp-completion-provider.
 
 #+begin_src emacs-lisp               
 (use-package lsp-mode
-  :hook ((lsp-mode . lsp-enable-which-key-integration)
-         (elixir-ts-mode . my/setup-elixir-env-and-lsp)
-         (typescript-ts-mode . my/setup-typescript-env-and-lsp)
-         (tsx-ts-mode . my/setup-typescript-env-and-lsp)
-         (js-ts-mode . my/setup-typescript-env-and-lsp)
-         (go-ts-mode . my/setup-go-env-and-lsp))
-  :commands lsp lsp-deferred
   :ensure t
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+        ((ruby-ts-mode
+         elixir-ts-mode
+         typescript-ts-mode
+         tsx-ts-mode
+         js-ts-mode) . lsp-deferred))
+  :commands lsp lsp-deferred
   :diminish "LSP"
   :custom
-    (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls credo-language-server)) ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
+    ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
+    (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls credo-language-server semgrep))
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
     (lsp-diagnostics-provider :flycheck)
     (lsp-prefer-flymake nil)
@@ -570,12 +564,7 @@ completions. Completion framework is controlled by lsp-completion-provider.
             (progn
               (message "Using emacs-lsp-booster for %s!" orig-result)
               (cons "emacs-lsp-booster" orig-result))
-          orig-result)))
-  :config
-  (use-package add-node-modules-path
-    :ensure t
-    :defer t
-    :hook ((tsx-ts-mode typescript-ts-mode vue-mode js-ts-mode) . add-node-modules-path)))
+          orig-result))))
 
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/infrastructure/\\'")
@@ -719,59 +708,28 @@ Handles code completion
 *** Golang
 
 #+begin_src emacs-lisp
-(defun my/setup-go-env-and-lsp ()
-  (my/load-direnv-env)
-  (message "[env+lsp] Setting up Go LSP.")
-  (lsp-deferred)
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(use-package go-mode
+  :ensure t
+  :hook ((go-ts-mode . (lambda ()
+                       (add-hook 'before-save-hook #'lsp-format-buffer t t)
+                       (add-hook 'before-save-hook #'lsp-organize-imports t t)))))
 #+end_src
 
 *** Elixir
 
-This relies on the custom-made kludge that is defined in the section
-"Environment".
-
-#+begin_src emacs-lisp
-(defun my/setup-elixir-env-and-lsp ()
-  (my/load-direnv-env)
-  (message "[env+lsp] Setting up Elixir LSP.")
-  (lsp-deferred))
-#+end_src
-
+--> Handled with Treesitter.
 
 ** Features
 
 *** Environment
 
-**** Load specific environment with custom-made stuff.
-
 Use direnv for this (make sure it is installed with your package manager).
 
 #+begin_src emacs-lisp
-(defun my/load-direnv-env ()
-  "Load environment using direnv with fish for the current buffer's project."
-  (let* ((project-dir (or (when-let ((proj (project-current)))
-                            (project-root proj))
-                          default-directory))
-         (env-output
-          (with-temp-buffer
-            (when (zerop
-                   (call-process
-                    "/usr/bin/direnv" nil t nil
-                    "exec" project-dir "fish" "-c" "env"))
-              (buffer-string)))))
-    (when env-output
-      (dolist (line (split-string env-output "\n" t))
-        (when (string-match "\\`\\([^=]+\\)=\\(.*\\)\\'" line)
-          (let ((var (match-string 1 line))
-                (val (match-string 2 line)))
-            (setenv var val)
-            (when (string= var "PATH")
-              (setq exec-path
-                    (append (parse-colon-path val)
-                            (list exec-directory))))))))
-    (message "[env] Loaded env for %s" project-dir)))
+(use-package envrc
+  :ensure t
+  :if (executable-find "direnv")
+  :hook (after-init . envrc-global-mode))
 #+end_src
 
 *** Which-key
@@ -1509,6 +1467,7 @@ https://www.youtube.com/watch?v=-eMmmAKcFR4
 (use-package time-zones
   :ensure t)
 #+end_src
+
 
 ** Org
 
