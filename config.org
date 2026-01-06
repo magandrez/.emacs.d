@@ -441,7 +441,7 @@ as of today.
 (use-package vue-mode
   :ensure t
   :mode "\\.vue\\'"
-  :hook (vue-mode . prettier-mode))
+  :hook (vue-mode . prettier-js-mode))
 #+end_src
 
 *** LSP
