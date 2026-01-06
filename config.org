@@ -1719,7 +1719,12 @@ SQL on Org files (Babel)
 Open this file
 
 #+begin_src emacs-lisp
-(define-key global-map (kbd "ESC ESC c")(lambda() (interactive)(find-file "~/.emacs.d/config.org")))
+(defun open-config ()
+  "Open my Emacs config file."
+  (interactive)
+  (find-file "~/.emacs.d/config.org"))
+
+(global-set-key (kbd "ESC ESC c") #'open-config)
 #+end_src
 
 Ibuffer
