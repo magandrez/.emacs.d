@@ -1829,3 +1829,14 @@ NOTE: Only in Finland such a thing is needed as week numbers...
                   (calendar-absolute-from-gregorian (list month day year)))))
         'font-lock-face 'calendar-iso-week-face))
 #+end_src
+
+
+#+begin_src emacs-lisp
+(defun js-stacktrace-format ()
+  "Format a JavaScript stack trace by breaking \\n."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (search-forward "\\n" nil t)
+      (replace-match "\n" nil t))))
+#+end_src
