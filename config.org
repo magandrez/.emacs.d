@@ -859,13 +859,13 @@ to the daemon started from a systemd service definition.
       epa-pinentry-mode 'loopback)
 #+END_SRC
 
-For credentials, use `auth-source-pass`, included in Emacs 26. See
-more [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][here]].
+For credentials, use `auth-source-pass`, included in Emacs 26.
 
 #+begin_src emacs-lisp
 (use-package auth-source
   :no-require
-  :config (setq auth-sources '("~/.authinfo.gpg")))
+  :init (auth-source-pass-enable)
+  :config (setq auth-sources '(password-store)))
 #+end_src
 
 *** Tramp mode
