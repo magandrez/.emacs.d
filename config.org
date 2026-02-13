@@ -1038,6 +1038,33 @@ Use github-review along with forge. See more [[https://github.com/charignon/gith
    github-review-view-comments-in-code-lines-outdated t))
 #+end_src
 
+Use git-link to open links to Github (or other hosting) in the browser
+from Magit
+
+#+begin_src emacs-lisp
+(use-package git-link
+  :ensure t
+  :defer t
+  :after magit
+  :bind (("C-c g l" . git-link-dwim))
+  :config
+  (setq git-link-open-in-browser t
+        git-link-default-remote "origin"))
+#+end_src
+
+From [[https://mbork.pl/2026-02-02_git-link][Marcin Borkowski]]:
+
+#+begin_src emacs-lisp
+(defun git-link-dwim ()
+  "Call `git-link-commit' if on a hash or `git-link' otherwise."
+  (interactive)
+  (let ((word (word-at-point t)))
+    (call-interactively
+     (if (string-match-p "^[a-fA-F0-9]\\{7,40\\}$" (or word ""))
+         #'git-link-commit
+       #'git-link))))
+#+end_src
+
 *** Flycheck
 
 On-the-fly syntax checking
