@@ -1073,20 +1073,19 @@ On-the-fly syntax checking
 (use-package flycheck
   :ensure t
   :defer t
-  :diminish
-  :bind (:map flycheck-mode-map
-    ("M-s-n" . flycheck-next-error) ; optional but recommended error navigation
-    ("M-s-p" . flycheck-previous-error))
-  :init (global-flycheck-mode)
   :config
   (setq flycheck-check-syntax-automatically '(save mode-enabled)))
 
 (use-package flycheck-pos-tip
   :ensure t
-  :defer t
   :after flycheck
   :config
-  (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+  (flycheck-pos-tip-mode))
+
+(use-package flycheck-status-emoji
+  :ensure t
+  :after flycheck
+  :hook (flycheck-mode . flycheck-status-emoji-mode))
 #+end_src
 
 *** Vertico + Orderless + Marginalia + Consult
