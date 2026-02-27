@@ -1833,3 +1833,35 @@ NOTE: Only in Finland such a thing is needed as week numbers...
     (while (search-forward "\\n" nil t)
       (replace-match "\n" nil t))))
 #+end_src
+
+Switch between the last two buffers
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-x j") 'mode-line-other-buffer)
+#+end_src
+
+#+begin_src emacs-lisp
+(defun my/compile ()
+  "Save buffer and always prompt for compile command, remembering last one."
+  (interactive)
+  (save-buffer)
+  (let ((display-buffer-alist
+         '(("\\*compilation\\*"
+            (display-buffer-same-window)))))
+    (call-interactively #'compile '(4))))
+
+(defvar my/run-command nil)
+
+(defun my/run ()
+  "Save buffer and run a command, remembering last run command."
+  (interactive)
+  (save-buffer)
+  (let* ((cmd (read-shell-command "Run: " my/run-command))
+         (my/run-command cmd)
+         (display-buffer-alist
+          '(("\\*execution\\*"
+             (display-buffer-same-window)))))
+    (compile cmd)))
+
+(global-set-key (kbd "C-c C-c") #'my/compile)
+(global-set-key (kbd "C-c C-r") #'my/run)
+#+end_src
