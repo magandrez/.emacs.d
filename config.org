@@ -460,7 +460,8 @@ Completion framework is controlled by lsp-completion-provider.
          elixir-ts-mode
          typescript-ts-mode
          tsx-ts-mode
-         js-ts-mode) . lsp-deferred))
+         js-ts-mode
+         go-ts-mode) . lsp-deferred))
   :commands lsp lsp-deferred
   :diminish "LSP"
   :custom
