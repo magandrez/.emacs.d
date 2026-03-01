@@ -1074,14 +1074,35 @@ On-the-fly syntax checking
 (use-package flycheck
   :ensure t
   :defer t
+  :hook (after-init . global-flycheck-mode)
   :config
-  (setq flycheck-check-syntax-automatically '(save mode-enabled)))
+  (setq flycheck-check-syntax-automatically '(save mode-enabled)
+        flycheck-display-errors-delay 0.3))
+
+(add-to-list 'display-buffer-alist
+             `(,(rx bos "*Flycheck errors*" eos)
+              (display-buffer-reuse-window
+               display-buffer-in-side-window)
+              (side            . bottom)
+              (reusable-frames . visible)
+              (window-height   . 0.33)))
+
+(defun my/flycheck-focus-error-list ()
+  "Focus the Flycheck errors buffer if it's displayed."
+  (let ((buffer (get-buffer "*Flycheck errors*")))
+    (when buffer
+      (let ((window (get-buffer-window buffer)))
+        (when window
+          (select-window window))))))
+
+(advice-add 'flycheck-list-errors :after #'my/flycheck-focus-error-list)
 
 (use-package flycheck-pos-tip
   :ensure t
   :after flycheck
+  :hook (flycheck-mode . flycheck-pos-tip-mode)
   :config
-  (flycheck-pos-tip-mode))
+  (setq flycheck-pos-tip-timeout 999))
 
 (use-package flycheck-status-emoji
   :ensure t
