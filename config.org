@@ -1759,7 +1759,7 @@ package (hence the requires).
         mu4e-view-show-images t
         message-kill-buffer-on-exit t
         message-send-mail-function 'smtpmail-send-it
-        smtpmail-debug-info t
+        smtpmail-debug-info nil
         mm-sign-option 'guided
         smtpmail-queue-mail nil
         message-citation-line-format "On %a, %d %b %Y at %H:%M, %f wrote:\n"
