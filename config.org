@@ -1019,26 +1019,6 @@ Magit is love for Emacs.
    magit-log-section-commit-count 15))
 #+END_SRC
 
-Configuring forge
-#+begin_src emacs-lisp
-(use-package forge
-  :ensure t
-  :after magit)
-#+end_src
-
-Use github-review along with forge. See more [[https://github.com/charignon/github-review][here]].
-
-#+begin_src emacs-lisp
-(use-package github-review
-  :ensure t
-  :defer t
-  :config
-  (setq
-   github-review-reply-inline-comments t
-   github-review-view-comments-in-code-lines t
-   github-review-view-comments-in-code-lines-outdated t))
-#+end_src
-
 Use git-link to open links to Github (or other hosting) in the browser
 from Magit
 
