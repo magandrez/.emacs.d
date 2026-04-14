@@ -1763,7 +1763,7 @@ package (hence the requires).
         mm-sign-option 'guided
         smtpmail-queue-mail nil
         message-citation-line-format "On %a, %d %b %Y at %H:%M, %f wrote:\n"
-        message-citation-line-function: 'message-insert-formatted-citation-line)
+        message-citation-line-function 'message-insert-formatted-citation-line)
 
   ;; Define contexts
   (setq mu4e-contexts
