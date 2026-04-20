@@ -64,7 +64,9 @@ Miscellaneous defaults below
   version-control t
   window-combination-resize t
   xref-search-program 'ripgrep
-  bidi-inhibit-bpa t)
+  bidi-inhibit-bpa t
+  redisplay-skip-fontification-on-input t)
+
 
 (setq-default bidi-display-reordering 'left-to-right
               bidi-paragraph-direction 'left-to-right)
