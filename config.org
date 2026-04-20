@@ -63,7 +63,11 @@ Miscellaneous defaults below
   vc-follow-symlinks t
   version-control t
   window-combination-resize t
-  xref-search-program 'ripgrep)
+  xref-search-program 'ripgrep
+  bidi-inhibit-bpa t)
+
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
 
 (add-hook 'window-setup-hook
           (lambda ()
