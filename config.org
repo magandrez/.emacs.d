@@ -71,6 +71,8 @@ Miscellaneous defaults below
 (setq-default bidi-display-reordering 'left-to-right
               bidi-paragraph-direction 'left-to-right)
 
+(setopt isearch-lazy-count t)
+
 (add-hook 'window-setup-hook
           (lambda ()
             (scroll-bar-mode -1) ;; reliably disable scroll bar
