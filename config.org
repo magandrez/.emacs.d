@@ -65,8 +65,8 @@ Miscellaneous defaults below
   window-combination-resize t
   xref-search-program 'ripgrep
   bidi-inhibit-bpa t
-  redisplay-skip-fontification-on-input t)
-
+  redisplay-skip-fontification-on-input t
+  ffap-machine-p-known 'reject)
 
 (setq-default bidi-display-reordering 'left-to-right
               bidi-paragraph-direction 'left-to-right)
