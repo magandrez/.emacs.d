@@ -54,10 +54,7 @@ Miscellaneous defaults below
   native-comp-async-report-warnings-errors nil
   package-native-compile t
   package-selected-packages nil
-  scroll-conservatively 0
-  scroll-down-aggressively 0.01
-  scroll-margin 1
-  scroll-up-aggressively 0.01
+  scroll-conservatively 1
   show-paren-delay 0
   use-short-answers t
   vc-follow-symlinks t
