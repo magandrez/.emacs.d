@@ -34,7 +34,6 @@ Miscellaneous defaults below
 (global-display-line-numbers-mode 1)
 
 (setq
-  auth-source-save-behavior nil
   backup-by-copying t
   browse-url-browser-function 'browse-url-firefox
   completions-detailed t
@@ -866,7 +865,8 @@ For credentials, use `auth-source-pass`, included in Emacs 26.
 (use-package auth-source
   :no-require
   :init (auth-source-pass-enable)
-  :config (setq auth-sources '(password-store)))
+  :config (setq auth-sources '(password-store)
+                auth-source-save-behavior nil))
 #+end_src
 
 *** Tramp mode
