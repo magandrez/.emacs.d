@@ -720,6 +720,16 @@ Handles code completion
 
 --> Handled with Treesitter.
 
+*** SQL
+
+SQL formatter from Purcell FTW
+#+begin_src emacs-lisp
+(use-package sqlformat
+  :ensure t
+  :config (setq sqlformat-command 'pgformatter
+                sqlformat-args '("--no-space-function"))
+  :hook (sql-mode . sqlformat-on-save-mode))
+#+end_src
 
 ** Features
 
