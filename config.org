@@ -1820,6 +1820,12 @@ package (hence the requires).
   :hook
   ;; Automatically sign or encrypt the message when sending
   (message-send-hook . sign-or-encrypt-message))
+
+(defun mu4e-reply-all ()
+  (interactive)
+  (cl-letf (((symbol-function 'yes-or-no-p) (lambda (&rest _) t))
+            ((symbol-function 'y-or-n-p)    (lambda (&rest _) t)))
+    (mu4e-compose-reply)))
 #+end_src
 
 *** Inline images
