@@ -731,6 +731,7 @@ SQL formatter from Purcell FTW
   :hook (sql-mode . sqlformat-on-save-mode))
 #+end_src
 
+
 ** Features
 
 *** Environment
@@ -1469,6 +1470,14 @@ https://www.youtube.com/watch?v=-eMmmAKcFR4
 #+begin_src emacs-lisp
 (use-package time-zones
   :ensure t)
+#+end_src
+
+*** Move text around
+#+begin_src emacs-lisp
+(use-package move-text
+  :ensure t
+  :bind (("s-k" . move-text-region-down)
+         ("s-i" . move-text-region-up)))
 #+end_src
 
 
