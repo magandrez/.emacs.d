@@ -1730,11 +1730,9 @@ package (hence the requires).
 (use-package mu4e
   :ensure nil
   :config
-  (require 'mu4e-contrib)
-  (require 'mu4e-org)
   (require 'smtpmail)
   (setq mu4e-mu-binary "/usr/bin/mu"
-        mail-user-agent 'mu4e-user-agent
+        mail-user-agent 'mu4e
         mu4e-maildir "~/.mail/manuel@manuel.is"
         mu4e-attachment-dir "~/Downloads"
         mu4e-change-filenames-when-moving t
@@ -1744,6 +1742,7 @@ package (hence the requires).
         mu4e-compose-dont-reply-to-self t
         mu4e-compose-keep-self-cc nil
         mu4e-context-policy 'pick-first
+        mu4e-index-lazy-check t
         mu4e-update-interval 300
         mu4e-get-mail-command "mbsync -a"
         auth-source-debug nil
@@ -1752,6 +1751,7 @@ package (hence the requires).
         mu4e-headers-include-related t
         mu4e-view-show-addresses t
         mu4e-view-show-images t
+        mu4e-use-fancy-chars t
         message-kill-buffer-on-exit t
         message-send-mail-function 'smtpmail-send-it
         smtpmail-debug-info nil
@@ -1855,6 +1855,7 @@ Attachments on mu4e, read [[https://www.djcbsoftware.nl/code/mu/mu4e/Attaching-f
   (add-hook 'dired-mode-hook #'turn-on-gnus-dired-mode))
 #+end_src
 
+
 ** Keybindings
 
 Open this file
@@ -1954,8 +1955,8 @@ Mu4e keybinding
 (global-set-key (kbd "C-x m") 'mu4e)
 #+end_src
 
-** Custom
 
+** Custom
 
 Add week numbers to calendar
 
