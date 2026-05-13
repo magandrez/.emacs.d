@@ -690,7 +690,7 @@ Handles code completion
         company-idle-delay 0.150
         company-tooltip-align-annotations t
         company-tooltip-limit 10
-        company-show-numbers t
+        company-show-quick-access t
         company-selection-wrap-around t)
   :config
   (setq company-backends '((company-capf company-yasnippet)))
