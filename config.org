@@ -571,11 +571,6 @@ Completion framework is controlled by lsp-completion-provider.
               (cons "emacs-lsp-booster" orig-result))
           orig-result))))
 
-(with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/infrastructure/\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/ecs/\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]workbench/work/resq/apps/resq-main/public/.*[/\\\\]bundle\\'")
-)
 #+end_src
 
 LSP UI for all nice IDE-like overlays of documentation
