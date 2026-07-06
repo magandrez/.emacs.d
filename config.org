@@ -1729,7 +1729,7 @@ package is not available in MELPA/ELPA/GNU, but rather a system
 package (hence the requires).
 
 #+begin_src emacs-lisp
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/elpa-src/mu4e-1.12.15")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/elpa-src/mu4e-1.14.2")
 (require 'mu4e)
 (use-package mu4e
   :ensure nil
