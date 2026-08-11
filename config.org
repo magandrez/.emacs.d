@@ -24,6 +24,7 @@ https://macowners.club/posts/setq-vs-customize-set-variable/
 Miscellaneous defaults below
 
 #+begin_src emacs-lisp
+;; -*- lexical-binding: t; -*-
 (savehist-mode 1)              ;; Save history typed in minibuffer
 (global-auto-revert-mode 1)
 

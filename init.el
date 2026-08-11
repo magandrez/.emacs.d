@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;; init.el --- Setting up the basics
 ;;; Commentary:
 ;;; This template init.el setups the basic config that enable
