@@ -674,7 +674,6 @@ Use tree-sitter for grokking language tokens for highlighting syntax.
                (sgml-mode . html-ts-mode)
                (yaml-mode . yaml-ts-mode)
                (go-mode . go-ts-mode)
-               (toml-mode . go-ts-mode)
                (ruby-mode . ruby-ts-mode)
                (dockerfile-mode . dockerfile-ts-mode)
                (python-mode . python-ts-mode)
