@@ -466,11 +466,11 @@ Completion framework is controlled by lsp-completion-provider.
          typescript-ts-mode
          tsx-ts-mode
          js-ts-mode
-         go-ts-mode) . lsp-deferred))
+         go-ts-mode
+         terraform-mode) . lsp-deferred))
   :commands lsp lsp-deferred
   :diminish "LSP"
   :custom
-    ;; For Terraform, don't use tfls, but use Hashicorp's official implementation
     (lsp-disabled-clients '(vue-semantic-server angular-ls deno tfls credo-language-server semgrep))
     (lsp-keymap-prefix "C-l")           ; Prefix for LSP actions
     (lsp-diagnostics-provider :flycheck)
