@@ -755,6 +755,31 @@ SQL formatter from Purcell FTW
 
 #+end_src
 
+*** Shell mode
+
+#+begin_src emacs-lisp
+(use-package sh-script
+  :ensure nil
+  :config
+  (defun my/insert-shell-heading ()
+    "Insert custom shell script heading."
+    (interactive)
+    (goto-line 1)
+    (insert "#!/usr/bin/env bash\n")
+    (insert "#\n")
+    (insert "# Author: Manuel González <manuel@manuel.is> -  DD.MM.YYYY\n")
+    (insert "#\n")
+    (insert "# Requirements\n")
+    (insert "# - \n")
+    (insert "# Description\n")
+    (insert "#\n")
+    (insert "#\n")
+  )
+  :bind (:map sh-mode-map
+              ("C-c h" . my/insert-shell-heading))
+)
+#+end_src
+
 ** Features
 
 *** Environment
