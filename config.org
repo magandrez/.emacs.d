@@ -746,7 +746,13 @@ SQL formatter from Purcell FTW
   :custom (terraform-indent-level 2)
   :mode (("\\.tf\\'" . terraform-mode)
          ("\\.tfvars\\'" . terraform-mode)
-         ("\\.tfstate\\'" . terraform-mode)))
+         ("\\.tfstate\\'" . terraform-mode))
+  :config (setq lsp-terraform-ls-enable-show-reference t ;; Code lens is experimental in Terraform mode
+                lsp-terraform-ls-prefill-required-fields t
+                lsp-terraform-ls-validate-on-save t
+          )
+)
+
 #+end_src
 
 ** Features
