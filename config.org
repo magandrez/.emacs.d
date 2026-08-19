@@ -298,12 +298,18 @@ Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp
 
 *** JSON
 --> Handled with Treesitter.
-*** Dot
+
+
+*** Dot & Graphviz
 
 #+begin_src emacs-lisp
-(use-package dot-mode
-  :ensure t
-  :mode "\\.dot$")
+(use-package dot-mode)
+
+(use-package graphviz-dot-mode
+  :config
+  (setq graphviz-dot-indent-width 4)
+  :hook
+  (graphviz-dot-mode . flycheck-mode))
 #+end_src
 
 *** gnuplot
