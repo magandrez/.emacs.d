@@ -546,6 +546,18 @@ Completion framework is controlled by lsp-completion-provider.
     ;; Ruby
     (lsp-ruby-lsp-server-command '("ruby-lsp"))
     (lsp-ruby-lsp-use-bundler nil)
+    ;; Python (pylsp) -- baseline defaults; enabled/disabled toggles for
+    ;; formatter/linter plugins are set dynamically per-buffer by
+    ;; `my/lsp-pylsp-autoconfigure', based on
+    ;; what's actually installed in the active conda env.
+    (lsp-pylsp-rename-backend 'jedi)
+    (lsp-pylsp-plugins-jedi-completion-enabled t)
+    (lsp-pylsp-plugins-jedi-completion-include-params t)
+    (lsp-pylsp-plugins-jedi-completion-fuzzy nil)
+    (lsp-pylsp-plugins-rope-autoimport-enabled t)
+    (lsp-pylsp-plugins-rope-autoimport-completions-enabled t)
+    (lsp-pylsp-plugins-mypy-live-mode nil)     ;; only check on save, cheaper
+    (lsp-pylsp-plugins-ruff-line-length 88)    ;; ignored anyway if pyproject.toml exists
   :init
     ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
     (advice-add (if (progn (require 'json)
@@ -786,6 +798,26 @@ SQL formatter from Purcell FTW
 )
 #+end_src
 
+*** Python
+
+For a project with Python, ensure:
+
+- Having a .envrc with `layout anaconda <myproject>`
+- Once the the new environment is created (i.e.: conda create --name
+  <myproject> python=3.99 whatever-binary-dep-if-any` followed by
+  `conda activate orchestrator`).
+- Ensure to install the following:
+  `pip install "python-lsp-server" pylint ruff python-lsp-ruff`.
+#+begin_src emacs-lisp
+(use-package python
+  :ensure nil
+  :hook ((python-ts-mode . (lambda ()
+                             (setq-local tab-width 4
+                                         python-indent-offset 4)
+                             (add-hook 'before-save-hook #'lsp-format-buffer nil t)
+                             (add-hook 'before-save-hook #'lsp-organize-imports nil t)))))
+#+end_src
+
 ** Features
 
 *** Environment
@@ -798,6 +830,47 @@ Use direnv for this (make sure it is installed with your package manager).
   :if (executable-find "direnv")
   :hook (after-init . envrc-global-mode))
 #+end_src
+
+For Python <-> LSP shenanigans
+
+#+begin_src emacs-lisp
+(defun my/lsp-pylsp-autoconfigure ()
+  "Enable pylsp plugins based on what's actually importable in the
+current buffer's Python environment (set by envrc/direnv/conda),
+rather than a fixed choice baked into the Emacs config."
+  (let* ((has-ruff   (executable-find "ruff"))
+         (has-black  (executable-find "black"))
+         (has-pylint (executable-find "pylint"))
+         (has-flake8 (executable-find "flake8"))
+         (has-mypy   (executable-find "mypy"))
+         (has-isort  (executable-find "isort")))
+
+    ;; --- Formatting: pick exactly one, in priority order ---
+    (setq-local lsp-pylsp-plugins-ruff-format-enabled (and has-ruff t))
+    (setq-local lsp-pylsp-plugins-black-enabled       (and has-black (not has-ruff) t))
+    (setq-local lsp-pylsp-plugins-yapf-enabled        nil)
+    (setq-local lsp-pylsp-plugins-autopep8-enabled    nil)
+
+    ;; --- Linting: prefer ruff, then pylint, then flake8, then pylsp's own defaults ---
+    (setq-local lsp-pylsp-plugins-ruff-enabled       (and has-ruff t))
+    (setq-local lsp-pylsp-plugins-pylint-enabled     (and has-pylint t))
+    (setq-local lsp-pylsp-plugins-flake8-enabled     (and has-flake8 (not has-ruff) t))
+    (setq-local lsp-pylsp-plugins-pyflakes-enabled   (not (or has-ruff has-flake8)))
+    (setq-local lsp-pylsp-plugins-pycodestyle-enabled (not (or has-ruff has-flake8)))
+    (setq-local lsp-pylsp-plugins-mccabe-enabled     nil)
+
+    ;; --- Type checking / imports: purely additive, no conflicts ---
+    (setq-local lsp-pylsp-plugins-mypy-enabled  (and has-mypy t))
+    (setq-local lsp-pylsp-plugins-isort-enabled (and has-isort t))))
+
+(add-hook 'envrc-mode-hook
+          (lambda ()
+            (when (derived-mode-p 'python-ts-mode)
+              (my/lsp-pylsp-autoconfigure)
+              (lsp-deferred))))
+
+#+end_src
+
 
 *** Which-key
 
