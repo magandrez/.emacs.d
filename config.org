@@ -312,6 +312,19 @@ Very basic, but gets the job done nicely. See https://github.com/Malabarba/elisp
   (graphviz-dot-mode . flycheck-mode))
 #+end_src
 
+*** D2
+
+#+begin_src emacs-lisp
+(use-package d2-mode
+;;  :init
+;;  (setq d2-flags (list "--layout" "tala" "--theme" "6"))
+  :config
+  (setq d2-output-format ".png")
+  (define-advice d2-compile
+      (:before (&rest _) setup) (save-buffer)))
+
+#+end_src
+
 *** gnuplot
 
 #+begin_src emacs-lisp
