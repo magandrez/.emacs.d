@@ -818,7 +818,7 @@ For a project with Python, ensure:
 - Having a .envrc with `layout anaconda <myproject>`
 - Once the the new environment is created (i.e.: conda create --name
   <myproject> python=3.99 whatever-binary-dep-if-any` followed by
-  `conda activate orchestrator`).
+  `conda activate <myproject>`).
 - Ensure to install the following:
   `pip install "python-lsp-server" pylint ruff python-lsp-ruff`.
 #+begin_src emacs-lisp
@@ -827,8 +827,7 @@ For a project with Python, ensure:
   :hook ((python-ts-mode . (lambda ()
                              (setq-local tab-width 4
                                          python-indent-offset 4)
-                             (add-hook 'before-save-hook #'lsp-format-buffer nil t)
-                             (add-hook 'before-save-hook #'lsp-organize-imports nil t)))))
+                             (add-hook 'before-save-hook #'lsp-format-buffer nil t)))))
 #+end_src
 
 ** Features
