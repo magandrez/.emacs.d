@@ -1866,7 +1866,29 @@ SQL on Org files (Babel)
 (define-key org-mode-map (kbd "C-s-l") 'org-do-demote)
 #+end_src
 
+*** Reveal.js
 
+#+begin_src emacs-lisp
+(use-package org-re-reveal
+  :ensure t
+  :after org
+  :demand t
+  :custom
+  ;; local copy:
+  ;; (org-re-reveal-root "file:///home/manuel/Downloads/re")
+  ;; or CDN instead:
+  (org-re-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
+  (org-re-reveal-revealjs-version "4")
+  (org-re-reveal-theme "black")
+  (org-re-reveal-transition "slide")
+  (org-re-reveal-title-slide nil))
+#+end_src
+
+Syntax highlighting for code blocks
+
+#+begin_src emacs-lisp
+(use-package htmlize :ensure t)
+#+end_src
 ** Mail
 
 Configuration emailing with `mu4e` client and `mbsync` as backend. The
